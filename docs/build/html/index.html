@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Welcome to openrouteservice-py’s documentation! &#8212; openrouteservice-py 0.1 documentation</title>
+    <title>Python library for openrouteservice API services &#8212; openrouteservice-py 0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -38,17 +38,50 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="welcome-to-openrouteservice-py-s-documentation">
-<h1>Welcome to openrouteservice-py’s documentation!<a class="headerlink" href="#welcome-to-openrouteservice-py-s-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
+  <div class="toctree-wrapper compound">
 </div>
-<span class="target" id="module-client"></span><p>Core client functionality, common across all API requests.</p>
-<dl class="class">
-<dt id="client.Client">
-<em class="property">class </em><code class="descclassname">client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>key=None</em>, <em>base_url='https://api.openrouteservice.org'</em>, <em>timeout=None</em>, <em>retry_timeout=60</em>, <em>requests_kwargs=None</em>, <em>queries_per_minute=40</em>, <em>retry_over_query_limit=False</em><span class="sig-paren">)</span><a class="headerlink" href="#client.Client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Performs requests to the Google Maps API web services.</p>
-</dd></dl>
-
+<div class="section" id="python-library-for-openrouteservice-api-services">
+<h1>Python library for openrouteservice API services<a class="headerlink" href="#python-library-for-openrouteservice-api-services" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The openrouteservice library gives you painless access to the <a class="reference external" href="https://go.openrouteservice.org">openrouteservice</a> (ORS) routing API’s.
+It performs requests against our API’s for</p>
+<ul class="simple">
+<li><a class="reference external" href="https://go.openrouteservice.org/documentation/#/reference/directions/directions/directions-service">directions</a></li>
+<li><a class="reference external" href="https://go.openrouteservice.org/documentation/#/reference/geocoding/geocoding/geocoding-service">reverse geocoding</a></li>
+<li><a class="reference external" href="https://go.openrouteservice.org/documentation/#/reference/isochrones/isochrones/isochrones-service">isochrones</a></li>
+<li><a class="reference external" href="https://go.openrouteservice.org/documentation/#/reference/matrix/matrix/matrix-service-(post)">matrix routing calculations</a></li>
+</ul>
+<p>For further details, please visit:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://go.openrouteservice.org">homepage</a></li>
+<li><a class="reference external" href="https://go.openrouteservice.org/documentation/">documentation</a></li>
+</ul>
+<p>By using this library, you agree to the ORS <a class="reference external" href="https://go.openrouteservice.org/terms-of-service/">terms and conditions</a>.</p>
+</div>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>openrouteservice requires:</p>
+<ul class="simple">
+<li>Python <code class="docutils literal"><span class="pre">&gt;=</span></code> 2.7, 3.4, 3.5, 3.6</li>
+<li><code class="docutils literal"><span class="pre">requests</span></code></li>
+</ul>
+<p>unit testing requires additionally:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">nose</span></code></li>
+<li><code class="docutils literal"><span class="pre">responses</span></code></li>
+<li><code class="docutils literal"><span class="pre">mock</span></code></li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">me</span>
+<span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+  <span class="n">fadf</span>
+  <span class="n">a</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
