@@ -67,7 +67,7 @@ class ConvertTest(unittest.TestCase):
             convert.build_coords('[1,2],[3,4]')
             
     def test_polyline_decode(self):
-        syd_mel_route = ("mtkeHuv|q@~@VLHz@\PR|@hBt@j@^n@L\NjALv@Jh@NXi@zBm@jC"
+        syd_mel_route = (r"mtkeHuv|q@~@VLHz@\PR|@hBt@j@^n@L\NjALv@Jh@NXi@zBm@jC"
                          "KTy@z@qAhBa@\[Ne@DgCc@i@?[Ty@hAi@zASRi@R}@H_@N[b@kAd"
                          "Cy@`Au@d@eA|@q@h@WRe@PYHYBqADgAAcAL_A^w@~@q@`@w@Zw@C"
                          "m@K[PeA|Aa@p@g@fAiAhBuAv@]VU^k@xAUXe@TqATy@V}@f@_@VO"
