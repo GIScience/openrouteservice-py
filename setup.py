@@ -12,7 +12,7 @@ if sys.version_info <= (2, 4):
   print >> sys.stderr, error
   sys.exit(1)
 
-setup(name='openrouteservice-py',
+setup(name='openrouteservice',
       version='0.1',
       description='Python client for requests to openrouteservice API services',
       classifiers=[
