@@ -4,10 +4,12 @@
    contain the root `toctree` directive.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
+   
+   openrouteservice
+   README
 
-.. automodule:: client
-.. autoclass:: Client
+.. include:: openrouteservice.rst
 .. include:: ../../README.rst
 
 

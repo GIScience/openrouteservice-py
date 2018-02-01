@@ -22,7 +22,7 @@
 import time as _time
 
 
-def pipe_list(arg):
+def _pipe_list(arg):
     """Convert list of values to pipe-delimited string"""
     if not _is_list(arg):
         raise TypeError(
@@ -31,7 +31,7 @@ def pipe_list(arg):
     return "|".join(map(str,arg))
 
 
-def comma_list(arg):
+def _comma_list(arg):
     """Convert list to comma-separated string"""
     if not _is_list(arg):
         raise TypeError(
@@ -40,7 +40,7 @@ def comma_list(arg):
     return ",".join(map(str,arg))
 
 
-def checkBool(boolean):
+def _checkBool(boolean):
     """Check whether passed boolean is a string"""
     if boolean not in ["true", "false"]:
         raise ValueError("Give boolean as string 'true' or 'false'.")
@@ -48,7 +48,7 @@ def checkBool(boolean):
     return
 
 
-def format_float(arg):
+def _format_float(arg):
     """Formats a float value to be as short as possible.
 
     Trims extraneous trailing zeros and period to give API
@@ -71,7 +71,7 @@ def format_float(arg):
     return ("{}".format(round(float(arg), 6)).rstrip("0").rstrip("."))
 
 
-def build_coords(arg):
+def _build_coords(arg):
     """Converts one or many lng/lat pair(s) to a comma-separated, pipe 
     delimited string. Coordinates will be rounded to 5 digits.
 
@@ -86,7 +86,7 @@ def build_coords(arg):
     :rtype: str
     """
     if _is_list(arg):
-        return pipe_list(_concat_coords(arg))
+        return _pipe_list(_concat_coords(arg))
     else:
         raise TypeError(
             "Expected a list or tuple of lng/lat tuples or lists, "
@@ -103,9 +103,9 @@ def _concat_coords(arg):
     """
     if all(_is_list(tup) for tup in arg):
         # Check if arg is a list/tuple of lists/tuples
-        return [comma_list(map(format_float, tup)) for tup in arg]
+        return [_comma_list(map(_format_float, tup)) for tup in arg]
     else:
-        return [comma_list(format_float(coord) for coord in arg)]
+        return [_comma_list(_format_float(coord) for coord in arg)]
 
 
 def _is_list(arg):

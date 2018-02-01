@@ -42,7 +42,7 @@ _DEFAULT_BASE_URL = "https://api.openrouteservice.org"
 _RETRIABLE_STATUSES = set([503])
 
 class Client(object):
-    """Performs requests to the Google Maps API web services."""
+    """Performs requests to the ORS API services."""
 
     def __init__(self, key=None,
                  base_url=_DEFAULT_BASE_URL, 
@@ -75,7 +75,6 @@ class Client(object):
             implemented. See the official requests docs for more info:
             http://docs.python-requests.org/en/latest/api/#main-interface
         :type requests_kwargs: dict
-
         """
 
         self.session = requests.Session()
@@ -95,7 +94,7 @@ class Client(object):
         self.queries_per_minute = queries_per_minute
         self.sent_times = collections.deque("", queries_per_minute)
 
-    def _request(self, 
+    def request(self, 
                  url, params, 
                  first_request_time=None, 
                  retry_counter=0,
@@ -133,6 +132,8 @@ class Client(object):
         :raises Timeout: if the request timed out.
         :raises TransportError: when something went wrong while trying to
             execute a request.
+            
+        :rtype: dict from JSON response.
         """
 
         if not first_request_time:
@@ -245,9 +246,9 @@ class Client(object):
         # be explicitly added to params
         if self.key:
             params.append(("api_key", self.key))
-            return path + "?" + urlencode_params(params)
+            return path + "?" + _urlencode_params(params)
         elif self.base_url != _DEFAULT_BASE_URL:
-            return path + "?" + urlencode_params(params)
+            return path + "?" + _urlencode_params(params)
 
         raise ValueError("No API key specified. "
                          "Visit https://go.openrouteservice.org/dev-dashboard/ "
@@ -261,7 +262,7 @@ from openrouteservice.geocoding import geocode
 from openrouteservice.geocoding import reverse_geocode
 
 
-def make_api_method(func):
+def _make_api_method(func):
     """
     Provides a single entry point for modifying all API methods.
     For now this is limited to allowing the client object to be modified
@@ -283,14 +284,14 @@ def make_api_method(func):
     return wrapper
 
 
-Client.directions = make_api_method(directions)
-Client.distance_matrix = make_api_method(distance_matrix)
-Client.isochrones = make_api_method(isochrones)
-Client.geocode = make_api_method(geocode)
-Client.reverse_geocode = make_api_method(reverse_geocode)
+Client.directions = _make_api_method(directions)
+Client.distance_matrix = _make_api_method(distance_matrix)
+Client.isochrones = _make_api_method(isochrones)
+Client.geocode = _make_api_method(geocode)
+Client.reverse_geocode = _make_api_method(reverse_geocode)
 
 
-def urlencode_params(params):
+def _urlencode_params(params):
     """URL encodes the parameters.
 
     :param params: The parameters
@@ -300,7 +301,7 @@ def urlencode_params(params):
     """
     # urlencode does not handle unicode strings in Python 2.
     # Firstly, normalize the values so they get encoded correctly.
-    params = [(key, normalize_for_urlencode(val)) for key, val in params]
+    params = [(key, _normalize_for_urlencode(val)) for key, val in params]
     # Secondly, unquote unreserved chars which are incorrectly quoted
     # by urllib.urlencode, causing invalid auth signatures. See GH #72
     # for more info.
@@ -312,7 +313,7 @@ try:
     # NOTE(cbro): `unicode` was removed in Python 3. In Python 3, NameError is
     # raised here, and caught below.
 
-    def normalize_for_urlencode(value):
+    def _normalize_for_urlencode(value):
         """(Python 2) Converts the value to a `str` (raw bytes)."""
         if isinstance(value, unicode):
             return value.encode('utf8')
@@ -320,10 +321,10 @@ try:
         if isinstance(value, str):
             return value
 
-        return normalize_for_urlencode(str(value))
+        return _normalize_for_urlencode(str(value))
 
 except NameError:
-    def normalize_for_urlencode(value):
+    def _normalize_for_urlencode(value):
         """(Python 3) No-op."""
         # urlencode in Python 3 handles all the types we are passing it.
         return value

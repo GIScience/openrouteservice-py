@@ -177,7 +177,7 @@ def directions(client,
 
     if geometry:
         # not checked on backend, check here
-        convert.checkBool(geometry)
+        convert._checkBool(geometry)
         params["geometry"] = geometry
 
     if geometry_format:
@@ -185,7 +185,7 @@ def directions(client,
         
     if geometry_simplify:
         # not checked on backend, check here
-        convert.checkBool(geometry_simplify)
+        convert._checkBool(geometry_simplify)
         if extra_info:
             params["geometry_simplify"] = 'false'
         else:
@@ -193,7 +193,7 @@ def directions(client,
         
     if instructions:
         # not checked on backend, check here
-        convert.checkBool(instructions)
+        convert._checkBool(instructions)
         params["instructions"] = instructions
 
     if instructions_format:
@@ -201,13 +201,13 @@ def directions(client,
 
     if roundabout_exits:
         # not checked on backend, check here
-        convert.checkBool(roundabout_exits)
+        convert._checkBool(roundabout_exits)
         params["roundabout_exits"] = roundabout_exits
 
     if radiuses:
         if len(radiuses) != len(coordinates):
             raise ValueError("Amount of radiuses must match the number of waypoints.")
-        params["radiuses"] = convert.pipe_list(radiuses)
+        params["radiuses"] = convert._pipe_list(radiuses)
 
     if bearings:
         if len(bearings) != len(coordinates) and len(bearings) != len(coordinates)-1:
@@ -219,16 +219,16 @@ def directions(client,
         if not all(convert._is_list(t) for t in bearings):
             raise TypeError("Expected bearing pairs to be a list or tuple")
             
-        params["bearings"] = convert.pipe_list([convert.comma_list(pair) for pair in bearings])
+        params["bearings"] = convert._pipe_list([convert._comma_list(pair) for pair in bearings])
         
     if continue_straight:
         # not checked on backend, check here
-        convert.checkBool(continue_straight)
+        convert._checkBool(continue_straight)
         params["continue_straight"] = continue_straight
 
     if elevation:
         # not checked on backend, check here
-        convert.checkBool(elevation)
+        convert._checkBool(elevation)
         params["elevation"] = elevation
 
     if extra_info:
@@ -238,7 +238,7 @@ def directions(client,
         if not all((info in options) for info in extra_info) :
             raise ValueError("Contains invalid extra_info parameter(s).")
         
-        params["extra_info"] = convert.pipe_list(extra_info)
+        params["extra_info"] = convert._pipe_list(extra_info)
 
     if optimized:
         # not checked on backend, check here
@@ -251,4 +251,4 @@ def directions(client,
         
     #TODO: Import and check options object
 
-    return client._request("/directions", params)
+    return client.request("/directions", params)
