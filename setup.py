@@ -29,7 +29,7 @@ setup(name='openrouteservice',
       author='Nils Nolde',
       author_email='nils.nolde@gmail.com',
       license='Apache-2.0',
-      packages='openrouteservice-py',
+      packages=['openrouteservice'],
       install_requires = [
               'requests',],
       include_package_data=True,
