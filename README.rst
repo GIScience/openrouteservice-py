@@ -1,6 +1,6 @@
 .. image:: https://readthedocs.org/projects/openrouteservice-py/badge/?version=latest
-:target: http://openrouteservice-py.readthedocs.io/en/latest/?badge=latest
-:alt: Documentation Status
+   :target: http://openrouteservice-py.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
 
 Quickstart
 ==================================================
