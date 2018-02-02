@@ -9,7 +9,7 @@ openrouteservice\.client module
 
 .. automodule:: openrouteservice.client
     :members:
-    :undoc-members:
+    :exclude-members: directions, geocode, reverse_geocode, isochrones, distance_matrix
     :show-inheritance:
 
 openrouteservice\.convert module

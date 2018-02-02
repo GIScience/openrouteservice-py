@@ -1,7 +1,6 @@
-openrouteservice
-================
+docs
+====
 
 .. toctree::
    :maxdepth: 4
 
-   openrouteservice

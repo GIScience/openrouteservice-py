@@ -18,20 +18,14 @@
 #
 import os
 import sys
-sys.path.insert(0, 'C:\\Users\\gisadmin\\Documents\\Dev\\Git\\Uni\\ORS\\infrastructure\\SDK\\openrouteservice-python-api\\openrouteservice')
-sys.path.insert(0, 'C:\\Users\\gisadmin\\Documents\\Dev\\Git\\Uni\\ORS\\infrastructure\\SDK\\openrouteservice-python-api')
-
-import sphinx_bootstrap_theme
+#sys.path.insert(0, 'C:\\Users\\gisadmin\\Documents\\Dev\\Git\\Uni\\ORS\\infrastructure\\SDK\\openrouteservice-python-api\\openrouteservice')
+#sys.path.insert(0, 'C:\\Users\\gisadmin\\Documents\\Dev\\Git\\Uni\\ORS\\infrastructure\\SDK\\openrouteservice-python-api')
 
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
 # needs_sphinx = '1.0'
-
-# Customize theme
-html_theme = 'bootstrap'
-html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
