@@ -58,17 +58,19 @@ def distance_matrix(client, locations,
         not. If set 'true', every element in destinations and sources will 
         contain the name element that identifies the name of the closest street.
         'true' or 'false'. Default 'false'.
-    :type resolve_locations: string
+    :type resolve_locations: boolean as string
 
     :param units: Specifies the unit system to use when displaying results.
         One of ["m", "km", "m"]. Default "m".
     :type units: string
 
-    :param optimized: Specifies whether Dijkstra algorithm (false) or any 
-        available technique to speed up shortest-path routing (true) is used. 
+    :param optimized: Specifies whether Dijkstra algorithm ('false') or any 
+        available technique to speed up shortest-path routing ('true') is used. 
         For normal Dijkstra the number of visited nodes is limited to 100000.
         Default 'true'.
     :type optimized: boolean as string
+    
+    :raises ValueError: When profile parameter has wrong value.
     
     :rtype: dict from JSON response
     """
@@ -100,16 +102,16 @@ def distance_matrix(client, locations,
         if sources == 'all': 
             params["sources"] = sources
         else:
-            params["sources"] = convert.comma_list(sources)
+            params["sources"] = convert._comma_list(sources)
 
     if destinations:
         if destinations == 'all': 
             params["destinations"] = destinations
         else:
-            params["destinations"] = convert.comma_list(destinations)
+            params["destinations"] = convert._comma_list(destinations)
 
     if metrics:
-        params["metrics"] = convert.pipe_list(metrics)
+        params["metrics"] = convert._pipe_list(metrics)
 
     if resolve_locations:
         params["resolve_locations"] = resolve_locations
@@ -119,8 +121,8 @@ def distance_matrix(client, locations,
 
     if optimized:
         # not checked on backend, check here
-        convert.checkBool(optimized)
+        convert._checkBool(optimized)
         params["optimized"] = optimized
 
 
-    return client._request("/matrix", {}, post_json=params) # No get() params
+    return client.request("/matrix", {}, post_json=params) # No get() params

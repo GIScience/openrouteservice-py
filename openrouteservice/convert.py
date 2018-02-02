@@ -133,15 +133,12 @@ def _has_method(arg, method):
 
 
 def decode_polyline(polyline):
-    """Decodes a Polyline string into a list of lat/lng dicts.
+    """Decodes a Polyline string into a GeoJSON structure.
 
-    See the developer docs for a detailed description of this encoding:
-    https://developers.google.com/maps/documentation/utilities/polylinealgorithm
-
-    :param polyline: An encoded polyline
+    :param polyline: An encoded polyline, only the geometry.
     :type polyline: string
 
-    :rtype: list of dicts with lat/lng keys
+    :rtype: dict as GeoJSON
     """
     points = []
     index = lat = lng = 0

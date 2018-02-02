@@ -76,11 +76,13 @@ def isochrones(client, locations,
     :param intersections: not implented right now.
     :type intersections: boolean as string
     
-    rtype: dict from JSON response
+    :raises ValueError: When parameter has invalid value(s).
+    
+    :rtype: dict from JSON response
     """
 
     params = {
-        "locations": convert.build_coords(locations)
+        "locations": convert._build_coords(locations)
     }
 
     if profile:
@@ -104,20 +106,20 @@ def isochrones(client, locations,
         params["range_type"] = range_type
 
     if intervals:
-        params["range"] = convert.comma_list(intervals)
+        params["range"] = convert._comma_list(intervals)
 
     if segments:
         params["interval"] = str(segments)
         
     if units:
         if units and (range_type == None or range_type == 'time'):
-            raise TypeError("For range_type time, units cannot be specified.")
+            raise ValueError("For range_type time, units cannot be specified.")
         params["units"] = units
 
     if location_type:
         params["location_type"] = location_type
 
     if attributes:
-        params["attributes"] = convert.pipe_list(attributes)
+        params["attributes"] = convert._pipe_list(attributes)
 
-    return client._request("/isochrones", params)
+    return client.request("/isochrones", params)

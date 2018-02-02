@@ -27,10 +27,8 @@ def geocode(client, query,
             circle=None,
             limit=None):
     """
-    Geocoding is the process of converting addresses
-    (like ``"1600 Amphitheatre Parkway, Mountain View, CA"``) into geographic
-    coordinates (like latitude 37.423021 and longitude -122.083739), which you
-    can use to place markers or position the map.
+    Geocoding is the process of converting addresses into geographic
+    coordinates.
 
     :param query: Name of location, street address or postal code. For a 
         structured geocoding request, a dict object can be passed. Please refer
@@ -56,8 +54,10 @@ def geocode(client, query,
 
     :param limit: Specifies the maximum number of responses. Default 5.
     :type limit: integer
+    
+    :raises ValueError: When parameter has invalid value(s).
 
-    :rtype: GeoJSON FeatureCollection as dict
+    :rtype: dict from JSON response
     """
 
     params = dict()
@@ -87,15 +87,15 @@ def geocode(client, query,
         params["boundary_type"] = boundary_type
 
     if rect:
-        params["rect"] = convert.comma_list(rect)
+        params["rect"] = convert._comma_list(rect)
 
     if circle:
-        params["circle"] = convert.comma_list(circle)
+        params["circle"] = convert._comma_list(circle)
 
     if limit:
         params["limit"] = str(limit)
 
-    return client._request("/geocoding", params)
+    return client.request("/geocoding", params)
 
 
 def reverse_geocode(client, location,
@@ -129,8 +129,10 @@ def reverse_geocode(client, location,
 
     :param limit: Specifies the maximum number of responses. Default 5.
     :type limit: integer
+    
+    :raises ValueError: When parameter has invalid value(s).
 
-    :rtype: GeoJSON FeatureCollection as dict
+    :rtype: dict from JSON response
     """
     
     params = dict()
@@ -138,7 +140,7 @@ def reverse_geocode(client, location,
     # Check if latlng param is a place_id string.
     #  place_id strings do not contain commas; latlng strings do.
     if location:
-        params["location"] = convert.comma_list(location)
+        params["location"] = convert._comma_list(location)
 
     if lang:
         # Is not checked on backend
@@ -150,12 +152,12 @@ def reverse_geocode(client, location,
         params["boundary_type"] = boundary_type
 
     if rect:
-        params["rect"] = convert.comma_list(rect)
+        params["rect"] = convert._comma_list(rect)
 
     if circle:
-        params["circle"] = convert.comma_list(circle)
+        params["circle"] = convert._comma_list(circle)
 
     if limit:
         params["limit"] = str(limit)
 
-    return client._request("/geocoding", params)
+    return client.request("/geocoding", params)

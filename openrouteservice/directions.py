@@ -81,7 +81,7 @@ def directions(client,
 
     :param geometry_simplify: Specifies whether to simplify the geometry. 
         "true" or "false". Default "false".
-    :type geometry_simplify: boolean
+    :type geometry_simplify: boolean as string
 
     :param instructions: Specifies whether to return turn-by-turn instructions.
         "true" or "false". Default "true".
@@ -125,28 +125,31 @@ def directions(client,
     :type continue_straight: boolean
 
     :param elevation: Specifies whether to return elevation values for points.
-        True or False. Default False.
-    :type elevation: boolean
+        "true" or "false". Default "false".
+    :type elevation: boolean as string
 
     :param extra_info: Returns additional information on ["steepness", "suitability",
         "surface", "waycategory", "waytype", "tollways", "traildifficulty"].
         Must be a list of strings. Default None.
     :type extra_info: list or tuple of strings
 
-    :param optimized: If set True, uses Contraction Hierarchies. True or False. 
-        Default True.
-    :type optimized: boolean
+    :param optimized: If set True, uses Contraction Hierarchies. "true" or "false".
+        Default "true".
+    :type optimized: boolean as string
 
     :param options: Refer to https://go.openrouteservice.org/documentation for 
         detailed documentation. Construct your own dict() following the example
         of the minified options object. Will converted to json automatically.
     :type options: dict
     
+    :raises ValueError: When parameter has wrong value.
+    :raises TypeError: When parameter is of wrong type.
+    
     :rtype: dict from JSON response
     """
 
     params = {
-        "coordinates": convert.build_coords(coordinates)
+        "coordinates": convert._build_coords(coordinates)
         }
 
     if profile:
@@ -242,7 +245,7 @@ def directions(client,
 
     if optimized:
         # not checked on backend, check here
-        convert.checkBool(optimized)
+        convert._checkBool(optimized)
         if optimized == 'true' and (bearings or continue_straight == 'true'):
             params["optimized"] = 'false'
             print("Set optimized='false' due to incompatible parameter settings.")

@@ -190,7 +190,7 @@ class Client(object):
             # Retry request.
             print('Server down.\nRetrying for the {}th time.'.format(retry_counter + 1))
             
-            return self._request(url, params, first_request_time,
+            return self.request(url, params, first_request_time,
                                  retry_counter + 1, requests_kwargs, post_json)
 
         try:
@@ -203,7 +203,7 @@ class Client(object):
             
             print('Rate limit exceeded.\nRetrying for the {}th time.'.format(retry_counter + 1))
             # Retry request.
-            return self._request(url, params, first_request_time,
+            return self.request(url, params, first_request_time,
                                  retry_counter + 1, requests_kwargs,
                                  post_json)
         except:
