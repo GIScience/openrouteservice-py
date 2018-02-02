@@ -37,7 +37,7 @@ class DistanceMatrixTest(_test.TestCase):
             self.client.isochrones(self.coords_valid*2)
             
     def test_units_with_time(self):
-        with self.assertRaises(TypeError):
+        with self.assertRaises(ValueError):
             self.client.isochrones(self.coords_valid[0],
                                    units='km')
             

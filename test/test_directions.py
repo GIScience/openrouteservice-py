@@ -22,7 +22,6 @@ import responses
 
 import openrouteservice
 import test as _test
-import unittest
 
 class DirectionsTest(_test.TestCase):
             

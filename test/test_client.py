@@ -24,8 +24,6 @@ import time
 
 import openrouteservice
 import test as _test
-import unittest
-import requests
 
 class ClientTest(_test.TestCase):
     
@@ -37,16 +35,15 @@ class ClientTest(_test.TestCase):
     def test_no_api_key(self):
         with self.assertRaises(Exception):
             client = openrouteservice.Client()
-            client.directions("Sydney", "Melbourne")
+            client.directions(self.coords_valid)
 
     def test_invalid_api_key(self):
         with self.assertRaises(Exception):
             client = openrouteservice.Client(key="Invalid key.")
-            client.directions("Sydney", "Melbourne")
+            client.directions(self.coords_valid)
 
     def test_urlencode(self):
-        # See GH #72.
-        encoded_params = openrouteservice.client.urlencode_params([("address", "=Sydney ~")])
+        encoded_params = openrouteservice.client._urlencode_params([("address", "=Sydney ~")])
         self.assertEqual("address=%3DSydney+~", encoded_params)
 
     @responses.activate
@@ -124,7 +121,7 @@ class ClientTest(_test.TestCase):
                       content_type="application/json")
 
         client = openrouteservice.Client(base_url="https://foo.com")
-        client._request("/bar", {'bunny':'pretty', 'fox':'prettier'})
+        client.request("/bar", {'bunny':'pretty', 'fox':'prettier'})
         
         self.assertURLEqual("https://foo.com/bar?bunny=pretty&fox=prettier",
                             responses.calls[0].request.url)

@@ -28,43 +28,43 @@ class ConvertTest(unittest.TestCase):
     def test_single_coord_tuple(self):
         expected = "1,2"
         ll = (1, 2)
-        self.assertEqual(expected, convert.build_coords(ll))
+        self.assertEqual(expected, convert._build_coords(ll))
 
         ll = [1, 2]
-        self.assertEqual(expected, convert.build_coords(ll))
+        self.assertEqual(expected, convert._build_coords(ll))
 
         with self.assertRaises(TypeError):
-            convert.build_coords(1)
+            convert._build_coords(1)
 
         with self.assertRaises(TypeError):
-            convert.build_coords({'lat':1, 'lon':2})
+            convert._build_coords({'lat':1, 'lon':2})
             
 
         with self.assertRaises(TypeError):
-            convert.build_coords('1,2')
+            convert._build_coords('1,2')
             
             
     def test_multi_coord_tuple(self):
         expected = "1,2|3,4"
 
         ll = ((1,2),(3,4))
-        self.assertEqual(expected, convert.build_coords(ll))
+        self.assertEqual(expected, convert._build_coords(ll))
 
         ll = [(1,2),(3,4)]
-        self.assertEqual(expected, convert.build_coords(ll))
+        self.assertEqual(expected, convert._build_coords(ll))
         
         ll = ([1,2],[3,4])
-        self.assertEqual(expected, convert.build_coords(ll))
+        self.assertEqual(expected, convert._build_coords(ll))
         
         ll = [[1,2],[3,4]]
-        self.assertEqual(expected, convert.build_coords(ll))
+        self.assertEqual(expected, convert._build_coords(ll))
         
         with self.assertRaises(TypeError):
-            convert.build_coords({{'lat':1, 'lon':2},{'lat':3, 'lon':4}})
+            convert._build_coords({{'lat':1, 'lon':2},{'lat':3, 'lon':4}})
             
 
         with self.assertRaises(TypeError):
-            convert.build_coords('[1,2],[3,4]')
+            convert._build_coords('[1,2],[3,4]')
             
     def test_polyline_decode(self):
         syd_mel_route = (r"mtkeHuv|q@~@VLHz@\PR|@hBt@j@^n@L\NjALv@Jh@NXi@zBm@jC"
