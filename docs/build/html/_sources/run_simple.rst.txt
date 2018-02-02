@@ -1,0 +1,7 @@
+run\_simple module
+==================
+
+.. automodule:: run_simple
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,4 +1,4 @@
-openrouteservice package
+Library reference
 ========================
 
 Submodules
@@ -9,7 +9,7 @@ openrouteservice\.client module
 
 .. automodule:: openrouteservice.client
     :members:
-    :exclude-members: directions, distance_matrix, geocode, reverse_geocode, isochrones
+    :undoc-members:
     :show-inheritance:
 
 openrouteservice\.convert module

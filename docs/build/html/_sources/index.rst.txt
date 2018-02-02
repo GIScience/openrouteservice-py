@@ -4,13 +4,13 @@
    contain the root `toctree` directive.
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 4
    
+   readme_link
    openrouteservice
-   README
 
-.. include:: openrouteservice.rst
 .. include:: ../../README.rst
+.. include:: openrouteservice.rst
 
 
 Indices and tables
