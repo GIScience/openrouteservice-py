@@ -6,6 +6,10 @@ try:
   from setuptools import setup
 except ImportError:
   from distutils.core import setup
+
+def readme():
+    with open('README.rst') as f:
+        return f.read()
   
 if sys.version_info <= (2, 6):
   error = 'Requires Python Version 2.7 or above... exiting.'
