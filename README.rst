@@ -148,9 +148,18 @@ If you're hosting your own ORS instance, you can alter the ``base_url`` paramete
 Support
 --------
 
-For general support, contact `Google Groups`_.
+For general support, contact our `Google Group`_.
 
 For issues/bugs/enhancement suggestions, please use https://github.com/GIScience/openrouteservice-py/issues.
 
 
-.. _`Google Groups`: https://groups.google.com/forum/?utm_source=digest&utm_medium=email#!forum/openrouteservice
+.. _`Google Group`: https://groups.google.com/forum/?utm_source=digest&utm_medium=email#!forum/openrouteservice
+
+
+Acknowledgements
+-----------------
+
+This library is based on the very elegant codebase from googlemaps_.
+
+
+.. _googlemaps: https://github.com/googlemaps/google-maps-services-python
