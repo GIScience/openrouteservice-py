@@ -15,6 +15,7 @@ if sys.version_info <= (2, 6):
 setup(name='openrouteservice',
       version='0.1',
       description='Python client for requests to openrouteservice API services',
+      long_description=readme(),
       classifiers=[
               'Development Status :: 4 - Beta',
               'License :: OSI Approved :: Apache Software License',
