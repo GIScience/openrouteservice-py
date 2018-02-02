@@ -87,7 +87,7 @@ For convenience, all request performing module methods are wrapped inside the ``
 disadvantage, that your IDE can't auto-show all positional and optional arguments for the 
 different methods. And there are a lot!
 
-The slightly more verbose alternative, preserving your IDE's smart functions, is::
+The slightly more verbose alternative, preserving your IDE's smart functions, is
 
 .. code:: python
 
@@ -103,7 +103,7 @@ The slightly more verbose alternative, preserving your IDE's smart functions, is
 Decode Polyline
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 By default, the directions API returns `encoded polylines <https://developers.google.com/maps/documentation/utilities/polylinealgorithm>`_.
-To decode to a ``dict``, which is GeoJSON-ready, simply do::
+To decode to a ``dict``, which is GeoJSON-ready, simply do
 
 .. code:: python
 
@@ -124,7 +124,7 @@ To decode to a ``dict``, which is GeoJSON-ready, simply do::
 
 Local ORS instance
 ^^^^^^^^^^^^^^^^^^^^
-If you're hosting your own ORS instance, you can alter the ``base_url`` parameter to fit your own::
+If you're hosting your own ORS instance, you can alter the ``base_url`` parameter to fit your own
 	
 .. code:: python
 
