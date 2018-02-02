@@ -48,11 +48,11 @@ To install from PyPI, simply use pip::
 
 To install the latest and greatest from source::
 
-   	pip install git+git://github.com/xxx
+   	pip install git+git://github.com/GIScience/openrouteservice-py
 
 For ``conda`` users, you can install using ``setuptools`` (required Python package)::
 
-	git clone https://github.com/GIScience/
+	git clone https://github.com/GIScience/openrouteservice-py
 	python setup.py install
 
 This command will install the library to your PYTHONPATH. Also works in virtual environments.
@@ -79,7 +79,7 @@ Basic example
 	coords = ((8.34234,48.23424),(8.34423,48.26424))
 
 	client = openrouteservice.Client(key='') # Specify your personal API key
-	routes = client.directions(coords)
+	routes = client.directions(coords) # Now it shows you all arguments for .directions
 
 	print routes
 
@@ -124,7 +124,7 @@ To decode to a ``dict``, which is GeoJSON-ready, simply do
 
 Local ORS instance
 ^^^^^^^^^^^^^^^^^^^^
-If you're hosting your own ORS instance, you can alter the ``base_url`` parameter to fit your own
+If you're hosting your own ORS instance, you can alter the ``base_url`` parameter to fit your own:
 	
 .. code:: python
 
@@ -150,7 +150,7 @@ Support
 
 For general support, contact `Google Groups`_.
 
-For issues/bugs/enhancement suggestions, please use https://github.com/GIScience.
+For issues/bugs/enhancement suggestions, please use https://github.com/GIScience/openrouteservice-py/issues.
 
 
 .. _`Google Groups`: https://groups.google.com/forum/?utm_source=digest&utm_medium=email#!forum/openrouteservice
