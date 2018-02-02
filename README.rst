@@ -1,3 +1,7 @@
+.. image:: https://readthedocs.org/projects/openrouteservice-py/badge/?version=latest
+:target: http://openrouteservice-py.readthedocs.io/en/latest/?badge=latest
+:alt: Documentation Status
+
 Quickstart
 ==================================================
 
@@ -14,13 +18,15 @@ It performs requests against our API's for
 For further details, please visit:
 
 - homepage_
-- documentation_
+- `ORS API documentation`_
+- `openrouteservice-py documentation`_
 
 By using this library, you agree to the ORS `terms and conditions`_.
 
 .. _openrouteservice: https://go.openrouteservice.org
 .. _homepage: https://go.openrouteservice.org
-.. _documentation: https://go.openrouteservice.org/documentation/
+.. _`ORS API documentation`: https://go.openrouteservice.org/documentation/
+.. _`openrouteservice-py documentation`: http://openrouteservice-py.readthedocs.io/en/latest/
 .. _directions: https://go.openrouteservice.org/documentation/#/reference/directions/directions/directions-service
 .. _isochrones: https://go.openrouteservice.org/documentation/#/reference/isochrones/isochrones/isochrones-service
 .. _`reverse geocoding`: https://go.openrouteservice.org/documentation/#/reference/geocoding/geocoding/geocoding-service
@@ -79,7 +85,7 @@ Basic example
 	coords = ((8.34234,48.23424),(8.34423,48.26424))
 
 	client = openrouteservice.Client(key='') # Specify your personal API key
-	routes = client.directions(coords) # Now it shows you all arguments for .directions
+	routes = client.directions(coords) 
 
 	print routes
 
@@ -97,7 +103,7 @@ The slightly more verbose alternative, preserving your IDE's smart functions, is
 	coords = ((8.34234,48.23424),(8.34423,48.26424))
 
 	client = openrouteservice.Client(key='') # Specify your personal API key
-	routes = directions(client, coords)
+	routes = directions(client, coords) # Now it shows you all arguments for .directions
 
 
 Decode Polyline
