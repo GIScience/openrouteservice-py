@@ -7,8 +7,8 @@ try:
 except ImportError:
   from distutils.core import setup
   
-if sys.version_info <= (2, 4):
-  error = 'Requires Python Version 2.5 or above... exiting.'
+if sys.version_info <= (2, 6):
+  error = 'Requires Python Version 2.7 or above... exiting.'
   print >> sys.stderr, error
   sys.exit(1)
 
