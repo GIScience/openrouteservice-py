@@ -88,7 +88,9 @@ disadvantage, that your IDE can't auto-show all positional and optional argument
 different methods. And there are a lot!
 
 The slightly more verbose alternative, preserving your IDE's smart functions, is::
-	
+
+.. code:: python
+
 	import openrouteservice
 	from openrouteservice.directions import directions
 
@@ -102,6 +104,8 @@ Decode Polyline
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 By default, the directions API returns `encoded polylines <https://developers.google.com/maps/documentation/utilities/polylinealgorithm>`_.
 To decode to a ``dict``, which is GeoJSON-ready, simply do::
+
+.. code:: python
 
 	import openrouteservice
 	from openrouteservice import convert
@@ -122,6 +126,8 @@ Local ORS instance
 ^^^^^^^^^^^^^^^^^^^^
 If you're hosting your own ORS instance, you can alter the ``base_url`` parameter to fit your own::
 	
+.. code:: python
+
 	import openrouteservice
 
 	coords = ((8.34234,48.23424),(8.34423,48.26424))
