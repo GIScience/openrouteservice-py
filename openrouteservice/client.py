@@ -55,6 +55,10 @@ class Client(object):
         :param key: ORS API key. Required.
         :type key: string
 
+        :param base_url: The base URL for the request. Defaults to the ORS API
+            server. Should not have a trailing slash.
+        :type base_url: string
+
         :param timeout: Combined connect and read timeout for HTTP requests, in
             seconds. Specify "None" for no timeout.
         :type timeout: int
@@ -115,10 +119,6 @@ class Client(object):
 
         :param retry_counter: The number of this retry, or zero for first attempt.
         :type retry_counter: int
-
-        :param base_url: The base URL for the request. Defaults to the ORS API
-            server. Should not have a trailing slash.
-        :type base_url: string
 
         :param requests_kwargs: Same extra keywords arg for requests as per
             __init__, but provided here to allow overriding internally on a
@@ -212,15 +212,15 @@ class Client(object):
 
     def _get_body(self, response):        
         body = response.json()
-        error = body.get('error')
+#        error = body.get('error')
         status_code = response.status_code
         
         if status_code == 429:
             raise openrouteservice.exceptions._OverQueryLimit(
-                str(status_code), error)
+                str(status_code), body)
         if status_code != 200:
             raise openrouteservice.exceptions.ApiError(status_code,
-                                                       error['message'])
+                                                       body)
 
         return body
 
@@ -260,6 +260,7 @@ from openrouteservice.distance_matrix import distance_matrix
 from openrouteservice.isochrones import isochrones
 from openrouteservice.geocoding import geocode
 from openrouteservice.geocoding import reverse_geocode
+from openrouteservice.places import places
 
 
 def _make_api_method(func):
@@ -289,6 +290,7 @@ Client.distance_matrix = _make_api_method(distance_matrix)
 Client.isochrones = _make_api_method(isochrones)
 Client.geocode = _make_api_method(geocode)
 Client.reverse_geocode = _make_api_method(reverse_geocode)
+Client.places = _make_api_method(places)
 
 
 def _urlencode_params(params):

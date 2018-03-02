@@ -19,7 +19,6 @@
 """Tests for the distance matrix module."""
 import responses
 import test as _test
-import unittest
 
 import openrouteservice
 

@@ -23,6 +23,6 @@ try:
     from openrouteservice.client import Client
     import openrouteservice.exceptions
 except ModuleNotFoundError:
-  pass
+    pass
 ## Allow sphinx to pick up these symbols for the documentation.
 #__all__ = ["Client"]

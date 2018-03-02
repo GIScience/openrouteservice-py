@@ -28,7 +28,7 @@ import test as _test
 class ClientTest(_test.TestCase):
     
     def setUp(self):
-        self.key = '58d904a497c67e00015b45fcc8de25513ac6446692280cb066e66e8c'
+        self.key = '58d904a497c67e00015b45fcb6f22c2dd2774733ad9f56f9662de7d3'
         self.query = 'Heidelberg'
         self.coords_valid = ((8.34234,48.23424),(8.34423,48.26424))
 
