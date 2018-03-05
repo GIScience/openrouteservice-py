@@ -25,7 +25,7 @@ import openrouteservice
 class DistanceMatrixTest(_test.TestCase):
 
     def setUp(self):
-        self.key = '58d904a497c67e00015b45fcacecf32dfe6248f4bd208bc3dc37e113'
+        self.key = 'sample_key'
         self.client = openrouteservice.Client(self.key)
         self.coords_valid = [[9.970093,48.477473],
                             [9.207916,49.153868],

@@ -26,7 +26,7 @@ import test as _test
 class DirectionsTest(_test.TestCase):
             
     def setUp(self):
-        self.key = '58d904a497c67e00015b45fcacecf32dfe6248f4bd208bc3dc37e113'
+        self.key = 'sample_key'
         self.client = openrouteservice.Client(self.key)
         self.coords_valid = ((8.34234,48.23424),(8.34423,48.26424))
         self.coords_invalid = ((1,2), (3,4))
