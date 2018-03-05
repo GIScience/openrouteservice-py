@@ -84,7 +84,7 @@ class ClientTest(_test.TestCase):
                           status=200,
                           content_type='application/json')
             
-        client = openrouteservice.Client(key='58d904a497c67e00015b45fcc8de25513ac6446692280cb066e66e8c',
+        client = openrouteservice.Client(key='58d904a497c67e00015b45fcb6f22c2dd2774733ad9f56f9662de7d3',
                                    queries_per_minute=queries_per_minute,
                                    retry_over_query_limit=False)
         with self.assertRaises(openrouteservice.exceptions._OverQueryLimit):

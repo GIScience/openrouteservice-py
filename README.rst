@@ -14,6 +14,7 @@ It performs requests against our API's for
 - `reverse geocoding`_
 - isochrones_
 - `matrix routing calculations`_
+- places_
 
 For further details, please visit:
 
@@ -31,6 +32,7 @@ By using this library, you agree to the ORS `terms and conditions`_.
 .. _isochrones: https://go.openrouteservice.org/documentation/#/reference/isochrones/isochrones/isochrones-service
 .. _`reverse geocoding`: https://go.openrouteservice.org/documentation/#/reference/geocoding/geocoding/geocoding-service
 .. _`matrix routing calculations`: https://go.openrouteservice.org/documentation/#/reference/matrix/matrix/matrix-service-(post)
+.. _places: https://github.com/GIScience/openpoiservice
 .. _`terms and conditions`: https://go.openrouteservice.org/terms-of-service/
 
 Requirements
