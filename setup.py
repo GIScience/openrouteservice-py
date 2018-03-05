@@ -17,7 +17,7 @@ if sys.version_info <= (2, 6):
   sys.exit(1)
 
 setup(name='openrouteservice',
-      version='0.1',
+      version='0.2',
       description='Python client for requests to openrouteservice API services',
       long_description=readme(),
       classifiers=[
@@ -29,7 +29,7 @@ setup(name='openrouteservice',
               'Programming Language :: Python :: 3.5',
               'Programming Language :: Python :: 3.6',
               ],
-      keywords='routing accessibility router OSM ORS openrouteservice openstreetmap isochrone',
+      keywords='routing accessibility router OSM ORS openrouteservice openstreetmap isochrone POI',
       url='https://github.com/GIScience/openrouteservice-py',
       author='Nils Nolde',
       author_email='nils.nolde@gmail.com',
