@@ -126,3 +126,20 @@ class ClientTest(_test.TestCase):
         self.assertURLEqual("https://foo.com/bar?bunny=pretty&fox=prettier",
                             responses.calls[0].request.url)
         self.assertEqual(1, len(responses.calls))
+    
+    @responses.activate
+    def test_dry_run(self):
+        # Test that nothing is requested when dry_run is 'true'
+        
+        responses.add(responses.GET,
+                      'https://api.openrouteservice.org/directions',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
+        
+        client = openrouteservice.Client(key=self.key)
+        req = client.request(params={'format_out': 'geojson'},
+                             url='directions/',
+                             dry_run='true')
+        
+        self.assertEqual(0, len(responses.calls))
