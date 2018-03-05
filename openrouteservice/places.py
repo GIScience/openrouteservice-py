@@ -20,10 +20,9 @@
 from openrouteservice import convert
 
 def places(client, request,
-                geom_type=None,
-                geom=None,
+                geojson=None,
                 bbox=None,
-                radius=None,
+                buffer=None,
                 filter_name=None,
                 filter_wheelchair=None,
                 filter_smoking=None,
@@ -47,10 +46,6 @@ def places(client, request,
         "cycling-electric",]. Default "driving-car".
     :type profile: string
 
-    :param range_type: Set 'time' for isochrones or 'distance' for equidistants.
-        Default 'time'.
-    :type sources: string
-
     :param intervals: Ranges to calculate distances/durations for. This can be
         a list of multiple ranges, e.g. [600, 1200, 1400] or a single value list.
         In the latter case, you can also specify the 'segments' variable to break
@@ -71,16 +66,7 @@ def places(client, request,
     :type location_type: string
 
     :param attributes: 'area' returns the area of each polygon in its feature
-        properties. 'reachfactor' returns a reachability score between 
-            geom=None,
-            bbox=None,
-            radius=None,
-            wheelchair=None,
-            smoking=None,
-            category_ids=None,
-            category_group_ids=None,
-            limit=None,
-            sortby=None,0 and 1.
+        properties. 'reachfactor' returns a reachability score between 0 and 1.
         One or more of ['area', 'reachfactor']. Default 'area'.
     :type attributes: list of string(s)
 
@@ -95,32 +81,29 @@ def places(client, request,
     :rtype: dict from JSON response
     """
     
-    params = {'request': convert._pipe_list(request),
+    params = {'request': request,
               'filters': dict(),
               'geometry': dict(),
               }
     
     if request != 'category_list':
-        if geom:
-            params['geometry']['geom'] = geom
-            
-        if geom_type:
-            params['geometry']['type'] = geom_type
+        if geojson:
+            params['geometry']['geojson'] = geojson
             
         if bbox:
             params['geometry']['bbox'] = bbox
             
-        if radius:
-            params['geometry']['radius'] = radius
+        if buffer:
+            params['geometry']['buffer'] = buffer
                     
         if filter_name:
             params['filters']['name'] = filter_name
                     
         if filter_wheelchair:
-            params['filters']['wheelchair'] = convert._pipe_list(filter_wheelchair)
+            params['filters']['wheelchair'] = filter_wheelchair
                     
         if filter_smoking:
-            params['filters']['smoking'] = convert._pipe_list(filter_smoking)
+            params['filters']['smoking'] = filter_smoking
                     
         if filter_category_ids and convert._is_list(filter_category_ids):
             params['filters']['category_ids'] = filter_category_ids
