@@ -162,4 +162,4 @@ def reverse_geocode(client, location,
     if limit:
         params["limit"] = str(limit)
 
-    return client.request("/geocoding", params, dry_run)
+    return client.request("/geocoding", params, dry_run=dry_run)

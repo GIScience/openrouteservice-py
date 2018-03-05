@@ -106,4 +106,4 @@ def places(client, request,
         if sortby:
             params['sortby'] = sortby
             
-    return client.request('/places', {}, post_json=params, dry_run)
+    return client.request('/places', {}, post_json=params, dry_run=dry_run)

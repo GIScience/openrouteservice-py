@@ -126,4 +126,4 @@ def distance_matrix(client, locations,
         params["optimized"] = optimized
 
 
-    return client.request("/matrix", {}, post_json=params, dry_run) # No get() params
+    return client.request("/matrix", {}, post_json=params, dry_run=dry_run) # No get() params

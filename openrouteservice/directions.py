@@ -24,7 +24,7 @@ from openrouteservice import convert
 def directions(client,
                coordinates,
                profile='driving-car', 
-               format_out='geojson',
+               format_out=None,
                preference=None, 
                units=None, 
                language=None,
@@ -259,4 +259,4 @@ def directions(client,
         
     #TODO: Import and check options object
 
-    return client.request("/directions", params, dry_run)
+    return client.request("/directions", params, dry_run=dry_run)

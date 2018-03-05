@@ -123,4 +123,4 @@ dry_run
     if attributes:
         params["attributes"] = convert._pipe_list(attributes)
 
-    return client.request("/isochrones", params, dry_run)
+    return client.request("/isochrones", params, dry_run=dry_run)
