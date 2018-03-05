@@ -32,9 +32,8 @@ def isochrones(client, locations,
                     dry_run=None):
     """ Gets travel distance and time for a matrix of origins and destinations.
 
-    :param locations: One or more pairs of lng/lat values.
-    :type locations: a single location, or a list of locations, where a
-        location is a list or tuple of lng,lat values
+    :param locations: One pair of lng/lat values.
+    :type locations: list or tuple of lng,lat values
 
     :param profile: Specifies the mode of transport to use when calculating
         directions. One of ["driving-car", "driving-hgv", "foot-walking",
@@ -61,7 +60,7 @@ def isochrones(client, locations,
     :param units: Specifies the unit system to use when displaying results.
         One of ["m", "km", "m"]. Default "m".
     :type units: string
-dry_run
+    
     :param location_type: 'start' treats the location(s) as starting point,
         'destination' as goal. Default 'start'.
     :type location_type: string
