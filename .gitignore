@@ -2,6 +2,7 @@
 *.in
 *egg-info/
 dist/
+build/
 /docs/build
 test.py
 
