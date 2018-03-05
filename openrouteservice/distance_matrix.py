@@ -73,7 +73,7 @@ def distance_matrix(client, locations,
     
     :raises ValueError: When profile parameter has wrong value.
     
-    :rtype: dict from JSON response
+    :rtype: call to Client.request()
     """
 
     params = {

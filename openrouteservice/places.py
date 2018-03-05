@@ -62,17 +62,16 @@ def places(client, request,
         'wheelchair': ['yes', 'limited', 'no', 'designated']
         'smoking': ['dedicated','yes','separated','isolated', 'no', 'outside']
         'fee': ['yes','no', 'str']
-    :type segments: dict
+    :type filters_custom: dict
 
-    :param options: not implemented right now.
-    :type options: dict
+    :param limit: limit for POI queries.
+    :type limit: integer
     
-    :param intersections: not implented right now.
-    :type intersections: boolean as string
+    :param sortby: Sorts the returned features by 'distance' or 'category'. 
+        For request='pois' only.
+    :type sortby: string
     
-    :raises ValueError: When parameter has invalid value(s).
-    
-    :rtype: dict from JSON response
+    :rtype: call to Client.request()
     """
     
     params = {'request': request,

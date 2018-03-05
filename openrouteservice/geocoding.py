@@ -58,7 +58,7 @@ def geocode(client, query,
     dry_run
     :raises ValueError: When parameter has invalid value(s).
 
-    :rtype: dict from JSON response
+    :rtype: call to Client.request()
     """
 
     params = dict()

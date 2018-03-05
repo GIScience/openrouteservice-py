@@ -147,7 +147,7 @@ def directions(client,
     :raises ValueError: When parameter has wrong value.
     :raises TypeError: When parameter is of wrong type.
     
-    :rtype: dict from JSON response
+    :rtype: call to Client.request()
     """
 
     params = {
