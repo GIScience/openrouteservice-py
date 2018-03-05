@@ -103,7 +103,8 @@ class Client(object):
                  first_request_time=None, 
                  retry_counter=0,
                  requests_kwargs=None, 
-                 post_json=None):
+                 post_json=None,
+                 dry_run='false'):
         """Performs HTTP GET/POST with credentials, returning the body as
         JSON.
 
@@ -127,6 +128,9 @@ class Client(object):
 
         :param post_json: HTTP POST parameters. Only specified by calling method.
         :type post_json: dict
+
+        :param dry_run: If 'true', only prints URL and parameters. 'true' or 'false'.
+        :type dry_run: string
 
         :raises ApiError: when the API returns an error.
         :raises Timeout: if the request timed out.
@@ -178,6 +182,14 @@ class Client(object):
         if post_json is not None:
             requests_method = self.session.post
             final_requests_kwargs["json"] = post_json
+        
+        # Only print URL and parameters for dry_run
+        if dry_run:
+            print("base_url:\n{}\authed_url:{}\nParameters:\n{}".format(self.base_url,
+                                                                        authed_url,
+                                                                        final_requests_kwargs))
+            return
+        
         try:
             response = requests_method(self.base_url + authed_url,
                                        **final_requests_kwargs)
