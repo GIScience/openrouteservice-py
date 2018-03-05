@@ -104,7 +104,7 @@ class Client(object):
                  retry_counter=0,
                  requests_kwargs=None, 
                  post_json=None,
-                 dry_run='false'):
+                 dry_run=None):
         """Performs HTTP GET/POST with credentials, returning the body as
         JSON.
 

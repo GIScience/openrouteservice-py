@@ -28,7 +28,8 @@ def isochrones(client, locations,
                     location_type=None,
                     attributes=None,
                     #options=None,
-                    intersections=None):
+                    intersections=None,
+                    dry_run=None):
     """ Gets travel distance and time for a matrix of origins and destinations.
 
     :param locations: One or more pairs of lng/lat values.
@@ -60,7 +61,7 @@ def isochrones(client, locations,
     :param units: Specifies the unit system to use when displaying results.
         One of ["m", "km", "m"]. Default "m".
     :type units: string
-
+dry_run
     :param location_type: 'start' treats the location(s) as starting point,
         'destination' as goal. Default 'start'.
     :type location_type: string
@@ -122,4 +123,4 @@ def isochrones(client, locations,
     if attributes:
         params["attributes"] = convert._pipe_list(attributes)
 
-    return client.request("/isochrones", params)
+    return client.request("/isochrones", params, dry_run)

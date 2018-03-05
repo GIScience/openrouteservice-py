@@ -28,7 +28,8 @@ def distance_matrix(client, locations,
                     metrics=None,
                     resolve_locations=None,
                     units=None,
-                    optimized='true'):
+                    optimized='true',
+                    dry_run=None):
     """ Gets travel distance and time for a matrix of origins and destinations.
 
     :param locations: One or more pairs of lng/lat values.
@@ -125,4 +126,4 @@ def distance_matrix(client, locations,
         params["optimized"] = optimized
 
 
-    return client.request("/matrix", {}, post_json=params) # No get() params
+    return client.request("/matrix", {}, post_json=params, dry_run) # No get() params

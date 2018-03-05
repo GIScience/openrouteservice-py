@@ -23,52 +23,46 @@ def places(client, request,
                 geojson=None,
                 bbox=None,
                 buffer=None,
-                filter_name=None,
-                filter_wheelchair=None,
-                filter_smoking=None,
                 filter_category_ids=None,
                 filter_category_group_ids=None,
+                filters_custom=None,
                 limit=None,
                 sortby=None,
+                dry_run=None
                     ):
     """ Gets POI's filtered by specified parameters.
 
-    :param request: Type of request. One or more of ['pois', 'category_list', 'category_stats'].
-        pois: returns geojson of pois;
-        category_stats: returns statistics of passed categories;
-        category_list: returns mapping of category ID's to textual representation.
-    :type request: list of strings
+    :param request: Type of request. One of ['pois', 'list', 'stats'].
+        'pois': returns geojson of pois;
+        'stats': returns statistics of passed categories;
+        'list': returns mapping of category ID's to textual representation.
+    :type request: string
 
-    :param profile: Specifies the mode of transport to use when calculating
-        directions. One of ["driving-car", "driving-hgv", "foot-walking",
-        "foot-hiking", "cycling-regular", "cycling-road",
-        "cycling-safe", "cycling-mountain", "cycling-tour", 
-        "cycling-electric",]. Default "driving-car".
-    :type profile: string
+    :param geojson: GeoJSON object used for the query.
+    :type profile: JSON object
 
-    :param intervals: Ranges to calculate distances/durations for. This can be
-        a list of multiple ranges, e.g. [600, 1200, 1400] or a single value list.
-        In the latter case, you can also specify the 'segments' variable to break
-        the single value into more isochrones. In meters or seconds. Default [60].
-    :type intervals: list of integer(s)
+    :param buffer: Buffers geometry of 'geojson' or 'bbox' with the specified
+        value in meters.
+    :type intervals: integer
 
-    :param segments: Segments isochrones or equidistants for one 'intervals' value.
-        Only has effect if used with a single value 'intervals' parameter.
-        In meters or seconds. Default 20.
-    :type segments: integer
+    :param filter_category_ids: Filter by ORS custom category IDs. See
+        https://github.com/GIScience/openrouteservice-docs#places-response
+        for the mappings.
+    :type units: list of integer
 
-    :param units: Specifies the unit system to use when displaying results.
-        One of ["m", "km", "m"]. Default "m".
-    :type units: string
+    :param filter_category_group_ids: Filter by ORS custom high-level category
+        groups. See
+        https://github.com/GIScience/openrouteservice-docs#places-response
+        for the mappings.        
+    :type attributes: list of integer
 
-    :param location_type: 'start' treats the location(s) as starting point,
-        'destination' as goal. Default 'start'.
-    :type location_type: string
-
-    :param attributes: 'area' returns the area of each polygon in its feature
-        properties. 'reachfactor' returns a reachability score between 0 and 1.
-        One or more of ['area', 'reachfactor']. Default 'area'.
-    :type attributes: list of string(s)
+    :param filters_custom: Specify additional filters by key/value. Default ORS
+        filters are
+        'name': free text
+        'wheelchair': ['yes', 'limited', 'no', 'designated']
+        'smoking': ['dedicated','yes','separated','isolated', 'no', 'outside']
+        'fee': ['yes','no', 'str']
+    :type segments: dict
 
     :param options: not implemented right now.
     :type options: dict
@@ -96,20 +90,15 @@ def places(client, request,
         if buffer:
             params['geometry']['buffer'] = buffer
                     
-        if filter_name:
-            params['filters']['name'] = filter_name
-                    
-        if filter_wheelchair:
-            params['filters']['wheelchair'] = filter_wheelchair
-                    
-        if filter_smoking:
-            params['filters']['smoking'] = filter_smoking
-                    
         if filter_category_ids and convert._is_list(filter_category_ids):
             params['filters']['category_ids'] = filter_category_ids
                     
-        if filter_category_group_ids:
+        if filter_category_group_ids and convert._is_list(filter_category_group_ids):
             params['filters']['categroy_group_ids'] = filter_category_group_ids
+                    
+        if filters_custom:
+            for f in filters_custom:
+                params['filters'][f] = filters_custom[f]
                     
         if limit:
             params['limit'] = limit
@@ -117,4 +106,4 @@ def places(client, request,
         if sortby:
             params['sortby'] = sortby
             
-    return client.request('/places', {}, post_json=params)
+    return client.request('/places', {}, post_json=params, dry_run)

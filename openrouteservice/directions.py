@@ -24,6 +24,7 @@ from openrouteservice import convert
 def directions(client,
                coordinates,
                profile='driving-car', 
+               format_out='geojson',
                preference=None, 
                units=None, 
                language=None,
@@ -41,7 +42,8 @@ def directions(client,
                elevation=None,
                extra_info=None,
                optimized='true',
-               options=None):
+               options=None,
+               dry_run=None):
     """Get directions between an origin point and a destination point.
     
     For more information, visit https://go.openrouteservice.org/documentation/.
@@ -52,7 +54,7 @@ def directions(client,
 
     :param profile: Specifies the mode of transport to use when calculating
         directions. One of ["driving-car", "driving-hgv", "foot-walking",
-        "foot-hiking", "cycling-regular", "cycling-road",
+        "foot-hiking", "cycling-regular", "cycling-road",requests_kwargs
         "cycling-safe", "cycling-mountain", "cycling-tour", 
         "cycling-electric",]. Default "driving-car".
     :type mode: string
@@ -169,6 +171,9 @@ def directions(client,
             raise ValueError("Invalid travel mode.")
         params["profile"] = profile
 
+    if format_out:
+        params["format"] = format_out
+
     if preference:
         params["preference"] = preference
 
@@ -254,4 +259,4 @@ def directions(client,
         
     #TODO: Import and check options object
 
-    return client.request("/directions", params)
+    return client.request("/directions", params, dry_run)
