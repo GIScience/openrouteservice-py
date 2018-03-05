@@ -28,7 +28,7 @@ from collections import OrderedDict
 class GeocodingTest(_test.TestCase):
     
     def setUp(self):
-        self.key = '58d904a497c67e00015b45fcacecf32dfe6248f4bd208bc3dc37e113'
+        self.key = 'sample_key'
         self.client = openrouteservice.Client(self.key)
         self.query = 'Heidelberg'
         self.location = (8.68353,49.412623)

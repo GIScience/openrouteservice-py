@@ -28,7 +28,7 @@ import test as _test
 class ClientTest(_test.TestCase):
     
     def setUp(self):
-        self.key = '58d904a497c67e00015b45fcc8de25513ac6446692280cb066e66e8c'
+        self.key = 'sample_key'
         self.query = 'Heidelberg'
         self.coords_valid = ((8.34234,48.23424),(8.34423,48.26424))
 
@@ -84,7 +84,7 @@ class ClientTest(_test.TestCase):
                           status=200,
                           content_type='application/json')
             
-        client = openrouteservice.Client(key=self.key,
+        client = openrouteservice.Client(key='58d904a497c67e00015b45fcb6f22c2dd2774733ad9f56f9662de7d3',
                                    queries_per_minute=queries_per_minute,
                                    retry_over_query_limit=False)
         with self.assertRaises(openrouteservice.exceptions._OverQueryLimit):
@@ -126,3 +126,20 @@ class ClientTest(_test.TestCase):
         self.assertURLEqual("https://foo.com/bar?bunny=pretty&fox=prettier",
                             responses.calls[0].request.url)
         self.assertEqual(1, len(responses.calls))
+    
+    @responses.activate
+    def test_dry_run(self):
+        # Test that nothing is requested when dry_run is 'true'
+        
+        responses.add(responses.GET,
+                      'https://api.openrouteservice.org/directions',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
+        
+        client = openrouteservice.Client(key=self.key)
+        req = client.request(params={'format_out': 'geojson'},
+                             url='directions/',
+                             dry_run='true')
+        
+        self.assertEqual(0, len(responses.calls))

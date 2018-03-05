@@ -55,6 +55,10 @@ class Client(object):
         :param key: ORS API key. Required.
         :type key: string
 
+        :param base_url: The base URL for the request. Defaults to the ORS API
+            server. Should not have a trailing slash.
+        :type base_url: string
+
         :param timeout: Combined connect and read timeout for HTTP requests, in
             seconds. Specify "None" for no timeout.
         :type timeout: int
@@ -99,7 +103,8 @@ class Client(object):
                  first_request_time=None, 
                  retry_counter=0,
                  requests_kwargs=None, 
-                 post_json=None):
+                 post_json=None,
+                 dry_run=None):
         """Performs HTTP GET/POST with credentials, returning the body as
         JSON.
 
@@ -116,10 +121,6 @@ class Client(object):
         :param retry_counter: The number of this retry, or zero for first attempt.
         :type retry_counter: int
 
-        :param base_url: The base URL for the request. Defaults to the ORS API
-            server. Should not have a trailing slash.
-        :type base_url: string
-
         :param requests_kwargs: Same extra keywords arg for requests as per
             __init__, but provided here to allow overriding internally on a
             per-request basis.
@@ -127,6 +128,9 @@ class Client(object):
 
         :param post_json: HTTP POST parameters. Only specified by calling method.
         :type post_json: dict
+
+        :param dry_run: If 'true', only prints URL and parameters. 'true' or 'false'.
+        :type dry_run: string
 
         :raises ApiError: when the API returns an error.
         :raises Timeout: if the request timed out.
@@ -178,6 +182,14 @@ class Client(object):
         if post_json is not None:
             requests_method = self.session.post
             final_requests_kwargs["json"] = post_json
+        
+        # Only print URL and parameters for dry_run
+        if dry_run:
+            print("base_url:\n{}\authed_url:{}\nParameters:\n{}".format(self.base_url,
+                                                                        authed_url,
+                                                                        final_requests_kwargs))
+            return
+        
         try:
             response = requests_method(self.base_url + authed_url,
                                        **final_requests_kwargs)
@@ -212,15 +224,15 @@ class Client(object):
 
     def _get_body(self, response):        
         body = response.json()
-        error = body.get('error')
+#        error = body.get('error')
         status_code = response.status_code
         
         if status_code == 429:
             raise openrouteservice.exceptions._OverQueryLimit(
-                str(status_code), error)
+                str(status_code), body)
         if status_code != 200:
             raise openrouteservice.exceptions.ApiError(status_code,
-                                                       error['message'])
+                                                       body)
 
         return body
 
@@ -260,6 +272,7 @@ from openrouteservice.distance_matrix import distance_matrix
 from openrouteservice.isochrones import isochrones
 from openrouteservice.geocoding import geocode
 from openrouteservice.geocoding import reverse_geocode
+from openrouteservice.places import places
 
 
 def _make_api_method(func):
@@ -289,6 +302,7 @@ Client.distance_matrix = _make_api_method(distance_matrix)
 Client.isochrones = _make_api_method(isochrones)
 Client.geocode = _make_api_method(geocode)
 Client.reverse_geocode = _make_api_method(reverse_geocode)
+Client.places = _make_api_method(places)
 
 
 def _urlencode_params(params):

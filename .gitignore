@@ -3,3 +3,7 @@
 *egg-info/
 dist/
 /docs/build
+test.py
+
+#Spyder
+.spyproject/

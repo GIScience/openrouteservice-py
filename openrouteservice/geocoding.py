@@ -25,7 +25,8 @@ def geocode(client, query,
             boundary_type=None,
             rect=None,
             circle=None,
-            limit=None):
+            limit=None,
+            dry_run=None):
     """
     Geocoding is the process of converting addresses into geographic
     coordinates.
@@ -54,10 +55,10 @@ def geocode(client, query,
 
     :param limit: Specifies the maximum number of responses. Default 5.
     :type limit: integer
-    
+    dry_run
     :raises ValueError: When parameter has invalid value(s).
 
-    :rtype: dict from JSON response
+    :rtype: call to Client.request()
     """
 
     params = dict()
@@ -103,7 +104,8 @@ def reverse_geocode(client, location,
                     boundary_type=None,
                     rect=None,
                     circle=None,
-                    limit=None):
+                    limit=None,
+                    dry_run=None):
     """
     Reverse geocoding is the process of converting geographic coordinates into a
     human-readable address.
@@ -160,4 +162,4 @@ def reverse_geocode(client, location,
     if limit:
         params["limit"] = str(limit)
 
-    return client.request("/geocoding", params)
+    return client.request("/geocoding", params, dry_run=dry_run)
