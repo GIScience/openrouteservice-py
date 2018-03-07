@@ -76,10 +76,10 @@ If you want to run the unit tests, see Requirements_. ``cd`` to the library dire
 
 
 Usage
----------------------------------
+---------------------------------	
+
 Basic example
 ^^^^^^^^^^^^^^^^^^^^
-
 .. code:: python
 
 	import openrouteservice
@@ -129,6 +129,18 @@ To decode to a ``dict``, which is GeoJSON-ready, simply do
 
 	print decoded
 
+Dry run
+^^^^^^^^^^^^^^^^^^^^
+Although errors in query creation should be handled quite decently, you can do a dry run to print the request and its parameters:
+
+.. code:: python
+
+	import openrouteservice
+	
+	coords = ((8.34234,48.23424),(8.34423,48.26424))
+	
+	client = openrouteservice.Client(key='') # Specify your personal API key
+	client.directions(coords, dry_run='true')	
 
 Local ORS instance
 ^^^^^^^^^^^^^^^^^^^^
