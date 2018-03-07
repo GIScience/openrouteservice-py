@@ -185,7 +185,7 @@ class Client(object):
         
         # Only print URL and parameters for dry_run
         if dry_run:
-            print("base_url:\n{}\authed_url:{}\nParameters:\n{}".format(self.base_url,
+            print("base_url:\n{}\nauthed_url:{}\nParameters:\n{}".format(self.base_url,
                                                                         authed_url,
                                                                         final_requests_kwargs))
             return
