@@ -66,6 +66,7 @@ def places(client, request,
 
     :param limit: limit for POI queries.
     :type limit: integer
+                       base_url='http://localhost:5000'
     
     :param sortby: Sorts the returned features by 'distance' or 'category'. 
         For request='pois' only.
@@ -105,4 +106,4 @@ def places(client, request,
         if sortby:
             params['sortby'] = sortby
             
-    return client.request('/places', {}, post_json=params, dry_run=dry_run)
+    return client.request('/pois', {}, post_json=params, dry_run=dry_run)

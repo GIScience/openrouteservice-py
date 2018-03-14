@@ -36,7 +36,7 @@ except ImportError: # Python 2
     from urllib import urlencode
 
 
-_USER_AGENT = "ORSClientPython/%s".format(openrouteservice.__version__)
+_USER_AGENT = "ORSClientPython.v{}".format(openrouteservice.__version__)
 _DEFAULT_BASE_URL = "https://api.openrouteservice.org"
 
 _RETRIABLE_STATUSES = set([503])
@@ -185,9 +185,8 @@ class Client(object):
         
         # Only print URL and parameters for dry_run
         if dry_run:
-            print("base_url:\n{}\nauthed_url:{}\nParameters:\n{}".format(self.base_url,
-                                                                        authed_url,
-                                                                        final_requests_kwargs))
+            print("url:\n{}\nParameters:\n{}".format(self.base_url+authed_url,
+                                                    final_requests_kwargs))
             return
         
         try:
