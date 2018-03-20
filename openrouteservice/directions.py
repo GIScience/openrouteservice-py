@@ -18,8 +18,9 @@
 
 """Performs requests to the ORS directions API."""
 
-from openrouteservice import convert
+import json
 
+from openrouteservice import convert
 
 def directions(client,
                coordinates,
@@ -141,7 +142,7 @@ def directions(client,
 
     :param options: Refer to https://go.openrouteservice.org/documentation for 
         detailed documentation. Construct your own dict() following the example
-        of the minified options object. Will converted to json automatically.
+        of the minified options object. Will be converted to json automatically.
     :type options: dict
     
     :raises ValueError: When parameter has wrong value.
@@ -216,7 +217,7 @@ def directions(client,
         if len(radiuses) != len(coordinates):
             raise ValueError("Amount of radiuses must match the number of waypoints.")
         params["radiuses"] = convert._pipe_list(radiuses)
-
+        
     if bearings:
         if len(bearings) != len(coordinates) and len(bearings) != len(coordinates)-1:
             raise ValueError("Provide as many bearings as waypoints or one less.")
@@ -241,9 +242,9 @@ def directions(client,
 
     if extra_info:
         # not checked on backend, check here
-        options = ["steepness", "suitability", "surface", "waycategory",
+        opts = ["steepness", "suitability", "surface", "waycategory",
                    "waytype", "tollways", "traildifficulty"]
-        if not all((info in options) for info in extra_info) :
+        if not all((info in opts) for info in extra_info) :
             raise ValueError("Contains invalid extra_info parameter(s).")
         
         params["extra_info"] = convert._pipe_list(extra_info)
@@ -256,7 +257,12 @@ def directions(client,
             print("Set optimized='false' due to incompatible parameter settings.")
         else:
             params["optimized"] = optimized
+    
+    if options:
+        # check if valid dict
+        if not isinstance(options, dict):
+            raise TypeError("Expected options object to be a dict, but got {}".format(type(options)))
+        params['options'] = json.dumps(options)
         
-    #TODO: Import and check options object
 
     return client.request("/directions", params, dry_run=dry_run)

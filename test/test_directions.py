@@ -119,7 +119,6 @@ class DirectionsTest(_test.TestCase):
             self.client.directions(self.coords_valid,
                                    bearings="[[100,100]]")
         
-        
 
     @responses.activate
     def test_complex_request(self):
@@ -128,25 +127,31 @@ class DirectionsTest(_test.TestCase):
                       body='{"status":"OK","routes":[]}',
                       status=200,
                       content_type='application/json')
+        
+        params = {
+                'coordinates':self.coords_valid,
+                'profile':'driving-hgv',
+                'preference':'fastest',
+                'units':'mi',
+                'language':'en',
+                'geometry':'true',
+                'geometry_format':'geojson',
+                'geometry_simplify':'false',
+                'instructions':'false',
+                'instructions_format':'html',
+                'roundabout_exits':'true',
+                'radiuses':[10000,10000],
+                'bearings':[[100,100], [200,200]],
+                'continue_straight':'false',
+                'elevation':'true',
+                'extra_info':['steepness', 'suitability'],
+                'optimized':'false',
+                'options':{'maximum_speed':20}
+                }
 
-        routes = self.client.directions(self.coords_valid,
-                                        profile='driving-hgv',
-                                        preference='fastest',
-                                        units='mi',
-                                        language='en',
-                                        geometry='true',
-                                        geometry_format='geojson',
-                                        geometry_simplify='false',
-                                        instructions='false',
-                                        instructions_format='html',
-                                        roundabout_exits='true',
-                                        radiuses=[10000,10000],
-                                        bearings=[[100,100], [200,200]],
-                                        continue_straight='false',
-                                        elevation='true',
-                                        extra_info=['steepness', 'suitability'],
-                                        optimized='false'
-                                        )
+        print(params)
+        routes = self.client.directions(**params)
+                                        
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://api.openrouteservice.org/directions?api_key={}&'
@@ -157,6 +162,7 @@ class DirectionsTest(_test.TestCase):
                             'instructions_format=html&roundabout_exits=true'
                             '&radiuses=10000%7C10000&bearings=100%2C100%7C200%2C200&'
                             'continue_straight=false&elevation=true&'
-                            'extra_info=steepness%7Csuitability&optimized=false'.format(self.key),
+                            'extra_info=steepness%7Csuitability&optimized=false&'
+                            'options=%7B%22maximum_speed%22%3A+20%7D'.format(self.key),
                             responses.calls[0].request.url)
         

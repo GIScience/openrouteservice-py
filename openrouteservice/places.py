@@ -62,7 +62,7 @@ def places(client, request,
         'wheelchair': ['yes', 'limited', 'no', 'designated']
         'smoking': ['dedicated','yes','separated','isolated', 'no', 'outside']
         'fee': ['yes','no', 'str']
-    :type filters_custom: dict of lists
+    :type filters_custom: dict of lists/str
 
     :param limit: limit for POI queries.
     :type limit: integer

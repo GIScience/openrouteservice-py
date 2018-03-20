@@ -20,18 +20,18 @@ openrouteservice\.convert module
     :undoc-members:
     :show-inheritance:
 
-openrouteservice\.places module
---------------------------------
-
-.. automodule:: openrouteservice.places
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 openrouteservice\.directions module
 -----------------------------------
 
 .. automodule:: openrouteservice.directions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+openrouteservice\.isochrones module
+-----------------------------------
+
+.. automodule:: openrouteservice.isochrones
     :members:
     :undoc-members:
     :show-inheritance:
@@ -44,14 +44,6 @@ openrouteservice\.distance\_matrix module
     :undoc-members:
     :show-inheritance:
 
-openrouteservice\.exceptions module
------------------------------------
-
-.. automodule:: openrouteservice.exceptions
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 openrouteservice\.geocoding module
 ----------------------------------
 
@@ -60,10 +52,18 @@ openrouteservice\.geocoding module
     :undoc-members:
     :show-inheritance:
 
-openrouteservice\.isochrones module
+openrouteservice\.places module
+--------------------------------
+
+.. automodule:: openrouteservice.places
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+openrouteservice\.exceptions module
 -----------------------------------
 
-.. automodule:: openrouteservice.isochrones
+.. automodule:: openrouteservice.exceptions
     :members:
     :undoc-members:
     :show-inheritance:
