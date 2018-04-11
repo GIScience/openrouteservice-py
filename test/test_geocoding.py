@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2014 Google Inc. All rights reserved.
 #
 # Modifications Copyright (C) 2018 HeiGIT, University of Heidelberg.
@@ -15,9 +14,9 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations under
 # the License.
+#
 
-
-"""Tests for the Pelias geocoding module."""
+"""Tests for the geocode module."""
 
 import responses
 
@@ -26,55 +25,49 @@ import unittest
 import openrouteservice
 from collections import OrderedDict
 
-class GeocodingPeliasTest(_test.TestCase):    
+class GeocodingTest(_test.TestCase):
+    
     def setUp(self):
         self.key = 'sample_key'
         self.client = openrouteservice.Client(self.key)
-        self.search = {'text': 'Heidelberg',
-                      'focus_point': (8.675786, 49.418431),
-                      'rect_min_x': 8.573179,
-                      'rect_min_y': 49.351764,
-                      'rect_max_x': 8.79405,
-                      'rect_max_y': 49.459693,
-                      'circle_point': (8.675786, 49.418431),
-                      'circle_radius': 50,
-                      'sources': ['osm', 'wof', 'gn'],
-                      'layers': ['locality',  'county', 'region'],
-                      'country': 'de',
-                      'size': 5,
-                        }
-        self.reverse = {'point': (8.675786, 49.418431),
-                        'circle_radius': 50,
-                      'sources': ['osm', 'wof', 'gn'],
-                      'layers': ['locality',  'county', 'region'],
-                      'country': 'de',
-                      'size': 5,
-                        }
-        
-    @response.activate
-    def test_full_search(self):
+        self.query = 'Heidelberg'
+        self.location = (8.68353,49.412623)
+        self.structured = {"postalcode": "69120",
+                            "country":"Germany",
+                            "locality": "Heidelberg",
+                            }
+
+    @responses.activate
+    def test_simple_geocode(self):
         responses.add(responses.GET,
-                      'https://api.openrouteservice.org/geocode/search',
+                      'https://api.openrouteservice.org/geocoding',
                       body='{"status":"OK","results":[]}',
                       status=200,
                       content_type='application/json')
 
-        results = self.client.pelias_search(**self.search)
+        results = self.client.geocode(self.query)
 
         self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('https://api.openrouteservice.org/geocode/search?boundary.circle.lat=49.418431&boundary.circle.lon=8.675786&boundary.circle.radius=50&boundary.rect.max_lon%09=49.459693&boundary.rect.min_lat%09=49.351764&boundary.rect.min_lon%09=8.573179&country=de&focus.point.lat=49.418431&focus.point.lon=8.675786&layers=locality%2Ccounty%2Cregion&size=5&sources=osm%2Cwof%2Cgn&text=Heidelberg&api_key=58d904a497c67e00015b45fc40d3503b3a9a4695936156d392dbf0e3'.format(self.key),
+        self.assertURLEqual('https://api.openrouteservice.org/geocoding?'
+                            'api_key={}&query=Heidelberg'.format(self.key),
                             responses.calls[0].request.url)
-        
-    def test_full_reverse(self):
+#
+    @responses.activate
+    def test_reverse_geocode(self):
         responses.add(responses.GET,
-                      'https://api.openrouteservice.org/geocode/reverse',
+                      'https://api.openrouteservice.org/geocoding',
                       body='{"status":"OK","results":[]}',
                       status=200,
                       content_type='application/json')
 
-        results = self.client.pelias_reverse(**self.reverse)
+        results = self.client.reverse_geocode(self.location)
 
         self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('https://api.openrouteservice.org/geocode/search?boundary.circle.lat=49.418431&boundary.circle.lon=8.675786&boundary.circle.radius=50&boundary.rect.max_lon%09=49.459693&boundary.rect.min_lat%09=49.351764&boundary.rect.min_lon%09=8.573179&country=de&focus.point.lat=49.418431&focus.point.lon=8.675786&layers=locality%2Ccounty%2Cregion&size=5&sources=osm%2Cwof%2Cgn&text=Heidelberg&api_key=58d904a497c67e00015b45fc40d3503b3a9a4695936156d392dbf0e3'.format(self.key),
+        self.assertURLEqual('https://api.openrouteservice.org/geocoding?'
+                            'api_key={}&location=8.68353%2C49.412623'.format(self.key),
                             responses.calls[0].request.url)
-        
+
+    def test_geocode_structured_query(self):
+        with self.assertRaises(ValueError):
+            self.structured['Apartment'] = 'Below Bridge No 5'
+            self.client.geocode(self.structured)

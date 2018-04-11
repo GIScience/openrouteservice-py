@@ -44,6 +44,14 @@ openrouteservice\.distance\_matrix module
     :undoc-members:
     :show-inheritance:
 
+openrouteservice\.geocode module
+----------------------------------
+
+.. automodule:: openrouteservice.geocode
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 openrouteservice\.geocoding module
 ----------------------------------
 
