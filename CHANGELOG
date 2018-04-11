@@ -1,3 +1,6 @@
+## v0.4
+- add Pelias geocoding endpoints
+
 ## v0.3
 - add options object to directions API
 
