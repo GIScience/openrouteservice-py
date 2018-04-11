@@ -16,7 +16,7 @@
 # the License.
 #
 
-"""Performs requests to the ORS geocoding API."""
+"""(DEPRECATED) Performs requests to the ORS geocoding API."""
 from openrouteservice import convert
 
 

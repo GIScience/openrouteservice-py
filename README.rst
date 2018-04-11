@@ -11,7 +11,8 @@ The openrouteservice library gives you painless access to the openrouteservice_ 
 It performs requests against our API's for 
 
 - directions_
-- `reverse geocoding`_
+- `Pelias geocoding`_
+- `Pelias reverse geocoding`_
 - isochrones_
 - `matrix routing calculations`_
 - places_
@@ -29,6 +30,8 @@ By using this library, you agree to the ORS `terms and conditions`_.
 .. _`ORS API documentation`: https://go.openrouteservice.org/documentation/
 .. _`openrouteservice-py documentation`: http://openrouteservice-py.readthedocs.io/en/latest/
 .. _directions: https://go.openrouteservice.org/documentation/#/reference/directions/directions/directions-service
+.. _`Pelias geocoding`: https://github.com/pelias/documentation/blob/master/search.md#available-search-parameters
+.. _`Pelias reverse geocoding`: https://github.com/pelias/documentation/blob/master/reverse.md#reverse-geocoding-parameters
 .. _isochrones: https://go.openrouteservice.org/documentation/#/reference/isochrones/isochrones/isochrones-service
 .. _`reverse geocoding`: https://go.openrouteservice.org/documentation/#/reference/geocoding/geocoding/geocoding-service
 .. _`matrix routing calculations`: https://go.openrouteservice.org/documentation/#/reference/matrix/matrix/matrix-service-(post)
@@ -63,7 +66,7 @@ For ``conda`` users, you can install using ``setuptools`` (required Python packa
 	git clone https://github.com/GIScience/openrouteservice-py
 	python setup.py install
 
-This command will install the library to your PYTHONPATH. Also works in virtual environments.
+This comman group will install the library to your global environment. Also works in virtual environments.
 
 
 Testing

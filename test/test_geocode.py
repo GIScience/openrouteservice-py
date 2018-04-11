@@ -51,7 +51,7 @@ class GeocodingPeliasTest(_test.TestCase):
                       'size': 5,
                         }
         
-    @response.activate
+    @responses.activate
     def test_full_search(self):
         responses.add(responses.GET,
                       'https://api.openrouteservice.org/geocode/search',
@@ -62,9 +62,10 @@ class GeocodingPeliasTest(_test.TestCase):
         results = self.client.pelias_search(**self.search)
 
         self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('https://api.openrouteservice.org/geocode/search?boundary.circle.lat=49.418431&boundary.circle.lon=8.675786&boundary.circle.radius=50&boundary.rect.max_lon%09=49.459693&boundary.rect.min_lat%09=49.351764&boundary.rect.min_lon%09=8.573179&country=de&focus.point.lat=49.418431&focus.point.lon=8.675786&layers=locality%2Ccounty%2Cregion&size=5&sources=osm%2Cwof%2Cgn&text=Heidelberg&api_key=58d904a497c67e00015b45fc40d3503b3a9a4695936156d392dbf0e3'.format(self.key),
+        self.assertURLEqual('https://api.openrouteservice.org/geocode/search?boundary.circle.lat=49.418431&boundary.circle.lon=8.675786&boundary.circle.radius=50&boundary.rect.max_lon%09=49.459693&boundary.rect.min_lat%09=49.351764&boundary.rect.min_lon%09=8.573179&country=de&focus.point.lat=49.418431&focus.point.lon=8.675786&layers=locality%2Ccounty%2Cregion&size=5&sources=osm%2Cwof%2Cgn&text=Heidelberg&api_key=sample_key'.format(self.key),
                             responses.calls[0].request.url)
         
+    @responses.activate
     def test_full_reverse(self):
         responses.add(responses.GET,
                       'https://api.openrouteservice.org/geocode/reverse',
@@ -75,6 +76,6 @@ class GeocodingPeliasTest(_test.TestCase):
         results = self.client.pelias_reverse(**self.reverse)
 
         self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('https://api.openrouteservice.org/geocode/search?boundary.circle.lat=49.418431&boundary.circle.lon=8.675786&boundary.circle.radius=50&boundary.rect.max_lon%09=49.459693&boundary.rect.min_lat%09=49.351764&boundary.rect.min_lon%09=8.573179&country=de&focus.point.lat=49.418431&focus.point.lon=8.675786&layers=locality%2Ccounty%2Cregion&size=5&sources=osm%2Cwof%2Cgn&text=Heidelberg&api_key=58d904a497c67e00015b45fc40d3503b3a9a4695936156d392dbf0e3'.format(self.key),
+        self.assertURLEqual('https://api.openrouteservice.org/geocode/reverse?boundary.circle.radius=50&country=de&layers=locality%2Ccounty%2Cregion&point.lat=49.418431&point.lon=8.675786&size=5&sources=osm%2Cwof%2Cgn&api_key=sample_key'.format(self.key),
                             responses.calls[0].request.url)
         
