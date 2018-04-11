@@ -271,6 +271,8 @@ from openrouteservice.distance_matrix import distance_matrix
 from openrouteservice.isochrones import isochrones
 from openrouteservice.geocoding import geocode
 from openrouteservice.geocoding import reverse_geocode
+from openrouteservice.geocode import pelias_search
+from openrouteservice.geocode import pelias_reverse
 from openrouteservice.places import places
 
 
@@ -301,6 +303,8 @@ Client.distance_matrix = _make_api_method(distance_matrix)
 Client.isochrones = _make_api_method(isochrones)
 Client.geocode = _make_api_method(geocode)
 Client.reverse_geocode = _make_api_method(reverse_geocode)
+Client.pelias_search = _make_api_method(pelias_search)
+Client.pelias_reverse = _make_api_method(pelias_reverse)
 Client.places = _make_api_method(places)
 
 

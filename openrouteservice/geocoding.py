@@ -1,4 +1,4 @@
-# Copyright 2014 Google Inc. All rights reserved.
+# Copyright (C) 2018 HeiGIT, University of Heidelberg.
 #
 # Modifications Copyright (C) 2018 HeiGIT, University of Heidelberg.
 #
@@ -16,121 +16,177 @@
 # the License.
 #
 
-"""Performs requests to the ORS geocoding API."""
+"""Performs requests to the ORS geocode API (direct Pelias clone)."""
 from openrouteservice import convert
 
+valid_layers = ['venue',
+                 'address',
+                 'street',
+                 'neighbourhood',
+                 'borough',
+                 'localadmin',
+                 'locality',
+                 'county',
+                 'macrocounty',
+                 'region',
+                 'macroregion',
+                 'county',
+                 'coarse']
 
-def geocode(client, query,
-            lang=None,
-            boundary_type=None,
-            rect=None,
-            circle=None,
-            limit=None,
+valid_sources = ['osm', 'oa', 'wof', 'gn']
+
+def pelias_search(client, text,
+            focus_point=None,
+            rect_min_x=None,
+            rect_min_y=None,
+            rect_max_x=None,
+            rect_max_y=None,
+            circle_point=None,
+            circle_radius=None,
+            sources=None,
+            layers=None,
+            country=None,
+            size=None,
             dry_run=None):
     """
     Geocoding is the process of converting addresses into geographic
     coordinates.
+    
+    This endpoint queries directly against a Pelias instance.
+    
+    :param text: Full-text query against search endpoint. Required.
+    :type text: string
 
-    :param query: Name of location, street address or postal code. For a 
-        structured geocoding request, a dict object can be passed. Please refer
-        to https://github.com/GIScience/openrouteservice-docs#geocoding-structured-query
-        for details. 
-    :type query: string or dict of structured geocoding request
+    :param focus_point: Focusses the search to be around this point and gives
+        results within a 100 km radius higher scores.
+    :type query: list or tuple of (Long, Lat)
 
-    :param lang: Specifies the language of the response. One of ['de', 'en',
-        'fr', 'it']. Default 'en'.
-    :type lang: string
+    :param rect_min_x: Min longitude by which to constrain request geographically.
+    :type rect_min_x: float
 
-    :param boundary_type: Specifies the type of spatial search restriction. 
-        One of ['rect','circle'].
-    :type boundary_type: string
+    :param rect_min_y: Min latitude by which to constrain request geographically.
+    :type rect_min_y: float
 
-    :param rect: For boundary_type=rect only! Sets the restriction rectangle's
-        minimum/maximum longitude/latitude, i.e. [MinLong,MinLat,MaxLong,Maxlat].
-    :type rect: list of integers
+    :param rect_max_x: Max longitude by which to constrain request geographically.
+    :type rect_max_x: float
 
-    :param circle: For boundary_type=circle only! Sets the restriction circle 
-        with a center point and a radius in meters, i.e. [Long,Lat,Radius]. 
-    :type circle: list of integers
+    :param rect_max_y: Max latitude by which to constrain request geographically.
+    :type rect_max_y: float
 
-    :param limit: Specifies the maximum number of responses. Default 5.
-    :type limit: integer
-    dry_run
+    :param circle_point: Geographical constraint in form a circle.
+    :type circle_point: list or tuple of (Long, Lat)
+
+    :param circle_radius: Radius of circle constraint in km. Default 50.
+    :type circle_radius: integer
+
+    :param sources: The originating source of the data. One or more of 
+        ['osm', 'oa', 'wof', 'gn']. Currently only 'osm', 'wof' and 'gn' are 
+        supported.
+    :type sources: list of strings
+
+    :param layers: The administrative hierarchy level for the query. Refer to 
+        https://github.com/pelias/documentation/blob/master/search.md#filter-by-data-type
+        for details.
+    :type layers: list of strings
+
+    :param country: Constrain query by country. Accepts alpha-2 or alpha-3 
+        digit ISO-3166 country codes.
+    :type country: list of strings
+
+    :param size: The amount of results returned. Default 10.
+    :type size: integer
+    
     :raises ValueError: When parameter has invalid value(s).
+    :raises TypeError: When parameter is of the wrong type.
 
     :rtype: call to Client.request()
     """
 
-    params = dict()
+    params = {'text': text}
+    
+    if focus_point:
+        params['focus.point.lon'] = convert._format_float(focus_point[0])
+        params['focus.point.lat'] = convert._format_float(focus_point[1])
+    
+    if rect_min_x:
+        params['boundary.rect.min_lon	'] = convert._format_float(rect_min_x)
+        
+    if rect_min_y:
+        params['boundary.rect.min_lat	'] = convert._format_float(rect_min_y)
+        
+    if rect_max_x:
+        params['boundary.rect.max_lon	'] = convert._format_float(rect_max_x)
+        
+    if rect_max_y:
+        params['boundary.rect.max_lon	'] = convert._format_float(rect_max_y)
+    
+    if circle_point:
+        params['boundary.circle.lon'] = convert._format_float(circle_point[0])
+        params['boundary.circle.lat'] = convert._format_float(circle_point[1])
+        
+    if circle_radius:
+        params['boundary.circle.radius'] = circle_radius
+        
+    if sources:
+        if not convert._is_list(sources):
+            raise TypeError('Data source invalid.')
+        if not all((source in valid_sources) for source in sources):
+            raise ValueError("Source must be one or more of {}".format(valid_sources))
+        params['sources'] = convert._comma_list(sources)
 
-    if query:
-        # Is not checked on backend
-        if isinstance(query, dict):
-            allowed_keys = ['address',
-                            'neighbourhood',
-                            'borough',
-                            'locality',
-                            'county',
-                            'region',
-                            'postalcode',
-                            'country']
-            if not all((key in allowed_keys) for key in query.keys()):
-                raise ValueError("Geocoding query contains invalid admin parameter.")
-        params["query"] = str(query)
+    if layers:
+        if not convert._is_list(layers):
+            raise TypeError('Invalid layer type for geocoding.')
+        if not all((layer in valid_layers) for layer in layers):
+            raise ValueError("Source must be one or more of ".format(valid_layers))
+        params['layers'] = convert._comma_list(layers)
 
-    if lang:
-        # Is not checked on backend
-        if lang not in ['en', 'fr', 'de', 'it']:
-            raise ValueError("Invalid language {} specified)".format(lang))
-        params["lang"] = lang
+    if country:
+        if not isinstance(country, str):
+            raise TypeError('Country must be a string.')
+        params['country'] = country
 
-    if boundary_type:
-        params["boundary_type"] = boundary_type
+    if size:
+        params['size'] = size
 
-    if rect:
-        params["rect"] = convert._comma_list(rect)
-
-    if circle:
-        params["circle"] = convert._comma_list(circle)
-
-    if limit:
-        params["limit"] = str(limit)
-
-    return client.request("/geocoding", params)
+    return client.request("/geocode/search", params, dry_run=dry_run)
 
 
-def reverse_geocode(client, location,
-                    lang=None,
-                    boundary_type=None,
-                    rect=None,
-                    circle=None,
-                    limit=None,
+def pelias_reverse(client, point,
+                    circle_radius=None,
+                    sources=None,
+                    layers=None,
+                    country=None,
+                    size=None,
                     dry_run=None):
     """
     Reverse geocoding is the process of converting geographic coordinates into a
     human-readable address.
+    
+    This endpoint queries directly against a Pelias instance.
 
-    :param location: Coordinate to be inquired.
-    :type location: lng/lat pair as list or tuple
+    :param point: Coordinate tuple. Required.
+    :type point: list or tuple of [Lon, Lat]
 
-    :param lang: Specifies the language of the response. One of ['de', 'en',
-        'fr', 'it']. Default 'en'.
-    :type lang: string
+    :param circle_radius: Radius around point to limit query in km. Default 1.
+    :type circle_radius: integer
 
-    :param boundary_type: Specifies the type of spatial search restriction. 
-        One of ['rect','circle'].
-    :type boundary_type: string
+    :param sources: The originating source of the data. One or more of 
+        ['osm', 'oa', 'wof', 'gn']. Currently only 'osm', 'wof' and 'gn' are 
+        supported.
+    :type sources: list of strings
 
-    :param rect: For boundary_type=rect only! Sets the restriction rectangle's
-        minimum/maximum longitude/latitude, i.e. [MinLong,MinLat,MaxLong,Maxlat].
-    :type rect: list of integers
+    :param layers: The administrative hierarchy level for the query. Refer to 
+        https://github.com/pelias/documentation/blob/master/search.md#filter-by-data-type
+        for details.
+    :type layers: list of strings
 
-    :param circle: For boundary_type=circle only! Sets the restriction circle 
-        with a center point and a radius in meters, i.e. [Long,Lat,Radius]. 
-    :type circle: list of integers
+    :param country: Constrain query by country. Accepts alpha-2 or alpha-3 
+        digit ISO-3166 country codes.
+    :type country: list of strings
 
-    :param limit: Specifies the maximum number of responses. Default 5.
-    :type limit: integer
+    :param size: The amount of results returned. Default 10.
+    :type size: integer
     
     :raises ValueError: When parameter has invalid value(s).
 
@@ -139,27 +195,36 @@ def reverse_geocode(client, location,
     
     params = dict()
 
-    # Check if latlng param is a place_id string.
-    #  place_id strings do not contain commas; latlng strings do.
-    if location:
-        params["location"] = convert._comma_list(location)
+    if not convert._is_list(point):
+        raise TypeError('Point must be a list/tuple of coordinates.')
+        
+    params['point.lon'] = convert._format_float(point[0])
+    params['point.lat'] = convert._format_float(point[1])
+        
+    if circle_radius:
+        params['boundary.circle.radius'] = str(circle_radius)
+        
+    if sources:
+        if not convert._is_list(sources):
+            raise TypeError('Data source invalid.')
+        if not all((source in valid_sources) for source in sources):
+            raise ValueError("Source must be one or more of {}".format(valid_sources))
+        params['sources'] = convert._comma_list(sources)
 
-    if lang:
-        # Is not checked on backend
-        if lang not in ['en', 'fr', 'de', 'it']:
-            raise ValueError("Invalid language {} specified)".format(lang))
-        params["lang"] = lang
+    if layers:
+        if not convert._is_list(layers):
+            raise TypeError('Invalid layer type for geocoding.')
+        if not all((layer in valid_layers) for layer in layers):
+            raise ValueError("Source must be one or more of ".format(valid_layers))
+        params['layers'] = convert._comma_list(layers)
 
-    if boundary_type:
-        params["boundary_type"] = boundary_type
+    if country:
+        if not isinstance(country, str):
+            raise TypeError('Country must be a string.')
+        
+        params['country'] = country
 
-    if rect:
-        params["rect"] = convert._comma_list(rect)
+    if size:
+        params['size'] = size
 
-    if circle:
-        params["circle"] = convert._comma_list(circle)
-
-    if limit:
-        params["limit"] = str(limit)
-
-    return client.request("/geocoding", params, dry_run=dry_run)
+    return client.request("/geocode/reverse", params, dry_run=dry_run)
