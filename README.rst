@@ -23,6 +23,8 @@ For further details, please visit:
 - `ORS API documentation`_
 - `openrouteservice-py documentation`_
 
+We also have a repo with a few useful examples here_.
+
 By using this library, you agree to the ORS `terms and conditions`_.
 
 .. _openrouteservice: https://go.openrouteservice.org
@@ -36,6 +38,7 @@ By using this library, you agree to the ORS `terms and conditions`_.
 .. _`reverse geocoding`: https://go.openrouteservice.org/documentation/#/reference/geocoding/geocoding/geocoding-service
 .. _`matrix routing calculations`: https://go.openrouteservice.org/documentation/#/reference/matrix/matrix/matrix-service-(post)
 .. _places: https://github.com/GIScience/openpoiservice
+.. _here: https://github.com/GIScience/openrouteservice-examples/tree/master/python
 .. _`terms and conditions`: https://go.openrouteservice.org/terms-of-service/
 
 Requirements
