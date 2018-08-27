@@ -67,7 +67,8 @@ def isochrones(client, locations,
 
     :param attributes: 'area' returns the area of each polygon in its feature
         properties. 'reachfactor' returns a reachability score between 0 and 1.
-        One or more of ['area', 'reachfactor']. Default 'area'.
+        'total_pop' returns population statistics from https://ghsl.jrc.ec.europa.eu/about.php.
+        One or more of ['area', 'reachfactor', 'total_pop']. Default 'area'.
     :type attributes: list of string(s)
 
     :param options: not implemented right now.
