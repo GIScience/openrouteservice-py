@@ -81,10 +81,10 @@ def distance_matrix(client, locations,
         "sources": sources,
         "destinations": destinations
     }
+    
+    get_params = {}
 
     if profile:
-        # NOTE(broady): the mode parameter is not validated by the Maps API
-        # server. Check here to prevent silent failures.
         if profile not in ["driving-car",
                            "driving-hgv",
                            "foot-walking",
@@ -98,6 +98,7 @@ def distance_matrix(client, locations,
                            ]:
             raise ValueError("Invalid travel mode.")
         params["profile"] = profile
+        get_params['profile'] = profile
 
     if sources:
         if sources == 'all': 
@@ -126,4 +127,4 @@ def distance_matrix(client, locations,
         params["optimized"] = optimized
 
 
-    return client.request("/matrix", {}, post_json=params, dry_run=dry_run) # No get() params
+    return client.request("/matrix", get_params, post_json=params, dry_run=dry_run) 
