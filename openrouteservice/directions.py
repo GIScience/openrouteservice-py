@@ -35,7 +35,7 @@ def directions(client,
                instructions=None,
                instructions_format=None, 
                roundabout_exits=None, 
-               #attributes=None,
+               attributes=None,
                #maneuvers=None, 
                radiuses=None,
                bearings=None,
@@ -98,6 +98,10 @@ def directions(client,
         roundabout exits. Adds the 'exit_bearings' array to the 'step' object 
         in the response. "true" or "false". Default "false".
     :type roundabout_exits: string
+
+    :param attributes: Returns route attributes on ["avgspeed", "detourfactor", "percentage"].
+        Must be a list of strings. Default None. 
+    :type attributes: list or tuple of strings
 
     :param radiuses: A list of maximum distances (measured in
         meters) that limit the search of nearby road segments to every given waypoint.
@@ -213,6 +217,14 @@ def directions(client,
         convert._checkBool(roundabout_exits)
         params["roundabout_exits"] = roundabout_exits
 
+    if attributes:
+        # not checked on backend, check here
+        opts = ["avgspeed", "detourfactor", "percentage"]
+        if not all((attribute in opts) for attribute in attributes) :
+            raise ValueError("Contains invalid attributes parameter(s).")
+            
+        params["attributes"] = convert._pipe_list(attributes)
+        
     if radiuses:
         if len(radiuses) != len(coordinates):
             raise ValueError("Amount of radiuses must match the number of waypoints.")
