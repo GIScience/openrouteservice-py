@@ -101,7 +101,14 @@ class DirectionsTest(_test.TestCase):
                             'api_key={}&coordinates=8.34234%2C48.23424%7C8.34423%2C48.26424&'
                             'profile=driving-car&continue_straight=true&optimized=false'.format(self.key),
                             responses.calls[0].request.url)
-        
+    
+    def test_invalid_attributes(self):
+        with self.assertRaises(ValueError):
+            self.client.directions(self.coords_valid,
+                                   attributes=['avgspeed',
+                                               'detourfactor',
+                                               'awesomeness'])
+            
     def test_invalid_extra_info(self):
         with self.assertRaises(ValueError):
             self.client.directions(self.coords_valid,
@@ -140,6 +147,7 @@ class DirectionsTest(_test.TestCase):
                 'instructions':'false',
                 'instructions_format':'html',
                 'roundabout_exits':'true',
+                'attributes':['avgspeed'],
                 'radiuses':[10000,10000],
                 'bearings':[[100,100], [200,200]],
                 'continue_straight':'false',
@@ -160,6 +168,7 @@ class DirectionsTest(_test.TestCase):
                             'language=en&geometry=true&geometry_format=geojson&'
                             'geometry_simplify=false&instructions=false&'
                             'instructions_format=html&roundabout_exits=true'
+                            '&attributes=avgspeed'
                             '&radiuses=10000%7C10000&bearings=100%2C100%7C200%2C200&'
                             'continue_straight=false&elevation=true&'
                             'extra_info=steepness%7Csuitability&optimized=false&'
