@@ -134,14 +134,14 @@ def _has_method(arg, method):
 
 def decode_polyline(polyline):
     """Decodes a Polyline string into a GeoJSON structure.
-
+    
     :param polyline: An encoded polyline, only the geometry.
     :type polyline: string
-
+    
     :rtype: dict as GeoJSON
     """
     points = []
-    index = lat = lng = 0
+    index = lat = lng = elev = 0
 
     while index < len(polyline):
         result = 1
@@ -166,7 +166,21 @@ def decode_polyline(polyline):
                 break
         lng += ~(result >> 1) if (result & 1) != 0 else (result >> 1)
 
-        points.append([round(lng * 1e-5, 6), round(lat * 1e-5, 6)])
+        result = 1
+        shift = 0
+        while True:
+            b = ord(polyline[index]) - 63 - 1
+            index += 1
+            result += b << shift
+            shift += 5
+            if b < 0x1f:
+                break
+        if (result & 1) != 0:
+            elev += ~(result >> 1)
+        else:
+            elev += (result >> 1) 
+        
+        points.append({"lng": round(lng * 1e-5, 6), "lat": round(lat * 1e-5, 6), "elev": round(elev * 1e-5, 6)})
         geojson = {u'type': u'LineString', u'coordinates': points}
 
     return geojson
