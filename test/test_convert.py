@@ -65,7 +65,8 @@ class ConvertTest(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             convert._build_coords('[1,2],[3,4]')
-            
+    
+    
     def test_polyline_decode(self):
         syd_mel_route = (r"mtkeHuv|q@~@VLHz@\PR|@hBt@j@^n@L\NjALv@Jh@NXi@zBm@jC"
                          "KTy@z@qAhBa@\[Ne@DgCc@i@?[Ty@hAi@zASRi@R}@H_@N[b@kAd"
@@ -80,7 +81,9 @@ class ConvertTest(unittest.TestCase):
                          "yBkEa@}@W}@WkCUqC?_@Hg@ZqABg@Gm@YoAEgAMq@@jAB|CC`@{@rACH")
 
         points = convert.decode_polyline(syd_mel_route)['coordinates']
-        self.assertAlmostEqual(8.344268, points[0][0], places=5)
-        self.assertAlmostEqual(48.233826, points[0][1], places=5)
-        self.assertAlmostEqual(8.343433, points[-1][0], places=5)
-        self.assertAlmostEqual(48.263552, points[-1][1], places=5)
+        self.assertAlmostEqual(8.344268, points[0]["lng"], places=5)
+        self.assertAlmostEqual(48.233826, points[0]["lat"], places=5)
+        self.assertAlmostEqual(-0.00032, points[0]["elev"], places=5)
+        self.assertAlmostEqual(8.35619, points[-1]["lng"], places=5)
+        self.assertAlmostEqual(48.23371, points[1]["lat"], places=5)
+        self.assertAlmostEqual(-0.00037, points[1]["elev"], places=5)
