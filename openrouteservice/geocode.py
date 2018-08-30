@@ -199,7 +199,7 @@ def pelias_structured(client, text,
     :type postalcode: list of strings
     
     :param country: Highest-level divisions supported in a search. Can be a full name or abbreviation.
-    :text county: list of strings
+    :type country: list of strings
     
     :raises TypeError: When parameter is of the wrong type.
 
