@@ -172,7 +172,7 @@ def decode_polyline(polyline):
             b = ord(polyline[index]) - 63 - 1
             index += 1
             result += b << shift
-            shift += 2
+            shift += 5
             if b < 0x1f:
                 break
         if (result & 1) != 0:
