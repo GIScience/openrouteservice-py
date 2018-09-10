@@ -65,22 +65,30 @@ class ConvertTest(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             convert._build_coords('[1,2],[3,4]')
-            
+    
+    
     def test_polyline_decode(self):
-        syd_mel_route = (r"mtkeHuv|q@~@VLHz@\PR|@hBt@j@^n@L\NjALv@Jh@NXi@zBm@jC"
-                         "KTy@z@qAhBa@\[Ne@DgCc@i@?[Ty@hAi@zASRi@R}@H_@N[b@kAd"
-                         "Cy@`Au@d@eA|@q@h@WRe@PYHYBqADgAAcAL_A^w@~@q@`@w@Zw@C"
-                         "m@K[PeA|Aa@p@g@fAiAhBuAv@]VU^k@xAUXe@TqATy@V}@f@_@VO"
-                         "\Mb@[fBe@|@Mp@WbCgClKSdAq@Rm@?g@WYg@G[[}Bk@qBy@wDUm@"
-                         "w@}@q@}A]o@k@y@kAjC_AjC_ApCe@z@i@j@q@f@[NsAp@u@T}A\w"
-                         "ATU?WCeBm@q@MwAGUCg@SMaAi@mDQm@K}@Mq@u@mAc@i@c@Ys@[W"
-                         "W_@q@e@a@cA_@w@E{BHmBXqBkBsA}@{Ao@iAB{@QYSi@qCUy@Ee@"
-                         "@SDWbA_BLKLAVNb@r@J@HEHK?]k@iDe@w@COAWBUh@qBDc@?c@Q{"
-                         "BGa@MQKCOBgA\{@AKEs@Wq@i@q@{@s@gAk@kA]g@g@_@I]??k@i@"
-                         "yBkEa@}@W}@WkCUqC?_@Hg@ZqABg@Gm@YoAEgAMq@@jAB|CC`@{@rACH")
+        syd_mel_route = (r"mlqlHat`t@OiACMvAs@HCPGJ?JAJBRFTRLJPNHDNDJ"
+                         "@D?fACRAZCPAb@AF?HAfBQJEDAn@QFC@QD_@@QFe@Bg"
+                         "@@KBy@?M@a@@q@?iE?C?OGgAkEwUQ{@c@gBQeAYeCIe"
+                         "AWmDAIImACUOyBIeAC}@Ey@?QLC@_@@KBiAVmDF]Ni@"
+                         "Zu@RYBA^_@~A{A`Ai@JCPGf@Qf@]X_@BMAMIKuBTI?G"
+                         "E?A?ADOnCsB\c@DGDIl@sAJUFMBGJUP[DCD@DP@l@?R"
+                         "?h@Bx@PnAAl@?BAFc@rAAB?@BRHBFEN[FQFQRg@Rw@J"
+                         "g@Ny@DUDOJe@N_ADm@BkBGcC@s@Du@l@eEZgBP_AHe@"
+                         "He@Fc@RuATaA?SCWAGIOQS[Qu@Ym@C}@R{@`@m@p@Wj"
+                         "@]nAGBE?KGAE?E?KVcB`@eB^mAn@uALUJSj@y@fA}@f"
+                         "@k@BGHM^k@r@qAHSLU^i@bA_Af@q@PYFKHIHCJ?RLFN"
+                         "XjAj@tDj@rERzBLzCHp@xAdKLf@RXTDNEBCFGDEDE@G"
+                         "@GDKBGRc@Xi@N[JUf@u@l@o@f@c@h@]XMfQ}D|EcAlA"
+                         "ORIJQ?C?CAUKOSGwAMa@M_EsBcBqA_A{@k@q@sCcEi@"
+                         "gAWo@[gAYyAMy@y@aNMyAc@uDS_As@uBMc@Ig@SeBKc"
+                         "@Uy@AI@A]GGCMIiCmAGCWMqAk@")
 
         points = convert.decode_polyline(syd_mel_route)['coordinates']
-        self.assertAlmostEqual(8.344268, points[0][0], places=5)
-        self.assertAlmostEqual(48.233826, points[0][1], places=5)
-        self.assertAlmostEqual(8.343433, points[-1][0], places=5)
-        self.assertAlmostEqual(48.263552, points[-1][1], places=5)
+        self.assertAlmostEqual(8.69201, points[0][0], places=5)
+        self.assertAlmostEqual(49.410151, points[0][1], places=5)
+        self.assertAlmostEqual(0.1, points[0][2], places=2)
+        self.assertAlmostEqual(8.69917, points[-1][0], places=5) 
+        self.assertAlmostEqual(49.41868 , points[-1][1], places=5)
+        self.assertAlmostEqual(12.5, points[-1][2], places=2)
