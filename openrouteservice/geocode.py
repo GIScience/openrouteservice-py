@@ -151,62 +151,60 @@ def pelias_search(client, text,
 
     return client.request("/geocode/search", params, dry_run=dry_run)
 
-  
-def pelias_structured(client, text,
-                     address=None,
-                     neighbourhood=None,
-                     borough=None,
-                     locality=None,
-                     county=None,
-                     region=None,
-                     postalcode=None,
-                     country=None,
-                     dry_run=None):
+
+def pelias_structured(client,
+                      address=None,
+                      neighbourhood=None,
+                      borough=None,
+                      locality=None,
+                      county=None,
+                      region=None,
+                      postalcode=None,
+                      country=None,
+                      dry_run=None):
     """
     With structured geocoding, you can search for the individual parts of a location. 
     Structured geocoding is an option on the search endpoint, 
     which allows you to define a query that maintains the individual fields.
     
     This endpoint queries directly against a Pelias instance.
-    
-    :param text: Full-text query against search endpoint. Required.
-    :type text: list of strings
+    For full documentation, please see https://github.com/pelias/documentation/blob/master/structured-geocoding.md
     
     :param address: Can contain a full address with house number or only a street name. 
-    :type address: list of strings
+    :type address: string
     
     :param neighbourhood: Neighbourhoods are vernacular geographic entities that 
         may not necessarily be official administrative divisions but are important nonetheless.
-    :type neighbourhood: list of strings
+    :type neighbourhood: string
     
     :param borough: Mostly known in the context of New York City, even though they may exist in other cities.
-    :type borough: list of strings
+    :type borough: string
     
     :param locality: Localities are equivalent to what are commonly referred to as cities.
-    :type locality: list of strings
+    :type locality: string
     
     :param county: Administrative divisions between localities and regions.
         Not as commonly used in geocoding as localities, but useful when attempting to 
         disambiguate between localities. 
-    :type county: list of strings
+    :type county: string
     
     :param region: Normally the first-level administrative divisions within countries, analogous to states 
         and provinces in the United States and Canada. Can be a full name or abbreviation.
-    :type region: list of strings
+    :type region: string
     
     :param postalcode: Dictated by an administrative division, which is almost always countries.
         Postal codes are unique within a country.
-    :type postalcode: list of strings
+    :type postalcode: string
     
     :param country: Highest-level divisions supported in a search. Can be a full name or abbreviation.
-    :type country: list of strings
+    :type country: string
     
     :raises TypeError: When parameter is of the wrong type.
 
-    :rtype: call to Client.request()
+    :rtype: dict from JSON response
     """
-    
-    params = {'text': text}
+
+    params = dict()
     
     if address:
         if not isinstance(address, str):
