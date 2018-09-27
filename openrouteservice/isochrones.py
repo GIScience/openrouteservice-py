@@ -126,7 +126,7 @@ def isochrones(client, locations,
         params["location_type"] = location_type
 
     if smoothing:
-        params["smoothing"] = smoothing
+        params["smoothing"] = convert.__format_float(smoothing)
 
     if attributes:
         params["attributes"] = convert._pipe_list(attributes)
