@@ -6,6 +6,10 @@
    :target: http://openrouteservice-py.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
 
+.. image:: https://coveralls.io/repos/github/GIScience/openrouteservice-py/badge.svg?branch=master
+   :target: https://coveralls.io/github/GIScience/openrouteservice-py?branch=master
+
+
 Quickstart
 ==================================================
 
