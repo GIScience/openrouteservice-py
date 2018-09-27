@@ -71,6 +71,7 @@ class DistanceMatrixTest(_test.TestCase):
                                            intervals=[1000,2000],
                                            units='m',
                                            location_type='destination',
+                                           smoothing=0.5,
                                            attributes=['area', 'reachfactor']
                                            )
 
@@ -81,5 +82,6 @@ class DistanceMatrixTest(_test.TestCase):
                             '%2C38.106467%7C8.34234%2C48.23424&profile=cycling-regular&'
                             'range_type=distance&range=1000%2C2000&'
                             'units=m&location_type=destination&'
+                            'smoothing=0.5&'
                             'attributes=area|reachfactor&interval=30'.format(self.key),
                             responses.calls[0].request.url)
