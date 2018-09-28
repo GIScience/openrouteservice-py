@@ -56,6 +56,7 @@ class DistanceMatrixTest(_test.TestCase):
                             'locations=9.970093%2C48.477473&'
                             'profile=driving-car&range=60&interval=30'.format(self.key),
                             responses.calls[0].request.url)
+        self.validateFormat(isochrone)
 
     @responses.activate
     def test_all_params(self):
@@ -83,3 +84,4 @@ class DistanceMatrixTest(_test.TestCase):
                             'units=m&location_type=destination&'
                             'attributes=area|reachfactor&interval=30'.format(self.key),
                             responses.calls[0].request.url)
+        self.validateFormat(isochrone)
