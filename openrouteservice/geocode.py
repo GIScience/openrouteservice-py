@@ -118,7 +118,7 @@ def pelias_search(client, text,
         params['boundary.rect.max_lon	'] = convert._format_float(rect_max_x)
         
     if rect_max_y:
-        params['boundary.rect.max_lon	'] = convert._format_float(rect_max_y)
+        params['boundary.rect.max_lat	'] = convert._format_float(rect_max_y)
     
     if circle_point:
         params['boundary.circle.lon'] = convert._format_float(circle_point[0])
