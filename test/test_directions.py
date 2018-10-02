@@ -174,4 +174,4 @@ class DirectionsTest(_test.TestCase):
                             'extra_info=steepness%7Csuitability&optimized=false&'
                             'options=%7B%22maximum_speed%22%3A+20%7D'.format(self.key),
                             responses.calls[0].request.url)
-        
+        self.validateFormat(params)

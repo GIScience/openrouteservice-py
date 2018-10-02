@@ -96,3 +96,4 @@ class DistanceMatrixTest(_test.TestCase):
         self.assertURLEqual('https://api.openrouteservice.org/matrix?api_key={}'.format(self.key),
                             responses.calls[0].request.url)
         self.assertEqual(resp, payload)
+        self.validateFormat(payload)
