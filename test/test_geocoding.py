@@ -36,6 +36,7 @@ class GeocodingTest(_test.TestCase):
                             "country":"Germany",
                             "locality": "Heidelberg",
                             }
+        self.validateFormat(self.structured)
 
     @responses.activate
     def test_simple_geocode(self):

@@ -44,6 +44,7 @@ class GeocodingPeliasTest(_test.TestCase):
                        'country': 'de',
                        'size': 5,
                        }
+        self.validateFormat(self.search)
         self.structured = {'address': 'Berliner Straße 45',
                            'neighbourhood': 'Neuenheimer Feld',
                            'borough': 'Heidelberg',
@@ -53,6 +54,7 @@ class GeocodingPeliasTest(_test.TestCase):
                            'postalcode': '69120',
                            'country': 'de',
                            }
+        self.validateFormat(self.structured)
         self.reverse = {'point': (8.675786, 49.418431),
                         'circle_radius': 50,
                         'sources': ['osm', 'wof', 'gn'],
@@ -60,6 +62,7 @@ class GeocodingPeliasTest(_test.TestCase):
                         'country': 'de',
                         'size': 5,
                         }
+        self.validateFormat(self.reverse)
 
     @responses.activate
     def test_full_search(self):

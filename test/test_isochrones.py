@@ -75,7 +75,7 @@ class DistanceMatrixTest(_test.TestCase):
                                            attributes=['area', 'reachfactor']
                                            )
 
-        iso_parameter = {'locations': [9.970093, 48.477473],
+        iso_parameter = {'locations': [[9.970093, 48.477473], [9.207916, 49.153868]],
                          'profile': 'cycling-regular',
                          'range_type': 'distance',
                          'range': [1000, 2000],

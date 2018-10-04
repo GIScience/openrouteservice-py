@@ -28,20 +28,22 @@ except ImportError:  # Python 2
     from urlparse import urlparse, parse_qsl
 
 schema = {
+    # 'api_key': {'type': 'string'},
     'address': {'type': 'string'},
-    'attributes': {'type': 'list', 'schema': {'type': 'string',
+    'attributes': {'type': ['list', 'tuple'], 'schema': {'type': 'string',
                                               'allowed': ['area', 'reachfactor', 'total_pop', 'avgspeed',
                                                           'detourfactor', 'percentage']}},
-    # in directions, isochrones # tuple?
-    'bearings': {'type': ['list', 'tuple']},  # or lists or tuples
+    # in directions, isochrones
+    'bearings': {'type': ['list', 'tuple'], 'schema': {'type': 'list', 'schema': {'type': 'integer'}}},
     'borough': {'type': 'string'},
-    # 'buffer'
     'category_group_ids': {'type': 'list', 'schema': {'type': 'integer'}},
     'circle_radius': {'type': 'integer'},
+    'circle_point': {'type': ['tuple', 'float']},  # not in API docu
     'continue_straight': {'type': 'string', 'allowed': ['true', 'false']},
-    'coordinates': {'type': 'list', 'schema': {'type': 'tuple'}},
-    'country': {'type': 'list', 'schema': {'type': 'string'}},
-    # 'country': {'type': 'string'}, -> strucured
+    'coordinates': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
+                              {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float'}}},
+                              {'type': 'tuple', 'schema': {'type': 'tuple', 'schema': {'type': 'float'}}}]},
+    'country': {'type': 'string'},
     'county': {'type': 'string'},
     'destinations': {
         'oneof': [{'type': 'list', 'schema': {'type': 'integer'}}, {'type': 'string', 'allowed': ['all']}]},
@@ -65,15 +67,23 @@ schema = {
         'fee': {'type': 'list', 'schema': {
             'type': 'string', 'allowed': ['yes', 'no', 'str']
         }}}},
-    # 'first_request_time': {'type': 'datetime'}, -> datetime.datetime
-    'focus_point': {},  # format?
-    # 'geojson'
-    'geometry': {'type': 'string', 'allowed': ['true', 'false']},
+    # 'first_request_time': {'type': 'datetime'}, -> datetime.datetime -> client
+    'focus_point': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
+    'format': {'type': 'string', 'allowed': ['json', 'geojson', 'gpx']},
+    # 'geojson' # -> places
+    'geometry': {'type': 'string', 'allowed': ['true', 'false']},  # -> directions
+    # 'geometry': {'type': 'dict',
+    #              'schema': {'bbox': {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float'}}},
+    #                         'geojson': {'type': 'dict', 'schema': {'type': {'type': 'string', 'allowed': ['Point']},
+    #                                                                'coordinates': {'type': 'list',
+    #                                                                                'schema': {'type': 'float'}}}},
+    #                         'buffer': {'type': 'integer'}}},  # -> pois
     'geometry_format': {'type': 'string', 'allowed': ['encodedpolyline', 'geojson', 'polyline']},
     'geometry_simplify': {'type': 'string', 'allowed': ['true', 'false']},
+    'id': {'type': 'string'},
     'instructions': {'type': 'string', 'allowed': ['true', 'false']},
     'instructions_format': {'type': 'string', 'allowed': ['text', 'html']},
-    # 'intersections': {'type': 'string'}, -> not implemented right now
+    'intersections': {'type': 'string', 'allowed': ['true', 'false']},
     'interval': {'type': 'list', 'schema': {'type': 'integer'}},
     'language': {'type': 'string',
                  'allowed': ['en', 'de', 'cn', 'es', 'ru', 'dk', 'fr', 'it', 'nl', 'br', 'se', 'tr', 'gr']},
@@ -81,14 +91,40 @@ schema = {
     'layers': {'type': 'list', 'schema': {'type': 'string'}},
     'locality': {'type': 'string'},
     'location_type': {'type': 'string', 'allowed': ['start', 'destination']},
-    'locations': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
+    'locations': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
+                            {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float'}}},
+                            {'type': 'tuple', 'schema': {'type': 'tuple', 'schema': {'type': 'float'}}}]},
     'limit': {'type': 'integer'},
+    'maneuvers': {'type': 'string', 'allowed': ['true', 'false']},
     'metrics': {'type': 'list', 'schema': {'type': 'string'}, 'allowed': ['distance', 'duration']},
     'neighbourhood': {'type': 'string'},
     'optimized': {'type': 'string', 'allowed': ['true', 'false']},
-    'options': {'type': 'dict'},  # not implemented right now
-    # 'params': {} # dict or list of key/value tuples
-    'point': {'type': ['list', 'tuple'], 'schema': {'type': 'list', 'schema': {'type': 'float'}}},
+    'options': {'type': 'dict', 'schema': {'maximum_speed': {'type': 'integer'},
+                                           'avoid_features': {'type': 'string',
+                                                              'allowed': ['highways', 'tollways', 'ferries', 'tunnels',
+                                                                          'pavedroads', 'unpavedroads', 'tracks',
+                                                                          'fords', 'steps', 'hills']},
+                                           'avoid_borders': {'type': 'string', 'allowed': ['all', 'controlled']},
+                                           'avoid_countries': {'type': 'string'},
+                                           'vehicle_type': {'type': 'string',
+                                                            'allowed': ['hgv', 'bus', 'agricultural', 'delivery',
+                                                                        'forestry', 'goods']},
+                                           'profile_params': {'type': 'dict', 'schema': {
+                                               'weightings': {'type': 'dict', 'schema': {
+                                                   'steepness_difficulty': {'type': 'dict', 'schema': {
+                                                       'level': {'type': 'integer', 'min': 0, 'max': 3}}},
+                                                   'green': {'type': 'dict', 'schema': {
+                                                       'factor': {'type': 'float', 'min': 0, 'max': 1}}},
+                                                   'quiet': {'type': 'dict', 'schema': {
+                                                       'factor': {'type': 'float', 'min': 0, 'max': 1}}}}},
+                                               # 'restrictions':
+                                           }},
+                                           # 'avoid_polygons'
+                                           }},
+    # 'params': {} # -> client
+    'point': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
+                        {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float'}}},
+                        {'type': 'tuple', 'schema': {'type': 'tuple', 'schema': {'type': 'float'}}}]},
     'polyline': {'type': 'string'},
     'post_json': {'type': 'dict'},
     'postalcode': {'type': 'string'},
@@ -115,8 +151,9 @@ schema = {
     'size': {'type': 'integer'},
     'smoothing': {'type': 'float', 'min': 0, 'max': 1},
     'sortby': {'type': 'string', 'allowed': ['distance', 'category']},
-    # 'sources' -> distance_matrix: one or more indices inside a list; or 'all' (string)
-    'sources': {'type': 'list', 'schema': {'type': 'string'}, 'allowed': ['osm', 'oa', 'wof', 'gn']},
+    # 'sources': {'oneof': [{'type': 'list', 'schema': {'type': 'integer', 'min': 0}},
+    #                       {'type': 'string', 'allowed': ['all']}]}, # -> distance_matrix
+    'sources': {'type': 'list', 'schema': {'type': 'string'}, 'allowed': ['osm', 'oa', 'wof', 'gn']},  # -> geocode
     'text': {'type': 'string'},
     'units': {'type': 'string', 'allowed': ['m', 'km', 'mi']},
     'url': {'type': 'string'},
@@ -144,11 +181,8 @@ class TestCase(unittest.TestCase):
 
     def validateFormat(self, params):
         """Validates the used parameter with Cerberus."""
-
         # Add the tuple type
         tuple_type = TypeDefinition("tuple", (tuple), ())
         Validator.types_mapping["tuple"] = tuple_type
 
-        # v = Validator(schema)
-        # parameter_dict = v.validate(params)
         assert_success(params, schema)
