@@ -20,7 +20,7 @@
 
 import json
 
-from openrouteservice import convert
+from openrouteservice import convert, validator
 
 def directions(client,
                coordinates,
@@ -155,6 +155,8 @@ def directions(client,
     :rtype: call to Client.request()
     """
 
+    validator.directions_validate({'coordinates': coordinates})
+
     params = {
         "coordinates": convert._build_coords(coordinates)
         }
@@ -162,43 +164,37 @@ def directions(client,
     if profile:
         # NOTE(broady): the mode parameter is not validated by the Maps API
         # server. Check here to prevent silent failures.
-        if profile not in ["driving-car",
-                           "driving-hgv",
-                           "foot-walking",
-                           "foot-hiking",
-                           "cycling-regular",
-                           "cycling-road",
-                           "cycling-safe",
-                           "cycling-mountain",
-                           "cycling-tour", 
-                           "cycling-electric",
-                           ]:
-            raise ValueError("Invalid travel mode.")
+        validator.directions_validate({'profile': profile})
         params["profile"] = profile
 
     if format_out:
+        validator.directions_validate({'format_out': format_out})
         params["format"] = format_out
 
     if preference:
+        validator.directions_validate({'preference': preference})
         params["preference"] = preference
 
     if units:
+        validator.directions_validate({'units': units})
         params["units"] = units
 
     if language:
+        validator.directions_validate({'language': language})
         params["language"] = language
 
     if geometry:
         # not checked on backend, check here
-        convert._checkBool(geometry)
+        validator.directions_validate({'geometry': geometry})
         params["geometry"] = geometry
 
     if geometry_format:
+        validator.directions_validate({'geometry_format': geometry_format})
         params["geometry_format"] = geometry_format
         
     if geometry_simplify:
         # not checked on backend, check here
-        convert._checkBool(geometry_simplify)
+        validator.directions_validate({'geometry_simplify': geometry_simplify})
         if extra_info:
             params["geometry_simplify"] = 'false'
         else:
@@ -206,64 +202,56 @@ def directions(client,
         
     if instructions:
         # not checked on backend, check here
-        convert._checkBool(instructions)
+        validator.directions_validate({'instructions': instructions})
         params["instructions"] = instructions
 
     if instructions_format:
+        validator.directions_validate({'instructions_format': instructions_format})
         params["instructions_format"] = instructions_format
 
     if roundabout_exits:
         # not checked on backend, check here
-        convert._checkBool(roundabout_exits)
+        validator.directions_validate({'roundabout_exits': roundabout_exits})
         params["roundabout_exits"] = roundabout_exits
 
     if attributes:
         # not checked on backend, check here
-        opts = ["avgspeed", "detourfactor", "percentage"]
-        if not all((attribute in opts) for attribute in attributes) :
-            raise ValueError("Contains invalid attributes parameter(s).")
-            
+        validator.directions_validate({'attributes': attributes})
         params["attributes"] = convert._pipe_list(attributes)
         
     if radiuses:
-        if len(radiuses) != len(coordinates):
-            raise ValueError("Amount of radiuses must match the number of waypoints.")
+        validator.directions_validate({'radiuses': radiuses})
         params["radiuses"] = convert._pipe_list(radiuses)
         
     if bearings:
-        if len(bearings) != len(coordinates) and len(bearings) != len(coordinates)-1:
-            raise ValueError("Provide as many bearings as waypoints or one less.")
-        if not convert._is_list(bearings):
-            raise TypeError(
-            "Expected a list or tuple of bearing pairs, "
-            "but got {}".format(type(bearings).__name__))
-        if not all(convert._is_list(t) for t in bearings):
-            raise TypeError("Expected bearing pairs to be a list or tuple")
-            
+        validator.directions_validate({'bearings': bearings})
         params["bearings"] = convert._pipe_list([convert._comma_list(pair) for pair in bearings])
         
     if continue_straight:
         # not checked on backend, check here
-        convert._checkBool(continue_straight)
+        # convert._checkBool(continue_straight)
+        validator.directions_validate({'continue_straight': continue_straight})
         params["continue_straight"] = continue_straight
 
     if elevation:
         # not checked on backend, check here
-        convert._checkBool(elevation)
+        # convert._checkBool(elevation)
+        validator.directions_validate({'elevation': elevation})
         params["elevation"] = elevation
 
     if extra_info:
-        # not checked on backend, check here
-        opts = ["steepness", "suitability", "surface", "waycategory",
-                   "waytype", "tollways", "traildifficulty"]
-        if not all((info in opts) for info in extra_info) :
-            raise ValueError("Contains invalid extra_info parameter(s).")
-        
+        # # not checked on backend, check here
+        # opts = ["steepness", "suitability", "surface", "waycategory",
+        #            "waytype", "tollways", "traildifficulty"]
+        # if not all((info in opts) for info in extra_info) :
+        #     raise ValueError("Contains invalid extra_info parameter(s).")
+        validator.directions_validate({'extra_info': extra_info})
         params["extra_info"] = convert._pipe_list(extra_info)
 
     if optimized:
         # not checked on backend, check here
-        convert._checkBool(optimized)
+        # convert._checkBool(optimized)
+        validator.directions_validate({'optimized': optimized})
         if optimized == 'true' and (bearings or continue_straight == 'true'):
             params["optimized"] = 'false'
             print("Set optimized='false' due to incompatible parameter settings.")
@@ -272,9 +260,9 @@ def directions(client,
     
     if options:
         # check if valid dict
-        if not isinstance(options, dict):
-            raise TypeError("Expected options object to be a dict, but got {}".format(type(options)))
+        # if not isinstance(options, dict):
+        #     raise TypeError("Expected options object to be a dict, but got {}".format(type(options)))
+        validator.directions_validate({'options': options})
         params['options'] = json.dumps(options)
-        
 
     return client.request("/directions", params, dry_run=dry_run)

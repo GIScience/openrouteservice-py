@@ -16,7 +16,7 @@
 
 """Performs requests to the ORS isochrones API."""
 
-from openrouteservice import convert
+from openrouteservice import convert, validator
 
 
 def isochrones(client, locations,
@@ -87,20 +87,21 @@ def isochrones(client, locations,
     }
 
     if profile:
+        # validator.assert_success(profile)
         # NOTE(broady): the mode parameter is not validated by the Maps API
         # server. Check here to prevent silent failures.
-        if profile not in ["driving-car",
-                           "driving-hgv",
-                           "foot-walking",
-                           "foot-hiking",
-                           "cycling-regular",
-                           "cycling-road",
-                           "cycling-safe",
-                           "cycling-mountain",
-                           "cycling-tour", 
-                           "cycling-electric",
-                           ]:
-            raise ValueError("Invalid travel mode.")
+        # if profile not in ["driving-car",
+        #                    "driving-hgv",
+        #                    "foot-walking",
+        #                    "foot-hiking",
+        #                    "cycling-regular",
+        #                    "cycling-road",
+        #                    "cycling-safe",
+        #                    "cycling-mountain",
+        #                    "cycling-tour",
+        #                    "cycling-electric",
+        #                    ]:
+        #     raise ValueError("Invalid travel mode.")
         params["profile"] = profile
 
     if range_type:
@@ -113,8 +114,8 @@ def isochrones(client, locations,
         params["interval"] = str(segments)
         
     if units:
-        if units and (range_type == None or range_type == 'time'):
-            raise ValueError("For range_type time, units cannot be specified.")
+        # if units and (range_type == None or range_type == 'time'):
+        #     raise ValueError("For range_type time, units cannot be specified.")
         params["units"] = units
 
     if location_type:
@@ -122,5 +123,7 @@ def isochrones(client, locations,
 
     if attributes:
         params["attributes"] = convert._pipe_list(attributes)
+
+    #validator.assert_success(params)
 
     return client.request("/isochrones", params, dry_run=dry_run)
