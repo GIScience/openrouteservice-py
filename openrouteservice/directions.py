@@ -229,28 +229,21 @@ def directions(client,
         
     if continue_straight:
         # not checked on backend, check here
-        # convert._checkBool(continue_straight)
         validator.directions_validate({'continue_straight': continue_straight})
         params["continue_straight"] = continue_straight
 
     if elevation:
         # not checked on backend, check here
-        # convert._checkBool(elevation)
         validator.directions_validate({'elevation': elevation})
         params["elevation"] = elevation
 
     if extra_info:
-        # # not checked on backend, check here
-        # opts = ["steepness", "suitability", "surface", "waycategory",
-        #            "waytype", "tollways", "traildifficulty"]
-        # if not all((info in opts) for info in extra_info) :
-        #     raise ValueError("Contains invalid extra_info parameter(s).")
+        # not checked on backend, check here
         validator.directions_validate({'extra_info': extra_info})
         params["extra_info"] = convert._pipe_list(extra_info)
 
     if optimized:
         # not checked on backend, check here
-        # convert._checkBool(optimized)
         validator.directions_validate({'optimized': optimized})
         if optimized == 'true' and (bearings or continue_straight == 'true'):
             params["optimized"] = 'false'
@@ -260,8 +253,6 @@ def directions(client,
     
     if options:
         # check if valid dict
-        # if not isinstance(options, dict):
-        #     raise TypeError("Expected options object to be a dict, but got {}".format(type(options)))
         validator.directions_validate({'options': options})
         params['options'] = json.dumps(options)
 
