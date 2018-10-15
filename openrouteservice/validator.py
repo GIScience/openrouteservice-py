@@ -3,16 +3,7 @@ from cerberus.tests import assert_success, assert_normalized, assert_fail, asser
 from cerberus import errors  # BasicErrorHandler#, BaseErrorHandler, ValidationError
 
 
-# class Validator:
-# class CustomErrorHandler(errors.BasicErrorHandler):
-#     messages = errors.BasicErrorHandler.messages.copy()
-#     messages[errors.FORBIDDEN_VALUE.code] = 'VERBOTEN!'
-
-# class SchemaErrorHandler(errors.BasicErrorHandler):
-#   messages = errors.BasicErrorHandler.messages.copy()
-# def arriseError():
-
-def directions_validate(params):  # , error
+def directions_validation(params):  # , error
     """Validates the used parameter with Cerberus."""
     # Add the tuple type
     tuple_type = TypeDefinition("tuple", (tuple), ())
@@ -136,19 +127,19 @@ def directions_validate(params):  # , error
                                                }},
         'id': {'type': 'string'}
     }
-    assert_success(params, schema)
-    # try:
-    #     assert_success(params, schema)
-    #     #print('OK')
-    # except Exception as message:
-    #     print(message)
+    # assert_success(params, schema)
+    try:
+        assert_success(params, schema)
+        # print('OK')
+    except Exception as message:
+        print(message)
 
 
-def isochrones_validate(params):
-    # """Validates the used parameter with Cerberus."""
-    # # Add the tuple type
-    # tuple_type = TypeDefinition("tuple", (tuple), ())
-    # Validator.types_mapping["tuple"] = tuple_type
+def isochrones_validation(params):
+    """Validates the used parameter with Cerberus."""
+    # Add the tuple type
+    tuple_type = TypeDefinition("tuple", (tuple), ())
+    Validator.types_mapping["tuple"] = tuple_type
 
     schema = {
         'locations': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
@@ -159,9 +150,9 @@ def isochrones_validate(params):
                                 'cycling-road', 'cycling-safe', 'cycling-mountain', 'cycling-tour',
                                 'cycling-electric']},
         'range_type': {'type': 'string', 'allowed': ['time', 'distance']},
-        'range': {'type': 'list', 'schema': {'type': 'integer'}},
-        'interval': {'type': 'list', 'schema': {'type': 'integer'}},
-        'units': {'type': 'string', 'allowed': ['m', 'km', 'mi']},
+        'range': {'type': ['list', 'tuple'], 'schema': {'type': 'integer'}},
+        'interval': {'type': ['list', 'tuple'], 'schema': {'type': 'integer'}},
+        'units': {'type': 'string', 'allowed': ['m', 'km', 'mi'], 'default': 'm'},
         'location_type': {'type': 'string', 'allowed': ['start', 'destination']},
         'attributes': {'type': ['list', 'tuple'], 'schema': {'type': 'string',
                                                              'allowed': ['area', 'reachfactor', 'total_pop']}},
@@ -195,8 +186,120 @@ def isochrones_validate(params):
         'id': {'type': 'string'}
     }
 
-    try:
-        assert_success(params, schema)
-        print('OK')
-    except Exception as message:
-        print(message)
+    assert_success(params, schema)
+
+
+def distance_matrix_validation(params):
+    """Validates the used parameter with Cerberus."""
+    # Add the tuple type
+    tuple_type = TypeDefinition("tuple", (tuple), ())
+    Validator.types_mapping["tuple"] = tuple_type
+
+    schema = {
+        'locations': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
+                                {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float'}}},
+                                {'type': 'tuple', 'schema': {'type': 'tuple', 'schema': {'type': 'float'}}}]},
+        'sources': {'oneof': [{'type': 'list', 'schema': {'type': 'integer', 'min': 0}},
+                              {'type': 'string', 'allowed': ['all']}]},
+        'destinations': {
+            'oneof': [{'type': 'list', 'schema': {'type': 'integer'}}, {'type': 'string', 'allowed': ['all']}]},
+        'profile': {'type': 'string',
+                    'allowed': ['driving-car', 'driving-hgv', 'foot-walking', 'foot-hiking', 'cycling-regular',
+                                'cycling-road', 'cycling-safe', 'cycling-mountain', 'cycling-tour',
+                                'cycling-electric'],  # 'required': True,
+                    },
+        'metrics': {'type': 'list', 'schema': {'type': 'string'}, 'allowed': ['distance', 'duration']},
+        'resolve_locations': {'type': 'string', 'allowed': ['true', 'false']},
+        'units': {'type': 'string', 'allowed': ['m', 'km', 'mi'], 'default': 'm'},
+        'optimized': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'true'},
+    }
+
+    assert_success(params, schema)
+
+
+def search_validation(params):
+    """Validates the used parameter with Cerberus."""
+    # Add the tuple type
+    tuple_type = TypeDefinition("tuple", (tuple), ())
+    Validator.types_mapping["tuple"] = tuple_type
+
+    schema = {
+        'text': {'type': 'string'},
+        'focus_point': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
+        'rect_min_x': {'type': 'float'},
+        'rect_min_y': {'type': 'float'},
+        'rect_max_x': {'type': 'float'},
+        'rect_max_y': {'type': 'float'},
+        'circle_point': {'type': ['tuple', 'float']},
+        'circle_radius': {'type': 'integer', 'default': 50},
+        'sources': {'type': 'list', 'schema': {'type': 'string'}, 'allowed': ['osm', 'oa', 'wof', 'gn'],
+                    'default': ['osm', 'oa', 'wof', 'gn']},
+        'layers': {'type': 'list', 'schema': {'type': 'string'},
+                   'allowed': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
+                               'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse'],
+                   'default': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
+                               'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse']},
+        'country': {'type': 'string'},
+        'size': {'type': 'integer', 'default': 10},
+    }
+
+    assert_success(params, schema)
+
+
+def structured_validation(params):
+    """Validates the used parameter with Cerberus."""
+    # Add the tuple type
+    tuple_type = TypeDefinition("tuple", (tuple), ())
+    Validator.types_mapping["tuple"] = tuple_type
+
+    schema = {
+        'address': {'type': 'string'},
+        'neighbourhood': {'type': 'string'},
+        'borough': {'type': 'string'},
+        'locality': {'type': 'string'},
+        'county': {'type': 'string'},
+        'region': {'type': 'string'},
+        'postalcode': {'type': 'string'},
+        'country': {'type': 'string'},
+        # 'size': {'type': 'integer', 'default': 10},
+    }
+
+    assert_success(params, schema)
+
+
+def reverse_validation(params):
+    """Validates the used parameter with Cerberus."""
+    # Add the tuple type
+    tuple_type = TypeDefinition("tuple", (tuple), ())
+    Validator.types_mapping["tuple"] = tuple_type
+
+    schema = {
+        'point': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
+                            {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float'}}},
+                            {'type': 'tuple', 'schema': {'type': 'tuple', 'schema': {'type': 'float'}}}]},
+        'circle_radius': {'type': 'integer'},
+        'sources': {'type': 'list', 'schema': {'type': 'string'}, 'allowed': ['osm', 'oa', 'wof', 'gn'],
+                    'default': ['osm', 'oa', 'wof', 'gn']},
+        'layers': {'type': 'list', 'schema': {'type': 'string'},
+                   'allowed': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
+                               'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse'],
+                   'default': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
+                               'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse']},
+        'country': {'type': 'string'},
+        'size': {'type': 'integer', 'default': 10},
+    }
+
+    assert_success(params, schema)
+
+# def geocode_validation(params):
+
+# def places_validation(params):
+#     """Validates the used parameter with Cerberus."""
+#     # Add the tuple type
+#     tuple_type = TypeDefinition("tuple", (tuple), ())
+#     Validator.types_mapping["tuple"] = tuple_type
+#
+#     schema = {
+#         'request': {'type': 'string', 'allowed': ['pois', 'list', 'stats']},
+#
+#     }

@@ -44,7 +44,6 @@ class GeocodingPeliasTest(_test.TestCase):
                        'country': 'de',
                        'size': 5,
                        }
-        self.validateFormat(self.search)
         self.structured = {'address': 'Berliner Straße 45',
                            'neighbourhood': 'Neuenheimer Feld',
                            'borough': 'Heidelberg',
@@ -54,7 +53,6 @@ class GeocodingPeliasTest(_test.TestCase):
                            'postalcode': '69120',
                            'country': 'de',
                            }
-        self.validateFormat(self.structured)
         self.reverse = {'point': (8.675786, 49.418431),
                         'circle_radius': 50,
                         'sources': ['osm', 'wof', 'gn'],
@@ -62,7 +60,6 @@ class GeocodingPeliasTest(_test.TestCase):
                         'country': 'de',
                         'size': 5,
                         }
-        self.validateFormat(self.reverse)
 
     @responses.activate
     def test_full_search(self):
@@ -79,7 +76,6 @@ class GeocodingPeliasTest(_test.TestCase):
             'https://api.openrouteservice.org/geocode/search?boundary.circle.lat=49.418431&boundary.circle.lon=8.675786&boundary.circle.radius=50&boundary.rect.max_lon%09=49.459693&boundary.rect.min_lat%09=49.351764&boundary.rect.min_lon%09=8.573179&country=de&focus.point.lat=49.418431&focus.point.lon=8.675786&layers=locality%2Ccounty%2Cregion&size=5&sources=osm%2Cwof%2Cgn&text=Heidelberg&api_key=sample_key'.format(
                 self.key),
             responses.calls[0].request.url)
-        # self.validateFormat(results)
 
     @responses.activate
     def test_full_structured(self):

@@ -17,7 +17,7 @@
 #
 
 """Performs requests to the ORS geocode API (direct Pelias clone)."""
-from openrouteservice import convert
+from openrouteservice import convert, validator
 
 valid_layers = ['venue',
                  'address',
@@ -101,52 +101,53 @@ def pelias_search(client, text,
 
     :rtype: call to Client.request()
     """
-
+    validator.search_validation({'text': text})
     params = {'text': text}
     
     if focus_point:
+        # validator.search_validation({'': })
         params['focus.point.lon'] = convert._format_float(focus_point[0])
         params['focus.point.lat'] = convert._format_float(focus_point[1])
     
     if rect_min_x:
-        params['boundary.rect.min_lon	'] = convert._format_float(rect_min_x)
+        validator.search_validation({'rect_min_x': rect_min_x})
+        params['boundary.rect.min_lon	'] = convert._format_float(rect_min_x)  #
         
     if rect_min_y:
-        params['boundary.rect.min_lat	'] = convert._format_float(rect_min_y)
+        validator.search_validation({'rect_min_y': rect_min_y})
+        params['boundary.rect.min_lat	'] = convert._format_float(rect_min_y)  #
         
     if rect_max_x:
-        params['boundary.rect.max_lon	'] = convert._format_float(rect_max_x)
+        validator.search_validation({'rect_max_x': rect_max_x})
+        params['boundary.rect.max_lon	'] = convert._format_float(rect_max_x)  #
         
     if rect_max_y:
-        params['boundary.rect.max_lon	'] = convert._format_float(rect_max_y)
+        validator.search_validation({'rect_max_y': rect_max_y})
+        params['boundary.rect.max_lon	'] = convert._format_float(rect_max_y)  #
     
     if circle_point:
-        params['boundary.circle.lon'] = convert._format_float(circle_point[0])
-        params['boundary.circle.lat'] = convert._format_float(circle_point[1])
+        # validator.search_validation({'circle_point': })
+        params['boundary.circle.lon'] = convert._format_float(circle_point[0])  #
+        params['boundary.circle.lat'] = convert._format_float(circle_point[1])  #
         
     if circle_radius:
+        #validator.search_validation({'circle_radius': circle_radius})
         params['boundary.circle.radius'] = circle_radius
         
     if sources:
-        if not convert._is_list(sources):
-            raise TypeError('Data source invalid.')
-        if not all((source in valid_sources) for source in sources):
-            raise ValueError("Source must be one or more of {}".format(valid_sources))
+        validator.search_validation({'sources': sources})
         params['sources'] = convert._comma_list(sources)
 
     if layers:
-        if not convert._is_list(layers):
-            raise TypeError('Invalid layer type for geocoding.')
-        if not all((layer in valid_layers) for layer in layers):
-            raise ValueError("Source must be one or more of ".format(valid_layers))
+        validator.search_validation({'layers': layers})
         params['layers'] = convert._comma_list(layers)
 
     if country:
-        if not isinstance(country, str):
-            raise TypeError('Country must be a string.')
+        validator.search_validation({'country': country})
         params['country'] = country
 
     if size:
+        validator.search_validation({'size': size})
         params['size'] = size
 
     return client.request("/geocode/search", params, dry_run=dry_run)
@@ -161,7 +162,9 @@ def pelias_structured(client,
                       region=None,
                       postalcode=None,
                       country=None,
-                      dry_run=None):
+                      dry_run=None,
+                      # size=None
+                      ):
     """
     With structured geocoding, you can search for the individual parts of a location. 
     Structured geocoding is an option on the search endpoint, 
@@ -207,44 +210,40 @@ def pelias_structured(client,
     params = dict()
     
     if address:
-        if not isinstance(address, str):
-            raise TypeError('Address must be a string.')
+        validator.structured_validation({'address': address})
         params['address'] = address
 
     if neighbourhood:
-        if not isinstance(neighbourhood, str):
-            raise TypeError('Neighbourhood must be a string.')
+        validator.structured_validation({'neighbourhood': neighbourhood})
         params['neighbourhood'] = neighbourhood
 
     if borough:
-        if not isinstance(borough, str):
-            raise TypeError('Borough must be a string.')
+        validator.structured_validation({'borough': borough})
         params['borough'] = borough
 
     if locality:
-        if not isinstance(locality, str):
-            raise TypeError('Locality must be a string.')
+        validator.structured_validation({'locality': locality})
         params['locality'] = locality
 
     if county:
-        if not isinstance(county, str):
-            raise TypeError('County must be a string.')
+        validator.structured_validation({'county': county})
         params['county'] = county
 
     if region:
-        if not isinstance(region, str):
-            raise TypeError('Region must be a string.')
+        validator.structured_validation({'region': region})
         params['region'] = region
 
     if postalcode:
-        if not isinstance(postalcode, str):
-            raise TypeError('Postalcode must be a string.')
+        validator.structured_validation({'postalcode': postalcode})
         params['postalcode'] = postalcode
 
     if country:
-        if not isinstance(country, str):
-            raise TypeError('Country must be a string.')
+        validator.structured_validation({'country': country})
         params['country'] = country
+
+    # if size:
+    #     validator.structured_validation({'size': size})
+    #     params['size'] = size
         
     return client.request("/geocode/search/structured", params, dry_run=dry_run)
   
@@ -292,36 +291,29 @@ def pelias_reverse(client, point,
     
     params = dict()
 
-    if not convert._is_list(point):
-        raise TypeError('Point must be a list/tuple of coordinates.')
+    validator.reverse_validation({'point': point})
         
     params['point.lon'] = convert._format_float(point[0])
     params['point.lat'] = convert._format_float(point[1])
         
     if circle_radius:
+        validator.reverse_validation({'circle_radius': circle_radius})
         params['boundary.circle.radius'] = str(circle_radius)
         
     if sources:
-        if not convert._is_list(sources):
-            raise TypeError('Data source invalid.')
-        if not all((source in valid_sources) for source in sources):
-            raise ValueError("Source must be one or more of {}".format(valid_sources))
+        validator.reverse_validation({'sources': sources})
         params['sources'] = convert._comma_list(sources)
 
     if layers:
-        if not convert._is_list(layers):
-            raise TypeError('Invalid layer type for geocoding.')
-        if not all((layer in valid_layers) for layer in layers):
-            raise ValueError("Source must be one or more of ".format(valid_layers))
+        validator.reverse_validation({'layers': layers})
         params['layers'] = convert._comma_list(layers)
 
     if country:
-        if not isinstance(country, str):
-            raise TypeError('Country must be a string.')
-        
+        validator.reverse_validation({'country': country})
         params['country'] = country
 
     if size:
+        validator.reverse_validation({'size': size})
         params['size'] = size
 
     return client.request("/geocode/reverse", params, dry_run=dry_run)

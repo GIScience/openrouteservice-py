@@ -155,7 +155,7 @@ def directions(client,
     :rtype: call to Client.request()
     """
 
-    validator.directions_validate({'coordinates': coordinates})
+    validator.directions_validation({'coordinates': coordinates})
 
     params = {
         "coordinates": convert._build_coords(coordinates)
@@ -164,37 +164,37 @@ def directions(client,
     if profile:
         # NOTE(broady): the mode parameter is not validated by the Maps API
         # server. Check here to prevent silent failures.
-        validator.directions_validate({'profile': profile})
+        validator.directions_validation({'profile': profile})
         params["profile"] = profile
 
     if format_out:
-        validator.directions_validate({'format_out': format_out})
+        validator.directions_validation({'format_out': format_out})
         params["format"] = format_out
 
     if preference:
-        validator.directions_validate({'preference': preference})
+        validator.directions_validation({'preference': preference})
         params["preference"] = preference
 
     if units:
-        validator.directions_validate({'units': units})
+        validator.directions_validation({'units': units})
         params["units"] = units
 
     if language:
-        validator.directions_validate({'language': language})
+        validator.directions_validation({'language': language})
         params["language"] = language
 
     if geometry:
         # not checked on backend, check here
-        validator.directions_validate({'geometry': geometry})
+        validator.directions_validation({'geometry': geometry})
         params["geometry"] = geometry
 
     if geometry_format:
-        validator.directions_validate({'geometry_format': geometry_format})
+        validator.directions_validation({'geometry_format': geometry_format})
         params["geometry_format"] = geometry_format
         
     if geometry_simplify:
         # not checked on backend, check here
-        validator.directions_validate({'geometry_simplify': geometry_simplify})
+        validator.directions_validation({'geometry_simplify': geometry_simplify})
         if extra_info:
             params["geometry_simplify"] = 'false'
         else:
@@ -202,49 +202,49 @@ def directions(client,
         
     if instructions:
         # not checked on backend, check here
-        validator.directions_validate({'instructions': instructions})
+        validator.directions_validation({'instructions': instructions})
         params["instructions"] = instructions
 
     if instructions_format:
-        validator.directions_validate({'instructions_format': instructions_format})
+        validator.directions_validation({'instructions_format': instructions_format})
         params["instructions_format"] = instructions_format
 
     if roundabout_exits:
         # not checked on backend, check here
-        validator.directions_validate({'roundabout_exits': roundabout_exits})
+        validator.directions_validation({'roundabout_exits': roundabout_exits})
         params["roundabout_exits"] = roundabout_exits
 
     if attributes:
         # not checked on backend, check here
-        validator.directions_validate({'attributes': attributes})
+        validator.directions_validation({'attributes': attributes})
         params["attributes"] = convert._pipe_list(attributes)
         
     if radiuses:
-        validator.directions_validate({'radiuses': radiuses})
+        validator.directions_validation({'radiuses': radiuses})
         params["radiuses"] = convert._pipe_list(radiuses)
         
     if bearings:
-        validator.directions_validate({'bearings': bearings})
+        validator.directions_validation({'bearings': bearings})
         params["bearings"] = convert._pipe_list([convert._comma_list(pair) for pair in bearings])
         
     if continue_straight:
         # not checked on backend, check here
-        validator.directions_validate({'continue_straight': continue_straight})
+        validator.directions_validation({'continue_straight': continue_straight})
         params["continue_straight"] = continue_straight
 
     if elevation:
         # not checked on backend, check here
-        validator.directions_validate({'elevation': elevation})
+        validator.directions_validation({'elevation': elevation})
         params["elevation"] = elevation
 
     if extra_info:
         # not checked on backend, check here
-        validator.directions_validate({'extra_info': extra_info})
+        validator.directions_validation({'extra_info': extra_info})
         params["extra_info"] = convert._pipe_list(extra_info)
 
     if optimized:
         # not checked on backend, check here
-        validator.directions_validate({'optimized': optimized})
+        validator.directions_validation({'optimized': optimized})
         if optimized == 'true' and (bearings or continue_straight == 'true'):
             params["optimized"] = 'false'
             print("Set optimized='false' due to incompatible parameter settings.")
@@ -253,7 +253,7 @@ def directions(client,
     
     if options:
         # check if valid dict
-        validator.directions_validate({'options': options})
+        validator.directions_validation({'options': options})
         params['options'] = json.dumps(options)
 
     return client.request("/directions", params, dry_run=dry_run)
