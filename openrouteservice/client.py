@@ -27,6 +27,7 @@ import requests
 import random
 import time
 import collections
+from pprint import pprint
 
 import openrouteservice
 
@@ -185,7 +186,7 @@ class Client(object):
         
         # Only print URL and parameters for dry_run
         if dry_run:
-            print("url:\n{}\nParameters:\n{}".format(self.base_url+authed_url,
+            pprint("url:\n{}\nParameters:\n{}".format(self.base_url+authed_url,
                                                     final_requests_kwargs))
             return
         
