@@ -1,14 +1,32 @@
+# -*- coding: utf-8 -*-
+
+# Copyright (C) 2018 HeiGIT, University of Heidelberg.
+#
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License. You may obtain a copy of
+# the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations under
+# the License.
+
+"""Validates the used parameter with Cerberus."""
+
 from cerberus import Validator, TypeDefinition
 from cerberus.tests import assert_success, assert_normalized, assert_fail, assert_schema_error
 from cerberus import errors  # BasicErrorHandler#, BaseErrorHandler, ValidationError
 
+# Add the tuple type
+tuple_type = TypeDefinition("tuple", (tuple), ())
+Validator.types_mapping["tuple"] = tuple_type
+
 
 def directions_validation(params):  # , error
-    """Validates the used parameter with Cerberus."""
-    # Add the tuple type
-    tuple_type = TypeDefinition("tuple", (tuple), ())
-    Validator.types_mapping["tuple"] = tuple_type
-
     schema = {
         'coordinates': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
                                   {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float'}}},
@@ -136,11 +154,6 @@ def directions_validation(params):  # , error
 
 
 def isochrones_validation(params):
-    """Validates the used parameter with Cerberus."""
-    # Add the tuple type
-    tuple_type = TypeDefinition("tuple", (tuple), ())
-    Validator.types_mapping["tuple"] = tuple_type
-
     schema = {
         'locations': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
                                 {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float'}}},
@@ -190,11 +203,6 @@ def isochrones_validation(params):
 
 
 def distance_matrix_validation(params):
-    """Validates the used parameter with Cerberus."""
-    # Add the tuple type
-    tuple_type = TypeDefinition("tuple", (tuple), ())
-    Validator.types_mapping["tuple"] = tuple_type
-
     schema = {
         'locations': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
                                 {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float'}}},
@@ -218,11 +226,6 @@ def distance_matrix_validation(params):
 
 
 def search_validation(params):
-    """Validates the used parameter with Cerberus."""
-    # Add the tuple type
-    tuple_type = TypeDefinition("tuple", (tuple), ())
-    Validator.types_mapping["tuple"] = tuple_type
-
     schema = {
         'text': {'type': 'string'},
         'focus_point': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
@@ -247,11 +250,6 @@ def search_validation(params):
 
 
 def structured_validation(params):
-    """Validates the used parameter with Cerberus."""
-    # Add the tuple type
-    tuple_type = TypeDefinition("tuple", (tuple), ())
-    Validator.types_mapping["tuple"] = tuple_type
-
     schema = {
         'address': {'type': 'string'},
         'neighbourhood': {'type': 'string'},
@@ -268,11 +266,6 @@ def structured_validation(params):
 
 
 def reverse_validation(params):
-    """Validates the used parameter with Cerberus."""
-    # Add the tuple type
-    tuple_type = TypeDefinition("tuple", (tuple), ())
-    Validator.types_mapping["tuple"] = tuple_type
-
     schema = {
         'point': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
                             {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float'}}},
@@ -291,15 +284,37 @@ def reverse_validation(params):
 
     assert_success(params, schema)
 
+
 # def geocode_validation(params):
 
-# def places_validation(params):
-#     """Validates the used parameter with Cerberus."""
-#     # Add the tuple type
-#     tuple_type = TypeDefinition("tuple", (tuple), ())
-#     Validator.types_mapping["tuple"] = tuple_type
-#
-#     schema = {
-#         'request': {'type': 'string', 'allowed': ['pois', 'list', 'stats']},
-#
-#     }
+def pois_validation(params):
+    schema = {
+        'request': {'type': 'string', 'allowed': ['pois', 'list', 'stats']},
+        # 'geometry': {'type': 'dict', 'schema': {
+        'bbox': {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float', 'maxlength': 2}}},
+        'geojson': {'type': 'dict', 'schema': {
+            'type': {'type': 'string', 'allowed': ['Point', 'Polygon', 'LineString']},
+            'coordinates': {'type': 'list', 'schema': {'type': 'float', 'maxlength': 2}},  # listed list für polygone?
+        }},  # }},
+        'buffer': {'type': 'integer'},
+        # 'filters': {'type': 'dict', 'schema': {
+        'filter_category_group_ids': {'type': 'list', 'schema': {'type': 'integer'}},
+        'filter_category_ids': {'type': 'list', 'schema': {'type': 'integer'}},
+        'name': {'type': 'list', 'schema': {'type': 'string'}},
+        'wheelchair': {'type': 'list',
+                       'schema': {'type': 'string', 'allowed': ['yes', 'no', 'limited', 'designated']}},
+        'smoking': {'type': 'list', 'schema': {'type': 'string',
+                                               'allowed': ['dedicated', 'yes', 'no', 'separated', 'isolated',
+                                                           'outside']}},
+        'fee': {'type': 'list', 'schema': {'type': 'string', 'allowed': ['yes', 'no']}},  # }},
+        'limit': {'type': 'integer', 'max': 1000},
+        'sortby': {'type': 'string', 'allowed': ['category', 'distance']}
+    }
+
+    assert_success(params, schema)
+
+    # try:
+    #     assert_success(params, schema)
+    #     # print('OK')
+    # except Exception as message:
+    #     print(message)

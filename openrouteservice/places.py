@@ -81,38 +81,38 @@ def places(client, request,
               }
     
     if request != 'category_list':
-        validator.places_validation({'request': request})
+        validator.pois_validation({'request': request})
         if geojson:
-            validator.places_validation({'geojson': geojson})
+            validator.pois_validation({'geojson': geojson})
             params['geometry']['geojson'] = geojson
             
         if bbox:
-            validator.places_validation({'bbox': bbox})
+            validator.pois_validation({'bbox': bbox})
             params['geometry']['bbox'] = bbox
             
         if buffer:
-            validator.places_validation({'buffer': buffer})
+            validator.pois_validation({'buffer': buffer})
             params['geometry']['buffer'] = buffer
                     
         if filter_category_ids and convert._is_list(filter_category_ids):
-            validator.places_validation({'category_ids': filter_category_ids})
+            validator.pois_validation({'filter_category_ids': filter_category_ids})
             params['filters']['category_ids'] = filter_category_ids
                     
         if filter_category_group_ids and convert._is_list(filter_category_group_ids):
-            validator.places_validation({'category_group_ids': filter_category_group_ids})
-            params['filters']['categroy_group_ids'] = filter_category_group_ids
+            validator.pois_validation({'category_group_ids': filter_category_group_ids})
+            params['filters']['category_group_ids'] = filter_category_group_ids
                     
         if filters_custom:
             for f in filters_custom:
-                validator.places_validation({'filters_custom'[f]: filters_custom[f]})
+                validator.pois_validation({'filters_custom'[f]: filters_custom[f]})
                 params['filters'][f] = filters_custom[f]
                     
         if limit:
-            validator.places_validation({'limit': limit})
+            validator.pois_validation({'limit': limit})
             params['limit'] = limit
                     
         if sortby:
-            validator.places_validation({'sortby': sortby})
+            validator.pois_validation({'sortby': sortby})
             params['sortby'] = sortby
             
     return client.request('/pois', {}, post_json=params, dry_run=dry_run)
