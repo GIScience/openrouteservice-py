@@ -18,21 +18,16 @@
 """Validates the used parameter with Cerberus."""
 
 from cerberus import Validator, TypeDefinition
-from cerberus.tests import assert_success, assert_normalized, assert_fail, assert_schema_error
-from cerberus import errors  # BasicErrorHandler#, BaseErrorHandler, ValidationError
 
 # Add the tuple type
 tuple_type = TypeDefinition("tuple", (tuple), ())
-Validator.types_mapping["tuple"] = tuple_type
+v = Validator()
 
 
 def directions_validation(params):  # , error
     schema = {
         'coordinates': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
-                                  {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float'}}},
-                                  {'type': 'tuple', 'schema': {'type': 'tuple', 'schema': {'type': 'float'}}}],
-                        # 'required': True
-                        },
+                                  {'type': ['list', 'tuple'], 'schema': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}}}]},
         'profile': {'type': 'string',
                     'allowed': ['driving-car', 'driving-hgv', 'foot-walking', 'foot-hiking', 'cycling-regular',
                                 'cycling-road', 'cycling-safe', 'cycling-mountain', 'cycling-tour',
@@ -145,19 +140,15 @@ def directions_validation(params):  # , error
                                                }},
         'id': {'type': 'string'}
     }
-    # assert_success(params, schema)
-    try:
-        assert_success(params, schema)
-        # print('OK')
-    except Exception as message:
-        print(message)
-
+                                               
+    v.validate(params, schema)
+    
+    return v
 
 def isochrones_validation(params):
     schema = {
         'locations': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
-                                {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float'}}},
-                                {'type': 'tuple', 'schema': {'type': 'tuple', 'schema': {'type': 'float'}}}]},
+                                {'type': ['list', 'tuple'], 'schema': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}}}]},
         'profile': {'type': 'string',
                     'allowed': ['driving-car', 'driving-hgv', 'foot-walking', 'foot-hiking', 'cycling-regular',
                                 'cycling-road', 'cycling-safe', 'cycling-mountain', 'cycling-tour',
@@ -196,18 +187,20 @@ def isochrones_validation(params):
                                                # 'avoid_polygons'
                                                }},
         'intersections': {'type': 'string', 'allowed': ['true', 'false']},
-        'id': {'type': 'string'}
-    }
-
-    assert_success(params, schema)
+        'id': {'type': 'string'},
+        'smoothing': {"type": "float", 'min': 0, 'max':1}
+    }, 'tuple'
+                                               
+    v.validate(params, schema)
+    
+    return v
 
 
 def distance_matrix_validation(params):
     schema = {
-        'locations': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
-                                {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float'}}},
-                                {'type': 'tuple', 'schema': {'type': 'tuple', 'schema': {'type': 'float'}}}]},
-        'sources': {'oneof': [{'type': 'list', 'schema': {'type': 'integer', 'min': 0}},
+        'locations': {'type': ['list', 'tuple'], 'schema': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}}},
+        'sources': {'oneof': [{'type': 'list', 
+                               'schema': {'type': 'integer', 'min': 0}},
                               {'type': 'string', 'allowed': ['all']}]},
         'destinations': {
             'oneof': [{'type': 'list', 'schema': {'type': 'integer'}}, {'type': 'string', 'allowed': ['all']}]},
@@ -221,19 +214,21 @@ def distance_matrix_validation(params):
         'units': {'type': 'string', 'allowed': ['m', 'km', 'mi'], 'default': 'm'},
         'optimized': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'true'},
     }
-
-    assert_success(params, schema)
+                                               
+    v.validate(params, schema)
+    
+    return v
 
 
 def search_validation(params):
     schema = {
         'text': {'type': 'string'},
-        'focus_point': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
+        'focus_point': {'type': 'list', 'schema': {'type': 'float'}},
         'rect_min_x': {'type': 'float'},
         'rect_min_y': {'type': 'float'},
         'rect_max_x': {'type': 'float'},
         'rect_max_y': {'type': 'float'},
-        'circle_point': {'type': ['tuple', 'float']},
+        'circle_point': {'type': 'list',  'schema': {'type': 'float'}},
         'circle_radius': {'type': 'integer', 'default': 50},
         'sources': {'type': 'list', 'schema': {'type': 'string'}, 'allowed': ['osm', 'oa', 'wof', 'gn'],
                     'default': ['osm', 'oa', 'wof', 'gn']},
@@ -244,9 +239,12 @@ def search_validation(params):
                                'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse']},
         'country': {'type': 'string'},
         'size': {'type': 'integer', 'default': 10},
+        'dry_run': {'type': 'string', 'allowed': ['true','false']}
     }
 
-    assert_success(params, schema)
+    v.validate(params, schema)
+    
+    return v
 
 
 def structured_validation(params):
@@ -261,19 +259,18 @@ def structured_validation(params):
         'country': {'type': 'string'},
         # 'size': {'type': 'integer', 'default': 10},
     }
-
-    assert_success(params, schema)
-
+                                               
+    v.validate(params, schema)
+    
+    return v
 
 def reverse_validation(params):
     schema = {
-        'point': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
-                            {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float'}}},
-                            {'type': 'tuple', 'schema': {'type': 'tuple', 'schema': {'type': 'float'}}}]},
+        'point': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
         'circle_radius': {'type': 'integer'},
-        'sources': {'type': 'list', 'schema': {'type': 'string'}, 'allowed': ['osm', 'oa', 'wof', 'gn'],
+        'sources': {'type': ['list', 'tuple'], 'schema': {'type': 'string'}, 'allowed': ['osm', 'oa', 'wof', 'gn'],
                     'default': ['osm', 'oa', 'wof', 'gn']},
-        'layers': {'type': 'list', 'schema': {'type': 'string'},
+        'layers': {'type': ['list', 'tuple'], 'schema': {'type': 'string'},
                    'allowed': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
                                'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse'],
                    'default': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
@@ -281,8 +278,10 @@ def reverse_validation(params):
         'country': {'type': 'string'},
         'size': {'type': 'integer', 'default': 10},
     }
-
-    assert_success(params, schema)
+                                               
+    v.validate(params, schema)
+    
+    return v
 
 
 # def geocode_validation(params):
@@ -310,11 +309,7 @@ def pois_validation(params):
         'limit': {'type': 'integer', 'max': 1000},
         'sortby': {'type': 'string', 'allowed': ['category', 'distance']}
     }
-
-    assert_success(params, schema)
-
-    # try:
-    #     assert_success(params, schema)
-    #     # print('OK')
-    # except Exception as message:
-    #     print(message)
+                                               
+    v.validate(params, schema)
+    
+    return v
