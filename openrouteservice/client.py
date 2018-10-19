@@ -28,7 +28,7 @@ import random
 import time
 import collections
 
-import openrouteservice
+from openrouteservice import exceptions, __version__
 
 try: # Python 3
     from urllib.parse import urlencode
@@ -36,7 +36,7 @@ except ImportError: # Python 2
     from urllib import urlencode
 
 
-_USER_AGENT = "ORSClientPython.v{}".format(openrouteservice.__version__)
+_USER_AGENT = "ORSClientPython.v{}".format(__version__)
 _DEFAULT_BASE_URL = "https://api.openrouteservice.org"
 
 _RETRIABLE_STATUSES = set([503])
@@ -145,7 +145,7 @@ class Client(object):
 
         elapsed = datetime.now() - first_request_time
         if elapsed > self.retry_timeout:
-            raise openrouteservice.exceptions.Timeout()
+            raise exceptions.Timeout()
 
         if retry_counter > 0:
             # 0.5 * (1.5 ^ i) is an increased sleep time of 1.5x per iteration,
@@ -193,9 +193,9 @@ class Client(object):
             response = requests_method(self.base_url + authed_url,
                                        **final_requests_kwargs)
         except requests.exceptions.Timeout:
-            raise openrouteservice.exceptions.Timeout()
+            raise exceptions.Timeout()
         except Exception as e:
-            raise openrouteservice.exceptions.TransportError(e)
+            raise exceptions.TransportError(e)
 
         if response.status_code in _RETRIABLE_STATUSES:
             # Retry request.
@@ -208,8 +208,8 @@ class Client(object):
             result = self._get_body(response)
             self.sent_times.append(time.time())
             return result
-        except openrouteservice.exceptions._RetriableRequest as e:
-            if isinstance(e, openrouteservice.exceptions._OverQueryLimit) and not self.retry_over_query_limit:
+        except exceptions._RetriableRequest as e:
+            if isinstance(e, exceptions._OverQueryLimit) and not self.retry_over_query_limit:
                 raise
             
             print('Rate limit exceeded.\nRetrying for the {}th time.'.format(retry_counter + 1))
@@ -227,10 +227,10 @@ class Client(object):
         status_code = response.status_code
         
         if status_code == 429:
-            raise openrouteservice.exceptions._OverQueryLimit(
+            raise exceptions._OverQueryLimit(
                 str(status_code), body)
         if status_code != 200:
-            raise openrouteservice.exceptions.ApiError(status_code,
+            raise exceptions.ApiError(status_code,
                                                        body)
 
         return body
