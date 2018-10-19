@@ -74,19 +74,13 @@ class ClientTest(_test.TestCase):
         # Assume more queries_per_minute than allowed by API policy and 
         # don't allow retries if API throws 'rate exceeded' error, which 
         # should be caught.
-        queries_per_minute = 60
+        queries_per_minute = 110
         query_range = range(queries_per_minute * 2)
-        
-        for _ in query_range:
-            responses.add(responses.GET,
-                          'https://api.openrouteservice.org/directions',
-                          body='{"status":"OK","results":[]}',
-                          status=200,
-                          content_type='application/json')
             
-        client = openrouteservice.Client(key='58d904a497c67e00015b45fcb6f22c2dd2774733ad9f56f9662de7d3',
+        client = openrouteservice.Client(key='5b3ce3597851110001cf624870cf2f2a58d44c718542b3088221b684',
                                    queries_per_minute=queries_per_minute,
                                    retry_over_query_limit=False)
+        
         with self.assertRaises(openrouteservice.exceptions._OverQueryLimit):
             for _ in query_range:
                 client.directions(self.coords_valid)

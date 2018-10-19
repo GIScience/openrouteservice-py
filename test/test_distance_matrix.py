@@ -56,7 +56,7 @@ class DistanceMatrixTest(_test.TestCase):
                                      destinations=destinations)
 
         self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('https://api.openrouteservice.org/matrix?api_key={}'.format(self.key),
+        self.assertURLEqual('https://api.openrouteservice.org/matrix?api_key={}&profile=driving-car'.format(self.key),
                             responses.calls[0].request.url)
 
     @responses.activate
@@ -93,7 +93,7 @@ class DistanceMatrixTest(_test.TestCase):
         resp = self.client.distance_matrix(**query)
 
         self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('https://api.openrouteservice.org/matrix?api_key={}'.format(self.key),
+        self.assertURLEqual('https://api.openrouteservice.org/matrix?api_key={}&profile=cycling-regular'.format(self.key),
                             responses.calls[0].request.url)
         self.assertEqual(resp, payload)
         self.validateFormat(payload)

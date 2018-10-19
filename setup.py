@@ -17,7 +17,7 @@ if sys.version_info <= (2, 6):
   sys.exit(1)
 
 setup(name='openrouteservice',
-      version='0.4',
+      version='1.0b',
       description='Python client for requests to openrouteservice API services',
       long_description=readme(),
       classifiers=[

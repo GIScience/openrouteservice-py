@@ -1,6 +1,14 @@
+.. image:: https://travis-ci.com/GIScience/openrouteservice-py.svg?branch=master
+    :target: https://travis-ci.com/GIScience/openrouteservice-py
+    :alt: Build status
+
 .. image:: https://readthedocs.org/projects/openrouteservice-py/badge/?version=latest
    :target: http://openrouteservice-py.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
+
+.. image:: https://coveralls.io/repos/github/GIScience/openrouteservice-py/badge.svg?branch=master
+   :target: https://coveralls.io/github/GIScience/openrouteservice-py?branch=master
+
 
 Quickstart
 ==================================================

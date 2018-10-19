@@ -51,9 +51,9 @@ def pelias_search(client, text,
     """
     Geocoding is the process of converting addresses into geographic
     coordinates.
-    
+
     This endpoint queries directly against a Pelias instance.
-    
+
     :param text: Full-text query against search endpoint. Required.
     :type text: string
 
@@ -79,23 +79,23 @@ def pelias_search(client, text,
     :param circle_radius: Radius of circle constraint in km. Default 50.
     :type circle_radius: integer
 
-    :param sources: The originating source of the data. One or more of 
-        ['osm', 'oa', 'wof', 'gn']. Currently only 'osm', 'wof' and 'gn' are 
+    :param sources: The originating source of the data. One or more of
+        ['osm', 'oa', 'wof', 'gn']. Currently only 'osm', 'wof' and 'gn' are
         supported.
     :type sources: list of strings
 
-    :param layers: The administrative hierarchy level for the query. Refer to 
+    :param layers: The administrative hierarchy level for the query. Refer to
         https://github.com/pelias/documentation/blob/master/search.md#filter-by-data-type
         for details.
     :type layers: list of strings
 
-    :param country: Constrain query by country. Accepts alpha-2 or alpha-3 
+    :param country: Constrain query by country. Accepts alpha-2 or alpha-3
         digit ISO-3166 country codes.
     :type country: list of strings
 
     :param size: The amount of results returned. Default 10.
     :type size: integer
-    
+
     :raises ValueError: When parameter has invalid value(s).
     :raises TypeError: When parameter is of the wrong type.
 
@@ -103,37 +103,37 @@ def pelias_search(client, text,
     """
     validator.search_validation({'text': text})
     params = {'text': text}
-    
+
     if focus_point:
         # validator.search_validation({'': })
         params['focus.point.lon'] = convert._format_float(focus_point[0])
         params['focus.point.lat'] = convert._format_float(focus_point[1])
-    
+
     if rect_min_x:
         validator.search_validation({'rect_min_x': rect_min_x})
         params['boundary.rect.min_lon	'] = convert._format_float(rect_min_x)  #
-        
+
     if rect_min_y:
         validator.search_validation({'rect_min_y': rect_min_y})
         params['boundary.rect.min_lat	'] = convert._format_float(rect_min_y)  #
-        
+
     if rect_max_x:
         validator.search_validation({'rect_max_x': rect_max_x})
         params['boundary.rect.max_lon	'] = convert._format_float(rect_max_x)  #
-        
+
     if rect_max_y:
         validator.search_validation({'rect_max_y': rect_max_y})
         params['boundary.rect.max_lon	'] = convert._format_float(rect_max_y)  #
-    
+
     if circle_point:
         # validator.search_validation({'circle_point': })
         params['boundary.circle.lon'] = convert._format_float(circle_point[0])  #
         params['boundary.circle.lat'] = convert._format_float(circle_point[1])  #
-        
+
     if circle_radius:
         #validator.search_validation({'circle_radius': circle_radius})
         params['boundary.circle.radius'] = circle_radius
-        
+
     if sources:
         validator.search_validation({'sources': sources})
         params['sources'] = convert._comma_list(sources)
@@ -166,49 +166,49 @@ def pelias_structured(client,
                       # size=None
                       ):
     """
-    With structured geocoding, you can search for the individual parts of a location. 
-    Structured geocoding is an option on the search endpoint, 
+    With structured geocoding, you can search for the individual parts of a location.
+    Structured geocoding is an option on the search endpoint,
     which allows you to define a query that maintains the individual fields.
-    
+
     This endpoint queries directly against a Pelias instance.
     For full documentation, please see https://github.com/pelias/documentation/blob/master/structured-geocoding.md
-    
-    :param address: Can contain a full address with house number or only a street name. 
+
+    :param address: Can contain a full address with house number or only a street name.
     :type address: string
-    
-    :param neighbourhood: Neighbourhoods are vernacular geographic entities that 
+
+    :param neighbourhood: Neighbourhoods are vernacular geographic entities that
         may not necessarily be official administrative divisions but are important nonetheless.
     :type neighbourhood: string
-    
+
     :param borough: Mostly known in the context of New York City, even though they may exist in other cities.
     :type borough: string
-    
+
     :param locality: Localities are equivalent to what are commonly referred to as cities.
     :type locality: string
-    
+
     :param county: Administrative divisions between localities and regions.
-        Not as commonly used in geocoding as localities, but useful when attempting to 
-        disambiguate between localities. 
+        Not as commonly used in geocoding as localities, but useful when attempting to
+        disambiguate between localities.
     :type county: string
-    
-    :param region: Normally the first-level administrative divisions within countries, analogous to states 
+
+    :param region: Normally the first-level administrative divisions within countries, analogous to states
         and provinces in the United States and Canada. Can be a full name or abbreviation.
     :type region: string
-    
+
     :param postalcode: Dictated by an administrative division, which is almost always countries.
         Postal codes are unique within a country.
     :type postalcode: string
-    
+
     :param country: Highest-level divisions supported in a search. Can be a full name or abbreviation.
     :type country: string
-    
+
     :raises TypeError: When parameter is of the wrong type.
 
     :rtype: dict from JSON response
     """
 
     params = dict()
-    
+
     if address:
         validator.structured_validation({'address': address})
         params['address'] = address
@@ -244,10 +244,10 @@ def pelias_structured(client,
     # if size:
     #     validator.structured_validation({'size': size})
     #     params['size'] = size
-        
+
     return client.request("/geocode/search/structured", params, dry_run=dry_run)
-  
-  
+
+
 def pelias_reverse(client, point,
                     circle_radius=None,
                     sources=None,
@@ -258,7 +258,7 @@ def pelias_reverse(client, point,
     """
     Reverse geocoding is the process of converting geographic coordinates into a
     human-readable address.
-    
+
     This endpoint queries directly against a Pelias instance.
 
     :param point: Coordinate tuple. Required.
@@ -267,39 +267,39 @@ def pelias_reverse(client, point,
     :param circle_radius: Radius around point to limit query in km. Default 1.
     :type circle_radius: integer
 
-    :param sources: The originating source of the data. One or more of 
-        ['osm', 'oa', 'wof', 'gn']. Currently only 'osm', 'wof' and 'gn' are 
+    :param sources: The originating source of the data. One or more of
+        ['osm', 'oa', 'wof', 'gn']. Currently only 'osm', 'wof' and 'gn' are
         supported.
     :type sources: list of strings
 
-    :param layers: The administrative hierarchy level for the query. Refer to 
+    :param layers: The administrative hierarchy level for the query. Refer to
         https://github.com/pelias/documentation/blob/master/search.md#filter-by-data-type
         for details.
     :type layers: list of strings
 
-    :param country: Constrain query by country. Accepts alpha-2 or alpha-3 
+    :param country: Constrain query by country. Accepts alpha-2 or alpha-3
         digit ISO-3166 country codes.
     :type country: list of strings
 
     :param size: The amount of results returned. Default 10.
     :type size: integer
-    
+
     :raises ValueError: When parameter has invalid value(s).
 
     :rtype: dict from JSON response
     """
-    
+
     params = dict()
 
     validator.reverse_validation({'point': point})
-        
+
     params['point.lon'] = convert._format_float(point[0])
     params['point.lat'] = convert._format_float(point[1])
-        
+
     if circle_radius:
         validator.reverse_validation({'circle_radius': circle_radius})
         params['boundary.circle.radius'] = str(circle_radius)
-        
+
     if sources:
         validator.reverse_validation({'sources': sources})
         params['sources'] = convert._comma_list(sources)
