@@ -75,44 +75,38 @@ def places(client, request,
     :rtype: call to Client.request()
     """
     
+    # Check all passed arguments
+    convert._is_valid_args(locals())
+    
     params = {'request': request,
               'filters': dict(),
               'geometry': dict(),
               }
     
     if request != 'category_list':
-        validator.pois_validation({'request': request})
         if geojson:
-            validator.pois_validation({'geojson': geojson})
             params['geometry']['geojson'] = geojson
             
         if bbox:
-            validator.pois_validation({'bbox': bbox})
             params['geometry']['bbox'] = bbox
             
         if buffer:
-            validator.pois_validation({'buffer': buffer})
             params['geometry']['buffer'] = buffer
                     
         if filter_category_ids and convert._is_list(filter_category_ids):
-            validator.pois_validation({'filter_category_ids': filter_category_ids})
             params['filters']['category_ids'] = filter_category_ids
                     
         if filter_category_group_ids and convert._is_list(filter_category_group_ids):
-            validator.pois_validation({'category_group_ids': filter_category_group_ids})
             params['filters']['category_group_ids'] = filter_category_group_ids
                     
         if filters_custom:
             for f in filters_custom:
-                validator.pois_validation({'filters_custom'[f]: filters_custom[f]})
                 params['filters'][f] = filters_custom[f]
                     
         if limit:
-            validator.pois_validation({'limit': limit})
             params['limit'] = limit
                     
         if sortby:
-            validator.pois_validation({'sortby': sortby})
             params['sortby'] = sortby
             
     return client.request('/pois', {}, post_json=params, dry_run=dry_run)

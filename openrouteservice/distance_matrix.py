@@ -75,8 +75,9 @@ def distance_matrix(client, locations,
     
     :rtype: call to Client.request()
     """
-
-    validator.distance_matrix_validation({'locations': locations})
+    
+    # Check all passed arguments
+    convert._is_valid_args(locals())
 
     params = {
         "locations": locations,
@@ -87,39 +88,32 @@ def distance_matrix(client, locations,
     get_params = {}
 
     if profile:
-        validator.distance_matrix_validation({'profile': profile})
         params["profile"] = profile
         get_params['profile'] = profile
 
     if sources:
-        validator.distance_matrix_validation({'sources': sources})
         if sources == 'all': 
             params["sources"] = sources
         else:
             params["sources"] = convert._comma_list(sources)
 
     if destinations:
-        validator.distance_matrix_validation({'destinations': destinations})
         if destinations == 'all': 
             params["destinations"] = destinations
         else:
             params["destinations"] = convert._comma_list(destinations)
 
     if metrics:
-        validator.distance_matrix_validation({'metrics': metrics})
         params["metrics"] = convert._pipe_list(metrics)
 
     if resolve_locations:
-        validator.distance_matrix_validation({'resolve_locations': resolve_locations})
         params["resolve_locations"] = resolve_locations
 
     if units:
-        validator.distance_matrix_validation({'units': units})
         params["units"] = units
 
     if optimized:
         # not checked on backend, check here
-        validator.distance_matrix_validation({'optimized': optimized})
         # convert._checkBool(optimized)
         params["optimized"] = optimized
 
