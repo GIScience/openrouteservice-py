@@ -86,45 +86,38 @@ def isochrones(client, locations,
     
     :rtype: call to Client.request()
     """
-    validator.isochrones_validation({'locations': locations})
+    
+    # Check all passed arguments
+    convert._is_valid_args(locals())
 
     params = {
         "locations": convert._build_coords(locations)
     }
 
     if profile:
-        # validator.assert_success(profile)
-        # NOTE(broady): the mode parameter is not validated by the Maps API
-        validator.isochrones_validation({'profile': profile})
         params["profile"] = profile
 
     if range_type:
-        validator.isochrones_validation({'range_type': range_type})
         params["range_type"] = range_type
 
     if intervals:
-        validator.isochrones_validation({'range': intervals})
         params["range"] = convert._comma_list(intervals)
 
     if segments:
-        validator.isochrones_validation({'interval': segments})
         params["interval"] = str(segments)
         
     if units:
         # if units and (range_type == None or range_type == 'time'):
         #     raise ValueError("For range_type time, units cannot be specified.")
-        validator.isochrones_validation({'units': units})
         params["units"] = units
 
     if location_type:
-        validator.isochrones_validation({'location_type': location_type})
         params["location_type"] = location_type
 
     if smoothing:
         params["smoothing"] = convert._format_float(smoothing)
 
     if attributes:
-        validator.isochrones_validation({'attributes': attributes})
         params["attributes"] = convert._pipe_list(attributes)
 
     return client.request("/isochrones", params, dry_run=dry_run)

@@ -17,7 +17,7 @@
 #
 
 """Performs requests to the ORS geocode API (direct Pelias clone)."""
-from openrouteservice import convert, validator
+from openrouteservice import convert, validator, exceptions
 
 valid_layers = ['venue',
                  'address',
@@ -101,53 +101,45 @@ def pelias_search(client, text,
 
     :rtype: call to Client.request()
     """
-    validator.search_validation({'text': text})
+    
+    # Check all passed arguments
+    convert._is_valid_args(locals())
+            
     params = {'text': text}
 
     if focus_point:
-        # validator.search_validation({'': })
         params['focus.point.lon'] = convert._format_float(focus_point[0])
         params['focus.point.lat'] = convert._format_float(focus_point[1])
 
     if rect_min_x:
-        validator.search_validation({'rect_min_x': rect_min_x})
         params['boundary.rect.min_lon	'] = convert._format_float(rect_min_x)  #
 
     if rect_min_y:
-        validator.search_validation({'rect_min_y': rect_min_y})
         params['boundary.rect.min_lat	'] = convert._format_float(rect_min_y)  #
 
     if rect_max_x:
-        validator.search_validation({'rect_max_x': rect_max_x})
         params['boundary.rect.max_lon	'] = convert._format_float(rect_max_x)  #
 
     if rect_max_y:
-        validator.search_validation({'rect_max_y': rect_max_y})
         params['boundary.rect.max_lon	'] = convert._format_float(rect_max_y)  #
 
     if circle_point:
-        # validator.search_validation({'circle_point': })
         params['boundary.circle.lon'] = convert._format_float(circle_point[0])  #
         params['boundary.circle.lat'] = convert._format_float(circle_point[1])  #
 
     if circle_radius:
-        #validator.search_validation({'circle_radius': circle_radius})
         params['boundary.circle.radius'] = circle_radius
 
     if sources:
-        validator.search_validation({'sources': sources})
         params['sources'] = convert._comma_list(sources)
 
     if layers:
-        validator.search_validation({'layers': layers})
         params['layers'] = convert._comma_list(layers)
 
     if country:
-        validator.search_validation({'country': country})
         params['country'] = country
 
     if size:
-        validator.search_validation({'size': size})
         params['size'] = size
 
     return client.request("/geocode/search", params, dry_run=dry_run)
@@ -179,6 +171,9 @@ def pelias_structured(client,
     :param neighbourhood: Neighbourhoods are vernacular geographic entities that
         may not necessarily be official administrative divisions but are important nonetheless.
     :type neighbourhood: string
+    
+    # Check all passed arguments
+    convert._is_valid_args(locals())
 
     :param borough: Mostly known in the context of New York City, even though they may exist in other cities.
     :type borough: string
@@ -206,39 +201,34 @@ def pelias_structured(client,
 
     :rtype: dict from JSON response
     """
+    
+    # Check all passed arguments
+    convert._is_valid_args(locals())
 
     params = dict()
 
     if address:
-        validator.structured_validation({'address': address})
         params['address'] = address
 
     if neighbourhood:
-        validator.structured_validation({'neighbourhood': neighbourhood})
         params['neighbourhood'] = neighbourhood
 
     if borough:
-        validator.structured_validation({'borough': borough})
         params['borough'] = borough
 
     if locality:
-        validator.structured_validation({'locality': locality})
         params['locality'] = locality
 
     if county:
-        validator.structured_validation({'county': county})
         params['county'] = county
 
     if region:
-        validator.structured_validation({'region': region})
         params['region'] = region
 
     if postalcode:
-        validator.structured_validation({'postalcode': postalcode})
         params['postalcode'] = postalcode
 
     if country:
-        validator.structured_validation({'country': country})
         params['country'] = country
 
     # if size:
@@ -288,32 +278,28 @@ def pelias_reverse(client, point,
 
     :rtype: dict from JSON response
     """
+    
+    # Check all passed arguments
+    convert._is_valid_args(locals())
 
     params = dict()
-
-    validator.reverse_validation({'point': point})
 
     params['point.lon'] = convert._format_float(point[0])
     params['point.lat'] = convert._format_float(point[1])
 
     if circle_radius:
-        validator.reverse_validation({'circle_radius': circle_radius})
         params['boundary.circle.radius'] = str(circle_radius)
 
     if sources:
-        validator.reverse_validation({'sources': sources})
         params['sources'] = convert._comma_list(sources)
 
     if layers:
-        validator.reverse_validation({'layers': layers})
         params['layers'] = convert._comma_list(layers)
 
     if country:
-        validator.reverse_validation({'country': country})
         params['country'] = country
 
     if size:
-        validator.reverse_validation({'size': size})
         params['size'] = size
 
     return client.request("/geocode/reverse", params, dry_run=dry_run)
