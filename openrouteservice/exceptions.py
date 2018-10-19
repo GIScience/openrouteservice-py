@@ -20,6 +20,12 @@
 Defines exceptions that are thrown by the ORS client.
 """
 
+class ValidationError(Exception):
+    """Something went wrong during cerberus validation"""
+    def __init__(self, error):
+        Exception.__init__(self, "Argument '{}:' {}".format(list(error.keys())[0],
+                                                 list(error.values())[0][0]))
+
 class ApiError(Exception):
     """Represents an exception returned by the remote API."""
     def __init__(self, status, message=None):
