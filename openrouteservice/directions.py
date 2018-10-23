@@ -156,7 +156,7 @@ def directions(client,
     """
     
     # Check all passed arguments
-    convert._is_valid_args(locals())
+    convert._is_valid_args(locals(), "directions")
 
     params = {
         "coordinates": convert._build_coords(coordinates)

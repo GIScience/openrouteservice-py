@@ -88,7 +88,7 @@ def isochrones(client, locations,
     """
     
     # Check all passed arguments
-    convert._is_valid_args(locals())
+    convert._is_valid_args(locals(), 'isochrones')
 
     params = {
         "locations": convert._build_coords(locations)

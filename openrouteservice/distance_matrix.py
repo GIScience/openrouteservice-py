@@ -77,7 +77,7 @@ def distance_matrix(client, locations,
     """
     
     # Check all passed arguments
-    convert._is_valid_args(locals())
+    convert._is_valid_args(locals(), 'distance_matrix')
 
     params = {
         "locations": locations,

@@ -76,7 +76,7 @@ def places(client, request,
     """
     
     # Check all passed arguments
-    convert._is_valid_args(locals())
+    convert._is_valid_args(locals(), 'pois')
     
     params = {'request': request,
               'filters': dict(),

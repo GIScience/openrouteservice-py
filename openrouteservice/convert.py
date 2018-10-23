@@ -23,11 +23,12 @@ import time as _time
 from cerberus import errors
 from openrouteservice import validator, exceptions
 
-def _is_valid_args(args):
+
+def _is_valid_args(args, module):
     """checks whether arguments to ORS functions are valid"""
     for arg in args:
         if arg != 'client' and args[arg] is not None:
-            v = validator.search_validation({arg: args[arg]})
+            v = validator.validator({arg: args[arg]}, module)
             if v.errors:
                 raise exceptions.ValidationError(v.errors)
 

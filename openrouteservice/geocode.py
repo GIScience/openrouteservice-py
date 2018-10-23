@@ -103,7 +103,7 @@ def pelias_search(client, text,
     """
     
     # Check all passed arguments
-    convert._is_valid_args(locals())
+    convert._is_valid_args(locals(), 'search')
             
     params = {'text': text}
 
@@ -203,7 +203,7 @@ def pelias_structured(client,
     """
     
     # Check all passed arguments
-    convert._is_valid_args(locals())
+    convert._is_valid_args(locals(), 'structured')
 
     params = dict()
 
@@ -280,7 +280,7 @@ def pelias_reverse(client, point,
     """
     
     # Check all passed arguments
-    convert._is_valid_args(locals())
+    convert._is_valid_args(locals(), 'reverse')
 
     params = dict()
 

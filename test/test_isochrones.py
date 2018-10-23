@@ -95,4 +95,3 @@ class DistanceMatrixTest(_test.TestCase):
                             'smoothing=0.5&'
                             'attributes=area|reachfactor&interval=30'.format(self.key),
                             responses.calls[0].request.url)
-        self.validateFormat(iso_parameter)
