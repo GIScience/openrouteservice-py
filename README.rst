@@ -33,6 +33,8 @@ For further details, please visit:
 
 We also have a repo with a few useful examples here_.
 
+For support, please ask our forum_.
+
 By using this library, you agree to the ORS `terms and conditions`_.
 
 .. _openrouteservice: https://go.openrouteservice.org
@@ -48,6 +50,7 @@ By using this library, you agree to the ORS `terms and conditions`_.
 .. _places: https://github.com/GIScience/openpoiservice
 .. _here: https://github.com/GIScience/openrouteservice-examples/tree/master/python
 .. _`terms and conditions`: https://go.openrouteservice.org/terms-of-service/
+.. _forum: https://ask.openrouteservice.org/c/sdks
 
 Requirements
 -----------------------------
@@ -182,12 +185,9 @@ If you're hosting your own ORS instance, you can alter the ``base_url`` paramete
 Support
 --------
 
-For general support, contact our `Google Group`_.
+For general support and questions, contact our forum_.
 
 For issues/bugs/enhancement suggestions, please use https://github.com/GIScience/openrouteservice-py/issues.
-
-
-.. _`Google Group`: https://groups.google.com/forum/?utm_source=digest&utm_medium=email#!forum/openrouteservice
 
 
 Acknowledgements
