@@ -212,10 +212,19 @@ def directions(client,
         params["radiuses"] = convert._pipe_list(radiuses)
         
     if bearings:
-        params["bearings"] = convert._pipe_list([convert._comma_list(pair) for pair in bearings])
+        if optimized == 'true':
+            print("Set optimized='false' due to incompatible parameter settings.")
+        else:
+            params["bearings"] = convert._pipe_list([convert._comma_list(pair) for pair in bearings])
         
     if continue_straight:
         # not checked on backend, check here
+        if continue_straight == 'true' and (optimized == 'true' or profile == ['driving-car', 'driving-hgv']):
+            params["continue_straight"] = 'false'
+            print("Set optimized='false' due to incompatible parameter settings or change profile.")
+        else:
+            params["continue_straight"] = continue_straight
+
         params["continue_straight"] = continue_straight
 
     if elevation:
@@ -229,7 +238,7 @@ def directions(client,
     if optimized:
         # not checked on backend, check here
         if optimized == 'true' and (bearings or continue_straight == 'true'):
-            params["optimized"] = 'false'
+            # params["optimized"] = 'false'
             print("Set optimized='false' due to incompatible parameter settings.")
         else:
             params["optimized"] = optimized

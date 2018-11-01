@@ -22,65 +22,55 @@ import openrouteservice
 from openrouteservice import validator
 import test as _test
 
+params = {
+    'profile': 'foot-walking',
+    'preference': 'fastest',
+    'units': 'mi',
+    'language': 'en',
+    'geometry': 'true',
+    'geometry_format': 'geojson',
+    'geometry_simplify': 'false',
+    'instructions': 'false',
+    'instructions_format': 'html',
+    'roundabout_exits': 'true',
+    'attributes': ['avgspeed'],
+    'radiuses': [10000, 10000],
+    'bearings': [[100, 100], [200, 200]],
+    'continue_straight': 'false',
+    'elevation': 'true',
+    'extra_info': ['steepness', 'suitability'],
+    # 'optimized': 'false',
+    'options': {'maximum_speed': 20}}
+
 
 class ValidatorTest(_test.TestCase):
 
-    @responses.activate
-    def test_directions_validation(self):
-        params = {
-            'coordinates': ((8.34234, 48.23424), (8.34423, 48.26424)),
-            'profile': 'driving-hgv',
-            'preference': 'best',
-            'units': 'mi',
-            'language': 'en',
-            'geometry': 'true',
-            'geometry_format': 'geojson',
-            'geometry_simplify': 'false',
-            'instructions': 'false',
-            'instructions_format': 'html',
-            'roundabout_exits': 'true',
-            'attributeds': ['avgspeed'],
-            'radiuses': [10000, 10000],
-            'bearings': [[100, 100], [200, 200]],
-            'elevation': 'true',
-            'extra_info': ['steepness', 'suitability'],
-            'optimized': 'true',
-            'options': {'maximum_speed': '20'}
-        }
-        v = validator.validator(params, 'directions')
-        self.assertEqual('unallowed value best', v.errors['preference'][0])
+    def setUp(self):
+        self.coords_point = (8.34234, 48.23424)
+        self.coords_linestring = ((8.34234, 48.23424), (8.34423, 48.26424))
+
+    def test_directions_correct_schema(self):
+        params['coordinates'] = ((8.34234, 48.23424), (8.34423, 48.26424)),  # self.coords_linestring,
+        v = validator.validator(params, 'directions', 2)
+        self.assertEqual(0, len(v.errors))
+
+    def test_directions_wrong_schema(self):
+        params['coordinates'] = ((8.34234, 48.23424), (8.34423, 48.26424)),  # self.coords_linestring,
+        # params['preference'] = 'best',
+        params['attributeds'] = ['avgspeed'],
+        params['optimized'] = 'true',
+        params['radiuses'] = [10000, 10000, 10000, 10000],
+        params['bearings'] = [[100, 100], [200, 200], [200, 200], [200, 200]]
+        params['options'] = {'maximum_speed': '20'}
+
+        v = validator.validator(params, 'directions', 2)
+        # self.assertEqual('unallowed value best', v.errors['preference'][0])
         self.assertEqual('unknown field', v.errors['attributeds'][0])
         self.assertEqual('must be of integer type', v.errors['options'][0]['maximum_speed'][0])
-        self.assertEqual("depends on these values: {'optimized': 'false'}", v.errors['bearings'][0])
+        # self.assertEqual("depends on these values: {'optimized': 'false'}", v.errors['bearings'][0])
 
-    @responses.activate
-    def test_direction_correct_validation(self):
-        params = {
-            'coordinates': ((8.34234, 48.23424), (8.34423, 48.26424)),
-            'profile': 'driving-hgv',
-            'preference': 'fastest',
-            'units': 'mi',
-            'language': 'en',
-            'geometry': 'true',
-            'geometry_format': 'geojson',
-            'geometry_simplify': 'false',
-            'instructions': 'false',
-            'instructions_format': 'html',
-            'roundabout_exits': 'true',
-            'attributes': ['avgspeed'],
-            'radiuses': [10000, 10000],
-            'bearings': [[100, 100], [200, 200]],
-            'continue_straight': 'false',
-            'elevation': 'true',
-            'extra_info': ['steepness', 'suitability'],
-            'optimized': 'false',
-            'options': {'maximum_speed': 20}
-        }
-        v = validator.validator(params, 'directions')
-
-    @responses.activate
-    def test_isochrones_validation(self):
-        params = {'locations': [[9.970093, 48.477473], [9.207916, 49.153868]],
+    def test_isochrones_wrong_schema(self):
+        params = {'locations': self.coords_linestring,
                   'profile': 'cycling-reguläar',
                   'range_type': 'distance',
                   'range': [1000, 2000],
@@ -90,11 +80,10 @@ class ValidatorTest(_test.TestCase):
                   'interval': [30]
                   }
         v = validator.validator(params, "isochrones")
+        print(v.errors)
 
-    @responses.activate
-    def test_distance_matrix_validation(self):
-        params = {'locations': [[9.970093, 48.477473], [9.207916, 49.153868], [37.573242, 55.801281],
-                                [115.663757, 38.106467]],
+    def test_distance_matrix_wrong_schema(self):
+        params = {'locations': self.coords_linestring,
                   'sources': [0, 1, 2],
                   'destinations': [1, 2, 3],
                   'profile': 'cycling-regular',
@@ -106,25 +95,26 @@ class ValidatorTest(_test.TestCase):
         # self.assertEqual()
         print(v.errors)
 
-    @responses.activate
-    def test_search_validation(self):
+    def test_search_wrong_schema(self):
         params = {'text': 'Heidelberg',
-                  'focus_point': (8.675786, 49.418431),
+                  'focus_point': self.coords_point,
                   'rect_min_x': 8.573179,
                   'rect_min_y': 49.351764,
                   'rect_max_x': 8.79405,
                   'rect_max_y': 49.459693,
-                  'circle_point': (8.675786, 49.418431),
+                  'circle_point': self.coords_point,
                   'circle_radius': 50,
                   'sources': ['osm', 'wof', 'gn'],
-                  'layers': ['locality', 'county', 'region'],
+                  'layers': ['locality', 'coddunty', 'region'],
                   'country': 'de',
                   'size': 5,
                   }
-        validator.search_validation(params)
+        # validator.search_validation(params)
+        v = validator.validator(params, 'search')
+        # self.assertEqual()
+        print(v.errors)
 
-    @responses.activate
-    def test_structured_validation(self):
+    def test_structured_wrong_schema(self):
         params = {'address': 'Berliner Straße 45',
                   'neighbourhood': 'Neuenheimer Feld',
                   'borough': 'Heidelberg',
@@ -136,8 +126,8 @@ class ValidatorTest(_test.TestCase):
                   }
         validator.structured_validation(params)
 
-    def test_reverse_validation(self):
-        params = {'point': (8.675786, 49.418431),
+    def test_reverse_wrong_schema(self):
+        params = {'point': self.coords_point,
                   'circle_radius': 50,
                   'sources': ['osm', 'wof', 'gn'],
                   'layers': ['locality', 'county', 'region'],
