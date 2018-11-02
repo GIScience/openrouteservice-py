@@ -30,9 +30,21 @@ def _is_valid_args(args, module):
         coords_len = len(args['coordinates'])
     for arg in args:
         if arg != 'client' and args[arg] is not None:
-            v = validator.validator({arg: args[arg]}, module, coords_len)
+            v = validator.validator(args, module, coords_len)
             if v.errors:
                 raise exceptions.ValidationError(v.errors)
+
+
+# def _is_valid_args(args, module):
+#     """checks whether arguments to ORS functions are valid"""
+#     coords_len = 0
+#     if module == 'directions':
+#         coords_len = len(args['coordinates'])
+#     for arg in args:
+#         if arg != 'client' and args[arg] is not None:
+#             v = validator.validator({arg: args[arg]}, module, coords_len)
+#             if v.errors:
+#                 raise exceptions.ValidationError(v.errors)
 
 
 # def _is_valid_args(args, module):

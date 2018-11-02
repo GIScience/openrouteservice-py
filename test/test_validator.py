@@ -23,6 +23,7 @@ from openrouteservice import validator
 import test as _test
 
 params = {
+    # 'coordinates': ((8.34234, 48.23424), (8.34423, 48.26424)),
     'profile': 'foot-walking',
     'preference': 'fastest',
     'units': 'mi',
@@ -36,10 +37,10 @@ params = {
     'attributes': ['avgspeed'],
     'radiuses': [10000, 10000],
     'bearings': [[100, 100], [200, 200]],
-    'continue_straight': 'false',
+    'continue_straight': 'true',
     'elevation': 'true',
     'extra_info': ['steepness', 'suitability'],
-    # 'optimized': 'false',
+    'optimized': 'false',
     'options': {'maximum_speed': 20}}
 
 
@@ -50,24 +51,25 @@ class ValidatorTest(_test.TestCase):
         self.coords_linestring = ((8.34234, 48.23424), (8.34423, 48.26424))
 
     def test_directions_correct_schema(self):
-        params['coordinates'] = ((8.34234, 48.23424), (8.34423, 48.26424)),  # self.coords_linestring,
+        params['coordinates'] = self.coords_linestring
         v = validator.validator(params, 'directions', 2)
         self.assertEqual(0, len(v.errors))
 
     def test_directions_wrong_schema(self):
-        params['coordinates'] = ((8.34234, 48.23424), (8.34423, 48.26424)),  # self.coords_linestring,
-        # params['preference'] = 'best',
-        params['attributeds'] = ['avgspeed'],
-        params['optimized'] = 'true',
-        params['radiuses'] = [10000, 10000, 10000, 10000],
-        params['bearings'] = [[100, 100], [200, 200], [200, 200], [200, 200]]
+        params['coordinates'] = self.coords_linestring
+        params['preference'] = 'best'
+        params['attributeds'] = ['avgspeed']
+        params['optimized'] = 'true'
+        params['radiuses'] = [10000, 10000, 10000, 10000]
+        params['bearings'] = [[100, 100], [200, 200]]
         params['options'] = {'maximum_speed': '20'}
 
         v = validator.validator(params, 'directions', 2)
-        # self.assertEqual('unallowed value best', v.errors['preference'][0])
+        self.assertEqual('unallowed value best', v.errors['preference'][0])
         self.assertEqual('unknown field', v.errors['attributeds'][0])
+        self.assertEqual('max length is 2', v.errors['radiuses'][0])
+        self.assertEqual("depends on these values: {'optimized': 'false'}", v.errors['bearings'][0])
         self.assertEqual('must be of integer type', v.errors['options'][0]['maximum_speed'][0])
-        # self.assertEqual("depends on these values: {'optimized': 'false'}", v.errors['bearings'][0])
 
     def test_isochrones_wrong_schema(self):
         params = {'locations': self.coords_linestring,
