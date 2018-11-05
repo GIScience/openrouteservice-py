@@ -23,7 +23,6 @@ from openrouteservice import validator
 import test as _test
 
 params = {
-    # 'coordinates': ((8.34234, 48.23424), (8.34423, 48.26424)),
     'profile': 'foot-walking',
     'preference': 'fastest',
     'units': 'mi',
@@ -81,7 +80,7 @@ class ValidatorTest(_test.TestCase):
                   'attributes': ['area', 'reachfactor'],
                   'interval': [30]
                   }
-        v = validator.validator(params, "isochrones")
+        v = validator.validator(params, "isochrones", 2)
         print(v.errors)
 
     def test_distance_matrix_wrong_schema(self):
