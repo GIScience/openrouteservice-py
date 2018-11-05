@@ -72,16 +72,15 @@ class ValidatorTest(_test.TestCase):
 
     def test_isochrones_wrong_schema(self):
         params = {'locations': self.coords_linestring,
-                  'profile': 'cycling-reguläar',
-                  'range_type': 'distance',
-                  'range': [1000, 2000],
+                  'profile': 'cycling-regular',
                   'units': 'm',
-                  'location_type': 'destination',
                   'attributes': ['area', 'reachfactor'],
-                  'interval': [30]
+                  'interval': ['30']
                   }
         v = validator.validator(params, "isochrones", 2)
-        print(v.errors)
+        self.assertEqual('required field', v.errors['range'][0])
+        self.assertEqual("depends on these values: {'range_type': 'distance'}", v.errors['units'][0])
+        self.assertEqual('must be of integer type', v.errors['interval'][0][0][0])
 
     def test_distance_matrix_wrong_schema(self):
         params = {'locations': self.coords_linestring,

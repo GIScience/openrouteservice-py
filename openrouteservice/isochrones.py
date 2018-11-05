@@ -86,12 +86,9 @@ def isochrones(client, locations,
     
     :rtype: call to Client.request()
     """
-    
-    # Check all passed arguments
-    convert._is_valid_args(locals(), 'isochrones')
 
     params = {
-        "locations": convert._build_coords(locations)
+        'locations': locations
     }
 
     if profile:
@@ -101,18 +98,33 @@ def isochrones(client, locations,
         params["range_type"] = range_type
 
     if intervals:
-        params["range"] = convert._comma_list(intervals)
+        params['range'] = intervals
 
     if segments:
-        params["interval"] = str(segments)
+        params["interval"] = segments
         
     if units:
-        # if units and (range_type == None or range_type == 'time'):
-        #     raise ValueError("For range_type time, units cannot be specified.")
         params["units"] = units
 
     if location_type:
         params["location_type"] = location_type
+
+    if smoothing:
+        params["smoothing"] = smoothing
+
+    if attributes:
+        params["attributes"] = attributes
+
+    # Check all passed arguments
+    convert._is_valid_args(params, 'isochrones')
+
+    params["locations"] = convert._build_coords(locations)
+
+    if intervals:
+        params["range"] = convert._comma_list(intervals)
+
+    if segments:
+        params["interval"] = str(segments)
 
     if smoothing:
         params["smoothing"] = convert._format_float(smoothing)

@@ -212,7 +212,7 @@ def isochrones_validation(params):
                                 'cycling-road', 'cycling-safe', 'cycling-mountain', 'cycling-tour',
                                 'cycling-electric'], 'required': True},
         'range_type': {'type': 'string', 'allowed': ['time', 'distance'], 'default': 'time'},
-        'range': {'type': ['list', 'tuple'], 'schema': {'type': 'integer'}},
+        'range': {'type': ['list', 'tuple'], 'schema': {'type': 'integer'}, 'required': True},
         'interval': {'type': ['list', 'tuple'], 'schema': {'type': 'integer'}},
         'units': {'type': 'string', 'allowed': ['m', 'km', 'mi'], 'default': 'm',
                   'dependencies': {'range_type': 'distance'}},
@@ -231,54 +231,94 @@ def isochrones_validation(params):
                                                                                                          'fords',
                                                                                                          'steps',
                                                                                                          'hills']}},
-                                               'avoid_borders': {'type': 'string', 'allowed': ['all', 'controlled'],
-                                                                 # 'dependencies': {
-                                                                 #     'profile': ['driving-car', 'driving-hgv']},
-                                                                 },
-                                               'avoid_countries': {'type': 'string'},
+                                               'avoid_borders': {'type': 'string',
+                                                                 'allowed': ['all', 'controlled'],
+                                                                 'dependencies': {
+                                                                     '^profile': ['driving-car', 'driving-hgv']}},
+                                               'avoid_countries': {'schema': {'type': 'string'},
+                                                                   'dependencies': {
+                                                                       '^profile': ['driving-car', 'driving-hgv']}},
                                                'vehicle_type': {'type': 'string',
                                                                 'allowed': ['hgv', 'bus', 'agricultural',
                                                                             'delivery',
                                                                             'forestry', 'goods'],
-                                                                # 'dependencies': {'profile': 'driving-hgv'}
-                                                                },
+                                                                'dependencies': {'^profile': 'driving-hgv'}},
                                                'profile_params': {'type': 'dict', 'schema': {
                                                    'weightings': {'type': 'dict', 'schema': {
                                                        'steepness_difficulty': {'type': 'dict', 'schema': {
                                                            'level': {'type': 'integer', 'min': 0,
                                                                      'max': 3}},
-                                                                                # 'dependencies': {
-                                                                                #     'profile': ['cycling-regular',
-                                                                                #                 'cycling-road',
-                                                                                #                 'cycling-safe',
-                                                                                #                 'cycling-mountain',
-                                                                                #                 'cycling-tour',
-                                                                                #                 'cycling-electric']}
-                                                                                },
+                                                                                'dependencies': {
+                                                                                    '^profile': ['cycling-regular',
+                                                                                                 'cycling-road',
+                                                                                                 'cycling-safe',
+                                                                                                 'cycling-mountain',
+                                                                                                 'cycling-tour',
+                                                                                                 'cycling-electric']}},
                                                        'green': {'type': 'dict', 'schema': {
                                                            'factor': {'type': 'float', 'min': 0,
                                                                       'max': 1}},
-                                                                 'dependencies': {'profile': ['foot-walking',
-                                                                                              'foot-hiking']}},
+                                                                 'dependencies': {'^profile': ['foot-walking',
+                                                                                               'foot-hiking']}},
                                                        'quiet': {'type': 'dict', 'schema': {
                                                            'factor': {'type': 'float', 'min': 0,
                                                                       'max': 1}},
-                                                                 'dependencies': {'profile': ['foot-walking',
-                                                                                              'foot-hiking']}}}},
-                                                   # 'restrictions': {'type': 'dict', 'schema': {
-                                                   #   'gradient': {'type': 'integer', 'min': 1, 'max': 15,
-                                                   # 'dependencies': {
-                                                   #     'profile': ['cycling-regular',
-                                                   #                 'cycling-road',
-                                                   #                 'cycling-safe',
-                                                   #                 'cycling-mountain',
-                                                   #                 'cycling-tour',
-                                                   #                 'cycling-electric']}
-                                                   # },
-
-                                                   # }}
+                                                                 'dependencies': {'^profile': ['foot-walking',
+                                                                                               'foot-hiking']}}}},
+                                                   'restrictions': {'type': 'dict', 'schema': {
+                                                       'gradient': {'type': 'integer', 'min': 1, 'max': 15,
+                                                                    'dependencies': {
+                                                                        '^profile': ['cycling-regular',
+                                                                                     'cycling-road',
+                                                                                     'cycling-safe',
+                                                                                     'cycling-mountain',
+                                                                                     'cycling-tour',
+                                                                                     'cycling-electric']}},
+                                                       'length': {'type': 'integer',
+                                                                  'dependencies': {'^profile': 'driving-hgv',
+                                                                                   # 'vehicle_type': True
+                                                                                   }},
+                                                       'width': {'type': 'integer',
+                                                                 'dependencies': {'^profile': 'driving-hgv',
+                                                                                  # 'vehicle_type': True
+                                                                                  }},
+                                                       'height': {'type': 'integer',
+                                                                  'dependencies': {'^profile': 'driving-hgv',
+                                                                                   # 'vehicle_type': True
+                                                                                   }},
+                                                       'axleload': {'type': 'integer',
+                                                                    'dependencies': {'^profile': 'driving-hgv',
+                                                                                     # 'vehicle_type': True
+                                                                                     }},
+                                                       'weight': {'type': 'integer',
+                                                                  'dependencies': {'^profile': 'driving-hgv',
+                                                                                   # 'vehicle_type': True
+                                                                                   }},
+                                                       'hazmat': {'type': 'string', 'allowed': ['true', 'false'],
+                                                                  'default': 'false',
+                                                                  'dependencies': {'^profile': 'driving-hgv',
+                                                                                   # 'vehicle_type': True
+                                                                                   }},
+                                                       # 'surface_type': {'type': 'string',
+                                                       #                  'default': 'cobblestone:flattened',
+                                                       #                  'dependencies': {'^profile': 'wheelchair'}},
+                                                       # 'track_type': {'type': 'string', 'default': 'grade1',
+                                                       #                'dependencies': {'^profile': 'wheelchair'}},
+                                                       # 'smoothness_type': {'type': 'string', 'default': 'good',
+                                                       #                     'dependencies': {'^profile': 'wheelchair'}},
+                                                       # 'maximum_sloped_curb': {'anyof': [
+                                                       #     {'type': 'float', 'allowed': [0.03, 0.06, 0.1],
+                                                       #      'default': 0.06},
+                                                       #     {'type': 'string', 'allowed': ['all']}], 'dependencies': {
+                                                       #     '^profile': 'wheelchair'}},
+                                                       # 'maximum_incline': {'anyof': [
+                                                       #     {'type': 'integer', 'allowed': [3, 6, 10, 15],
+                                                       #      'default': 6},
+                                                       #     {'type': 'string', 'allowed': ['all']}], 'dependencies': {
+                                                       #     '^profile': 'wheelchair'}}
+                                                   }}
                                                }},
-                                               # 'avoid_polygons'
+                                               'avoid_polygons': {}
                                                }},
         'intersections': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'false'},
         'id': {'type': 'string'},
