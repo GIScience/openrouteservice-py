@@ -73,27 +73,26 @@ class ValidatorTest(_test.TestCase):
     def test_isochrones_wrong_schema(self):
         params = {'locations': self.coords_linestring,
                   'profile': 'cycling-regular',
-                  'units': 'm',
+                  'range_type': 'time',
                   'attributes': ['area', 'reachfactor'],
                   'interval': ['30']
                   }
         v = validator.validator(params, "isochrones", 2)
         self.assertEqual('required field', v.errors['range'][0])
-        self.assertEqual("depends on these values: {'range_type': 'distance'}", v.errors['units'][0])
         self.assertEqual('must be of integer type', v.errors['interval'][0][0][0])
 
     def test_distance_matrix_wrong_schema(self):
         params = {'locations': self.coords_linestring,
+                  'profile': 'driving-car',
                   'sources': [0, 1, 2],
-                  'destinations': [1, 2, 3],
-                  'profile': 'cycling-regular',
                   'metrics': ['duration', 'distance'],
-                  'resolve_locations': 'tlrue',
-                  'units': 'mi',
-                  'optimized': 'false'}
-        v = validator.validator(params, 'distance_matrix')
-        # self.assertEqual()
-        print(v.errors)
+                  'resolve_locations': 'true',
+                  'units': 'm',
+                  'optimizedd': 'false'}
+        v = validator.validator(params, 'distance_matrix', 2)
+        self.assertEqual('no definitions validate', v.errors['sources'][0])
+        self.assertEqual('unknown field', v.errors['optimizedd'][0])
+
 
     def test_search_wrong_schema(self):
         params = {'text': 'Heidelberg',
@@ -102,20 +101,16 @@ class ValidatorTest(_test.TestCase):
                   'rect_min_y': 49.351764,
                   'rect_max_x': 8.79405,
                   'rect_max_y': 49.459693,
-                  'circle_point': self.coords_point,
-                  'circle_radius': 50,
-                  'sources': ['osm', 'wof', 'gn'],
-                  'layers': ['locality', 'coddunty', 'region'],
-                  'country': 'de',
-                  'size': 5,
+                  'circle_radius': {50},
+                  'layers': ['locality', 'name'],
+                  'size': 5
                   }
-        # validator.search_validation(params)
-        v = validator.validator(params, 'search')
-        # self.assertEqual()
-        print(v.errors)
+        v = validator.validator(params, 'search', None)
+        self.assertEqual("unallowed values ['name']", v.errors['layers'][0])
+        self.assertEqual('must be of integer type', v.errors['circle_radius'][0])
 
     def test_structured_wrong_schema(self):
-        params = {'address': 'Berliner Straße 45',
+        params = {'address': {'Berliner Straße 45'},
                   'neighbourhood': 'Neuenheimer Feld',
                   'borough': 'Heidelberg',
                   'locality': 'Heidelberg',
@@ -124,14 +119,30 @@ class ValidatorTest(_test.TestCase):
                   'postalcode': '69120',
                   'country': 'de',
                   }
-        validator.structured_validation(params)
+        v = validator.validator(params, 'structured', None)
+        self.assertEqual('must be of string type', v.errors['address'][0])
 
     def test_reverse_wrong_schema(self):
         params = {'point': self.coords_point,
                   'circle_radius': 50,
-                  'sources': ['osm', 'wof', 'gn'],
+                  'sources': ['osm', 'wof', 'gm'],
                   'layers': ['locality', 'county', 'region'],
-                  'country': 'de',
+                  'country': 35,
                   'size': 5,
                   }
-        validator.reverse_validation(params)
+        v = validator.validator(params, 'reverse', None)
+        self.assertEqual('must be of string type', v.errors['country'][0])
+        self.assertEqual("unallowed values ['gm']", v.errors['sources'][0])
+
+    def test_pois_wrong_schema(self):
+        params = {'request': 'pois',
+                  'geojson': {'type': 'Point'},
+                  'buffer': 100,
+                  'limit': 1200,
+                  'filter_category_ids': [180, 245],
+                  'filters_custom': {'wheelchair': ['maybe']}
+                  }
+        v = validator.validator(params, 'pois', 1)
+        self.assertEqual("field 'coordinates' is required", v.errors['geojson'][0]['type'][0])
+        self.assertEqual('max value is 1000', v.errors['limit'][0])
+        self.assertEqual('unallowed value maybe', v.errors['filters_custom'][0]['wheelchair'][0][0][0])

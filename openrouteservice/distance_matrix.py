@@ -75,9 +75,6 @@ def distance_matrix(client, locations,
     
     :rtype: call to Client.request()
     """
-    
-    # Check all passed arguments
-    convert._is_valid_args(locals(), 'distance_matrix')
 
     params = {
         "locations": locations,
@@ -92,19 +89,13 @@ def distance_matrix(client, locations,
         get_params['profile'] = profile
 
     if sources:
-        if sources == 'all': 
-            params["sources"] = sources
-        else:
-            params["sources"] = convert._comma_list(sources)
+        params["sources"] = sources
 
     if destinations:
-        if destinations == 'all': 
-            params["destinations"] = destinations
-        else:
-            params["destinations"] = convert._comma_list(destinations)
+        params["destinations"] = destinations
 
     if metrics:
-        params["metrics"] = convert._pipe_list(metrics)
+        params['metrics'] = metrics
 
     if resolve_locations:
         params["resolve_locations"] = resolve_locations
@@ -114,8 +105,25 @@ def distance_matrix(client, locations,
 
     if optimized:
         # not checked on backend, check here
-        # convert._checkBool(optimized)
         params["optimized"] = optimized
+
+    # Check all passed arguments
+    convert._is_valid_args(params, 'distance_matrix')
+
+    if sources:
+        if sources == 'all':
+            params["sources"] = sources
+        else:
+            params["sources"] = convert._comma_list(sources)
+
+    if destinations:
+        if destinations == 'all':
+            params["destinations"] = destinations
+        else:
+            params["destinations"] = convert._comma_list(destinations)
+
+    if metrics:
+        params["metrics"] = convert._pipe_list(metrics)
 
 
     return client.request("/matrix", get_params, post_json=params, dry_run=dry_run) 

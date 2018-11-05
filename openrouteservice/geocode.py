@@ -101,31 +101,64 @@ def pelias_search(client, text,
 
     :rtype: call to Client.request()
     """
-    
-    # Check all passed arguments
-    convert._is_valid_args(locals(), 'search')
             
     params = {'text': text}
+
+    if focus_point:
+        params['focus_point'] = focus_point
+
+    if rect_min_x:
+        params['rect_min_x'] = rect_min_x
+
+    if rect_min_y:
+        params['rect_min_y'] = rect_min_y
+
+    if rect_max_x:
+        params['rect_max_x'] = rect_max_x
+
+    if rect_max_y:
+        params['rect_max_y'] = rect_max_y
+
+    if circle_point:
+        params['circle_point'] = circle_point
+
+    if circle_radius:
+        params['circle_radius'] = circle_radius
+
+    if sources:
+        params['sources'] = sources
+
+    if layers:
+        params['layers'] = layers
+
+    if country:
+        params['country'] = country
+
+    if size:
+        params['size'] = size
+
+    # Check all passed arguments
+    convert._is_valid_args(params, 'search')
 
     if focus_point:
         params['focus.point.lon'] = convert._format_float(focus_point[0])
         params['focus.point.lat'] = convert._format_float(focus_point[1])
 
     if rect_min_x:
-        params['boundary.rect.min_lon	'] = convert._format_float(rect_min_x)  #
+        params['boundary.rect.min_lon	'] = convert._format_float(rect_min_x)
 
     if rect_min_y:
-        params['boundary.rect.min_lat	'] = convert._format_float(rect_min_y)  #
+        params['boundary.rect.min_lat	'] = convert._format_float(rect_min_y)
 
     if rect_max_x:
-        params['boundary.rect.max_lon	'] = convert._format_float(rect_max_x)  #
+        params['boundary.rect.max_lon	'] = convert._format_float(rect_max_x)
 
     if rect_max_y:
-        params['boundary.rect.max_lon	'] = convert._format_float(rect_max_y)  #
+        params['boundary.rect.max_lon	'] = convert._format_float(rect_max_y)
 
     if circle_point:
-        params['boundary.circle.lon'] = convert._format_float(circle_point[0])  #
-        params['boundary.circle.lat'] = convert._format_float(circle_point[1])  #
+        params['boundary.circle.lon'] = convert._format_float(circle_point[0])
+        params['boundary.circle.lat'] = convert._format_float(circle_point[1])
 
     if circle_radius:
         params['boundary.circle.radius'] = circle_radius
@@ -135,12 +168,6 @@ def pelias_search(client, text,
 
     if layers:
         params['layers'] = convert._comma_list(layers)
-
-    if country:
-        params['country'] = country
-
-    if size:
-        params['size'] = size
 
     return client.request("/geocode/search", params, dry_run=dry_run)
 
@@ -201,9 +228,6 @@ def pelias_structured(client,
 
     :rtype: dict from JSON response
     """
-    
-    # Check all passed arguments
-    convert._is_valid_args(locals(), 'structured')
 
     params = dict()
 
@@ -231,9 +255,8 @@ def pelias_structured(client,
     if country:
         params['country'] = country
 
-    # if size:
-    #     validator.structured_validation({'size': size})
-    #     params['size'] = size
+    # Check all passed arguments
+    convert._is_valid_args(params, 'structured')
 
     return client.request("/geocode/search/structured", params, dry_run=dry_run)
 
@@ -278,11 +301,28 @@ def pelias_reverse(client, point,
 
     :rtype: dict from JSON response
     """
-    
-    # Check all passed arguments
-    convert._is_valid_args(locals(), 'reverse')
 
     params = dict()
+
+    params['point'] = point
+
+    if circle_radius:
+        params['circle_radius'] = circle_radius
+
+    if sources:
+        params['sources'] = sources
+
+    if layers:
+        params['layers'] = layers
+
+    if country:
+        params['country'] = country
+
+    if size:
+        params['size'] = size
+
+    # Check all passed arguments
+    convert._is_valid_args(params, 'reverse')
 
     params['point.lon'] = convert._format_float(point[0])
     params['point.lat'] = convert._format_float(point[1])
@@ -295,11 +335,5 @@ def pelias_reverse(client, point,
 
     if layers:
         params['layers'] = convert._comma_list(layers)
-
-    if country:
-        params['country'] = country
-
-    if size:
-        params['size'] = size
 
     return client.request("/geocode/reverse", params, dry_run=dry_run)

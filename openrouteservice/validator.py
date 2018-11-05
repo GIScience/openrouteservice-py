@@ -31,7 +31,7 @@ def validator(params, module, coords_len):
     elif module == "isochrones":
         return isochrones_validation(params)
     elif module == "distance_matrix":
-        return distance_matrix_validation(params)
+        return distance_matrix_validation(params, coords_len)
     elif module == "search":
         return search_validation(params)
     elif module == "structured":
@@ -103,7 +103,8 @@ def directions_validation(params, coords_len):
                                                                                                          'tracks',
                                                                                                          'fords',
                                                                                                          'steps',
-                                                                                                         'hills']}},
+                                                                                                         'hills']}
+                                                                  },
                                                'avoid_borders': {'type': 'string',
                                                                  'allowed': ['all', 'controlled'],
                                                                  'dependencies': {
@@ -148,9 +149,10 @@ def directions_validation(params, coords_len):
                                                                                      'cycling-tour',
                                                                                      'cycling-electric']}},
                                                        'length': {'type': 'integer',
-                                                                  'dependencies': {'^profile': 'driving-hgv',
-                                                                                   # 'vehicle_type': True
-                                                                                   }},
+                                                                  'dependencies': {  # '^vehicle_type',
+                                                                      '^profile': 'driving-hgv'
+
+                                                                  }},
                                                        'width': {'type': 'integer',
                                                                  'dependencies': {'^profile': 'driving-hgv',
                                                                                   # 'vehicle_type': True
@@ -210,12 +212,12 @@ def isochrones_validation(params):
         'profile': {'type': 'string',
                     'allowed': ['driving-car', 'driving-hgv', 'foot-walking', 'foot-hiking', 'cycling-regular',
                                 'cycling-road', 'cycling-safe', 'cycling-mountain', 'cycling-tour',
-                                'cycling-electric'], 'required': True},
+                                'cycling-electric'], 'default': 'driving-car', 'required': True},
         'range_type': {'type': 'string', 'allowed': ['time', 'distance'], 'default': 'time'},
         'range': {'type': ['list', 'tuple'], 'schema': {'type': 'integer'}, 'required': True},
-        'interval': {'type': ['list', 'tuple'], 'schema': {'type': 'integer'}},
-        'units': {'type': 'string', 'allowed': ['m', 'km', 'mi'], 'default': 'm',
-                  'dependencies': {'range_type': 'distance'}},
+        'interval': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'integer'}},
+                               {'type': 'integer'}]},
+        'units': {'type': 'string', 'allowed': ['m', 'km', 'mi'], 'default': 'm'},
         'location_type': {'type': 'string', 'allowed': ['start', 'destination'], 'default': 'start'},
         'attributes': {'type': ['list', 'tuple'], 'schema': {'type': 'string',
                                                              'allowed': ['area', 'reachfactor', 'total_pop']}},
@@ -330,23 +332,27 @@ def isochrones_validation(params):
     return v
 
 
-def distance_matrix_validation(params):
+def distance_matrix_validation(params, coords_len):
     schema = {
-        'locations': {'type': ['list', 'tuple'], 'schema': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}}},
-        'sources': {'oneof': [{'type': 'list',
-                               'schema': {'type': 'integer', 'min': 0}},
-                              {'type': 'string', 'allowed': ['all']}]},
-        'destinations': {
-            'oneof': [{'type': 'list', 'schema': {'type': 'integer'}}, {'type': 'string', 'allowed': ['all']}]},
+        'locations': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
+                                {'type': ['list', 'tuple'],
+                                 'schema': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}}}],
+                      'required': True},
         'profile': {'type': 'string',
                     'allowed': ['driving-car', 'driving-hgv', 'foot-walking', 'foot-hiking', 'cycling-regular',
                                 'cycling-road', 'cycling-safe', 'cycling-mountain', 'cycling-tour',
-                                'cycling-electric'],
-                    },
+                                'cycling-electric'], 'default': 'driving-car', 'required': True},
+        'sources': {'anyof': [
+            {'type': 'list', 'schema': {'type': 'integer', 'min': 0, 'max': coords_len - 1}},
+            {'type': 'string', 'allowed': ['all']}]},
+        'destinations': {'anyof': [
+            {'type': 'list', 'schema': {'type': 'integer', 'min': 0, 'max': coords_len - 1}},
+            {'type': 'string', 'allowed': ['all']}]},
         'metrics': {'type': 'list', 'schema': {'type': 'string'}, 'allowed': ['distance', 'duration']},
-        'resolve_locations': {'type': 'string', 'allowed': ['true', 'false']},
+        'resolve_locations': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'false'},
         'units': {'type': 'string', 'allowed': ['m', 'km', 'mi'], 'default': 'm'},
         'optimized': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'true'},
+        'id': {'type': 'string'}
     }
 
     v.validate(params, schema)
@@ -356,7 +362,7 @@ def distance_matrix_validation(params):
 
 def search_validation(params):
     schema = {
-        'text': {'type': 'string'},
+        'text': {'type': 'string', 'required': True},
         'focus_point': {'type': 'list', 'schema': {'type': 'float'}},
         'rect_min_x': {'type': 'float'},
         'rect_min_y': {'type': 'float'},
@@ -391,7 +397,6 @@ def structured_validation(params):
         'region': {'type': 'string'},
         'postalcode': {'type': 'string'},
         'country': {'type': 'string'},
-        # 'size': {'type': 'integer', 'default': 10},
     }
 
     v.validate(params, schema)
@@ -401,7 +406,7 @@ def structured_validation(params):
 
 def reverse_validation(params):
     schema = {
-        'point': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
+        'point': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}, 'required': True},
         'circle_radius': {'type': 'integer'},
         'sources': {'type': ['list', 'tuple'], 'schema': {'type': 'string'}, 'allowed': ['osm', 'oa', 'wof', 'gn'],
                     'default': ['osm', 'oa', 'wof', 'gn']},
@@ -419,28 +424,35 @@ def reverse_validation(params):
     return v
 
 
-# def geocode_validation(params):
-
 def pois_validation(params):
     schema = {
-        'request': {'type': 'string', 'allowed': ['pois', 'list', 'stats']},
+        'request': {'type': 'string', 'allowed': ['pois', 'list', 'stats'], 'default': 'pois', 'required': True},
         # 'geometry': {'type': 'dict', 'schema': {
         'bbox': {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float', 'maxlength': 2}}},
         'geojson': {'type': 'dict', 'schema': {
-            'type': {'type': 'string', 'allowed': ['Point', 'Polygon', 'LineString']},
-            'coordinates': {'type': 'list', 'schema': {'type': 'float', 'maxlength': 2}},  # listed list für polygone?
-        }},  # }},
-        'buffer': {'type': 'integer'},
+            'type': {'type': 'string', 'allowed': ['Point', 'Polygon', 'LineString'], 'required': True,
+                     'dependencies': 'coordinates'},
+            'coordinates': {'anyof': [
+                {'type': 'list', 'schema': {'type': 'float', 'maxlength': 2}, 'dependencies': {'type': 'Point'}},
+                {'type': 'list',
+                 'schema': {'type': 'list',
+                            'schema': {'type': 'list', 'schema': {'type': 'float', 'minlength': 2}}},
+                 'dependencies': {'type': ['Polygon', 'LineString']}}]
+            }, }},
+        'buffer': {'type': 'integer', 'default': 500},
+        # }},
         # 'filters': {'type': 'dict', 'schema': {
         'filter_category_group_ids': {'type': 'list', 'schema': {'type': 'integer'}},
         'filter_category_ids': {'type': 'list', 'schema': {'type': 'integer'}},
         'name': {'type': 'list', 'schema': {'type': 'string'}},
-        'wheelchair': {'type': 'list',
-                       'schema': {'type': 'string', 'allowed': ['yes', 'no', 'limited', 'designated']}},
-        'smoking': {'type': 'list', 'schema': {'type': 'string',
-                                               'allowed': ['dedicated', 'yes', 'no', 'separated', 'isolated',
-                                                           'outside']}},
-        'fee': {'type': 'list', 'schema': {'type': 'string', 'allowed': ['yes', 'no']}},  # }},
+        'filters_custom': {'type': 'dict', 'schema': {
+            'wheelchair': {'type': 'list',
+                           'schema': {'type': 'string', 'allowed': ['yes', 'no', 'limited', 'designated']}},
+            'smoking': {'type': 'list', 'schema': {'type': 'string',
+                                                   'allowed': ['dedicated', 'yes', 'no', 'separated', 'isolated',
+                                                               'outside']}},
+            'fee': {'type': 'list', 'schema': {'type': 'string', 'allowed': ['yes', 'no']}}}},
+        # }},
         'limit': {'type': 'integer', 'max': 1000},
         'sortby': {'type': 'string', 'allowed': ['category', 'distance']}
     }
