@@ -76,14 +76,14 @@ def directions_validation(params, coords_len):
                      'schema': {'type': 'list',
                                 'items': [{'type': 'integer', 'min': 0, 'max': 360, 'required': True},
                                           {'type': 'integer', 'default': 100}], 'minlength': 1, 'maxlength': 2},
-                     'dependencies': {'optimized': 'false'}},
+                     },
         'continue_straight': {'schema': {
             'type': 'string', 'allowed': ['true', 'false'], 'default': 'false'},
             'dependencies': {
                 'profile': ['foot-walking', 'foot-hiking', 'cycling-regular',
                             'cycling-road', 'cycling-safe', 'cycling-mountain',
                             'cycling-tour',
-                            'cycling-electric'], 'optimized': 'false', }},
+                            'cycling-electric']}},
         'elevation': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'false'},
         'extra_info': {'type': ['list', 'tuple'], 'schema': {'type': 'string',
                                                              'allowed': ['steepness', 'suitability',
