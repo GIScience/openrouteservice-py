@@ -6,9 +6,6 @@
    :target: http://openrouteservice-py.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
 
-.. image:: https://coveralls.io/repos/github/GIScience/openrouteservice-py/badge.svg?branch=master
-   :target: https://coveralls.io/github/GIScience/openrouteservice-py?branch=master
-
 
 Quickstart
 ==================================================
@@ -16,7 +13,7 @@ Quickstart
 Description
 --------------------------------------------------
 The openrouteservice library gives you painless access to the openrouteservice_ (ORS) routing API's.
-It performs requests against our API's for 
+It performs requests against our API's for
 
 - directions_
 - `Pelias geocoding`_
@@ -65,7 +62,7 @@ unit testing requires additionally the following Python libraries:
 Installation
 ------------------------------
 To install from PyPI, simply use pip::
-	
+
 	pip install openrouteservice
 
 To install the latest and greatest from source::
@@ -90,7 +87,7 @@ If you want to run the unit tests, see Requirements_. ``cd`` to the library dire
 
 
 Usage
----------------------------------	
+---------------------------------
 
 Basic example
 ^^^^^^^^^^^^^^^^^^^^
@@ -101,12 +98,12 @@ Basic example
 	coords = ((8.34234,48.23424),(8.34423,48.26424))
 
 	client = openrouteservice.Client(key='') # Specify your personal API key
-	routes = client.directions(coords) 
+	routes = client.directions(coords)
 
 	print routes
 
 For convenience, all request performing module methods are wrapped inside the ``client`` class. This has the
-disadvantage, that your IDE can't auto-show all positional and optional arguments for the 
+disadvantage, that your IDE can't auto-show all positional and optional arguments for the
 different methods. And there are a lot!
 
 The slightly more verbose alternative, preserving your IDE's smart functions, is
@@ -150,16 +147,16 @@ Although errors in query creation should be handled quite decently, you can do a
 .. code:: python
 
 	import openrouteservice
-	
+
 	coords = ((8.34234,48.23424),(8.34423,48.26424))
-	
+
 	client = openrouteservice.Client(key='') # Specify your personal API key
-	client.directions(coords, dry_run='true')	
+	client.directions(coords, dry_run='true')
 
 Local ORS instance
 ^^^^^^^^^^^^^^^^^^^^
 If you're hosting your own ORS instance, you can alter the ``base_url`` parameter to fit your own:
-	
+
 .. code:: python
 
 	import openrouteservice
@@ -168,7 +165,7 @@ If you're hosting your own ORS instance, you can alter the ``base_url`` paramete
 
 	# key can be omitted for local host
 	client = openrouteservice.Client(key='',
-	                                 base_url='https://foo/bar') 
+	                                 base_url='https://foo/bar')
 
 	# url is the extension for your endpoint, no trailing slashes!
 	# params has to be passed explicitly, refer to API reference for details
@@ -178,16 +175,15 @@ If you're hosting your own ORS instance, you can alter the ``base_url`` paramete
 	                               }
 	                        )
 
-
 Support
 --------
 
-For general support, contact our `Google Group`_.
+For general support, contact our forum_.
 
 For issues/bugs/enhancement suggestions, please use https://github.com/GIScience/openrouteservice-py/issues.
 
 
-.. _`Google Group`: https://groups.google.com/forum/?utm_source=digest&utm_medium=email#!forum/openrouteservice
+.. _forum: https://ask.openrouteservice.org/c/sdks
 
 
 Acknowledgements
