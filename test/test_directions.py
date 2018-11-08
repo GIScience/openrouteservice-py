@@ -21,6 +21,7 @@
 import responses
 
 import openrouteservice
+from openrouteservice.exceptions import ValidationError
 import test as _test
 
 class DirectionsTest(_test.TestCase):
@@ -54,14 +55,7 @@ class DirectionsTest(_test.TestCase):
                             'api_key={}&profile=driving-car&'
                             'coordinates=8.34234,48.23424|8.34423,48.26424&'
                             'optimized=true'.format(self.key),
-                            responses.calls[0].request.url)
-        
-
-    def test_invalid_travel_mode(self):
-        with self.assertRaises(ValueError):
-            self.client.directions(self.coords_valid,
-                                  profile="crawling")
-        
+                            responses.calls[0].request.url)        
 
     @responses.activate
     def test_bearings(self):
@@ -94,38 +88,14 @@ class DirectionsTest(_test.TestCase):
         
         # Simplest directions request. Driving directions by default.
         routes = self.client.directions(self.coords_valid,
+                                        profile='cycling-regular',
                                         continue_straight='true')
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://api.openrouteservice.org/directions?'
                             'api_key={}&coordinates=8.34234%2C48.23424%7C8.34423%2C48.26424&'
-                            'profile=driving-car&continue_straight=true&optimized=false'.format(self.key),
-                            responses.calls[0].request.url)
-    
-    def test_invalid_attributes(self):
-        with self.assertRaises(ValueError):
-            self.client.directions(self.coords_valid,
-                                   attributes=['avgspeed',
-                                               'detourfactor',
-                                               'awesomeness'])
-            
-    def test_invalid_extra_info(self):
-        with self.assertRaises(ValueError):
-            self.client.directions(self.coords_valid,
-                                   extra_info=['steepness',
-                                               'suitability',
-                                               'awesomeness'])
-        
-    def test_too_few_radiuses(self):
-        with self.assertRaises(ValueError):
-            self.client.directions(self.coords_valid,
-                                   radiuses=[1])
-        
-    def test_invalid_bearings(self):
-        with self.assertRaises(ValueError):
-            self.client.directions(self.coords_valid,
-                                   bearings="[[100,100]]")
-        
+                            'profile=cycling-regular&continue_straight=true&optimized=false'.format(self.key),
+                            responses.calls[0].request.url)        
 
     @responses.activate
     def test_complex_request(self):
@@ -137,7 +107,7 @@ class DirectionsTest(_test.TestCase):
         
         params = {
                 'coordinates':self.coords_valid,
-                'profile':'driving-hgv',
+                'profile':'cycling-regular',
                 'preference':'fastest',
                 'units':'mi',
                 'language':'en',
@@ -164,7 +134,7 @@ class DirectionsTest(_test.TestCase):
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://api.openrouteservice.org/directions?api_key={}&'
                             'coordinates=8.34234%2C48.23424%7C8.34423%2C48.26424&'
-                            'profile=driving-hgv&preference=fastest&units=mi&'
+                            'profile=cycling-regular&preference=fastest&units=mi&'
                             'language=en&geometry=true&geometry_format=geojson&'
                             'geometry_simplify=false&instructions=false&'
                             'instructions_format=html&roundabout_exits=true'

@@ -154,9 +154,11 @@ def directions(client,
 
     :rtype: call to Client.request()
     """
+    
+    validator.validator(locals(), 'directions')
 
     params = {
-        "coordinates": coordinates
+        "coordinates": convert._build_coords(coordinates)
         }
 
     if profile:
@@ -177,71 +179,60 @@ def directions(client,
         params["language"] = language
 
     if geometry:
+        # not checked on backend, check here
         params["geometry"] = geometry
 
     if geometry_format:
         params["geometry_format"] = geometry_format
-
+        
     if geometry_simplify:
+        # not checked on backend, check here
         if extra_info:
             params["geometry_simplify"] = 'false'
         else:
             params["geometry_simplify"] = geometry_simplify
-
+        
     if instructions:
+        # not checked on backend, check here
         params["instructions"] = instructions
 
     if instructions_format:
         params["instructions_format"] = instructions_format
 
     if roundabout_exits:
+        # not checked on backend, check here
         params["roundabout_exits"] = roundabout_exits
 
     if attributes:
-        params["attributes"] = attributes
-
+        # not checked on backend, check here
+        params["attributes"] = convert._pipe_list(attributes)
+        
     if radiuses:
-        params["radiuses"] = radiuses
-
+        params["radiuses"] = convert._pipe_list(radiuses)
+        
     if bearings:
-        params["bearings"] = bearings
-
+        params["bearings"] = convert._pipe_list([convert._comma_list(pair) for pair in bearings])
+        
     if continue_straight:
+        # not checked on backend, check here
         params["continue_straight"] = continue_straight
 
     if elevation:
+        # not checked on backend, check here
         params["elevation"] = elevation
 
     if extra_info:
-        params['extra_info'] = extra_info
-
-    if optimized:
-        params["optimized"] = optimized
-
-    if options:
-        params['options'] = options
-
-    # Check all passed arguments
-    convert._is_valid_args(params, "directions")
-
-    # Format all passed arguments
-    params["coordinates"] = convert._build_coords(coordinates)
-
-    if attributes:
-        params["attributes"] = convert._pipe_list(attributes)
-
-    if radiuses:
-        params["radiuses"] = convert._pipe_list(radiuses)
-
-    if bearings:
-        params["bearings"] = convert._pipe_list([convert._comma_list(pair) for pair in bearings])
-
-    if continue_straight:
-        params["continue_straight"] = continue_straight
-
-    if extra_info:
+        # not checked on backend, check here
         params["extra_info"] = convert._pipe_list(extra_info)
 
+    if optimized:
+        # not checked on backend, check here
+        if optimized == 'true' and (bearings or continue_straight == 'true'):
+            params["optimized"] = 'false'
+            print("Set optimized='false' due to incompatible parameter settings.")
+        else:
+            params["optimized"] = optimized
+    
     if options:
         params['options'] = json.dumps(options)
 

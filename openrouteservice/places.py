@@ -74,54 +74,29 @@ def places(client, request,
     
     :rtype: call to Client.request()
     """
+
+    validator.validator(locals(), 'pois')
     
     params = {'request': request,
-              # 'filters': dict(),
-              # 'geometry': dict(),
+              'filters': dict(),
+              'geometry': dict(),
               }
-
-    if geojson:
-        params['geojson'] = geojson
-
-    if bbox:
-        params['bbox'] = bbox
-
-    if buffer:
-        params['buffer'] = buffer
-
-    if filter_category_ids:
-        params['filter_category_ids'] = filter_category_ids
-
-    if filter_category_group_ids:
-        params['filter_category_group_ids'] = filter_category_group_ids
-
-    if filters_custom:
-        params['custom'] = filters_custom
-
-    if limit:
-        params['limit'] = limit
-
-    if sortby:
-        params['sortby'] = sortby
-
-    # Check all passed arguments
-    convert._is_valid_args(params, 'pois')
-
+    
     if request != 'category_list':
         if geojson:
-            params['geojson'] = geojson
-
+            params['geometry']['geojson'] = geojson
+            
         if bbox:
-            params['bbox'] = bbox
-
+            params['geometry']['bbox'] = bbox
+            
         if buffer:
-            params['buffer'] = buffer
-
+            params['geometry']['buffer'] = buffer
+                    
         if filter_category_ids and convert._is_list(filter_category_ids):
-            params['filter_category_ids'] = filter_category_ids
+            params['filters']['category_ids'] = filter_category_ids
                     
         if filter_category_group_ids and convert._is_list(filter_category_group_ids):
-            params['filter_category_group_ids'] = filter_category_group_ids
+            params['filters']['category_group_ids'] = filter_category_group_ids
                     
         if filters_custom:
             for f in filters_custom:
@@ -132,5 +107,5 @@ def places(client, request,
                     
         if sortby:
             params['sortby'] = sortby
-
+            
     return client.request('/pois', {}, post_json=params, dry_run=dry_run)

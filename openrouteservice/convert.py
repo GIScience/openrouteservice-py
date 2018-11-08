@@ -19,23 +19,6 @@
 """Converts Python types to string representations suitable for ORS API server.
 """
 
-import time as _time
-from cerberus import errors
-from openrouteservice import validator, exceptions
-
-def _is_valid_args(args, module):
-    """checks whether arguments to ORS functions are valid"""
-    coords_len = 0
-    if 'coordinates' in module:
-        coords_len = len(args['coordinates'])
-    elif 'locations' in module:
-        coords_len = len(args['locations'])
-    for arg in args:
-        if arg != 'client' and args[arg] is not None:
-            v = validator.validator(args, module, coords_len)
-            if v.errors:
-                raise exceptions.ValidationError(v.errors)
-
 def _pipe_list(arg):
     """Convert list of values to pipe-delimited string"""
     if not _is_list(arg):

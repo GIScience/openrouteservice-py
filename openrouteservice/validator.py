@@ -18,6 +18,7 @@
 """Validates the used parameter with Cerberus."""
 
 from cerberus import Validator, TypeDefinition
+from openrouteservice import exceptions
 
 # Add the tuple type
 tuple_type = TypeDefinition("tuple", (tuple), ())
@@ -25,24 +26,44 @@ Validator.types_mapping['tuple'] = tuple_type
 v = Validator()
 
 
-def validator(params, module, coords_len):
-    if module == "directions":
-        return directions_validation(params, coords_len)
-    elif module == "isochrones":
-        return isochrones_validation(params)
-    elif module == "distance_matrix":
-        return distance_matrix_validation(params, coords_len)
-    elif module == "search":
-        return search_validation(params)
-    elif module == "structured":
-        return structured_validation(params)
-    elif module == "reverse":
-        return reverse_validation(params)
-    elif module == "pois":
-        return pois_validation(params)
+def validator(args, function):
+    """
+    Validates arguments against function specific schemas
+    
+    :param args: Arguments to validate
+    :type args: dict
+    
+    :param function: calling function
+    :type function: string
+    
+    :raises: ValidationError    
+    """
+    
+    # Sanitize locals() variables
+    args = {arg: args[arg] for arg in args if arg!='client' and args[arg] is not None}
+        
+    if function == 'directions':
+        coords_len = len(args['coordinates'])
+        val = _directions_validation(args, coords_len)
+    elif function == "isochrones":
+        val = _isochrones_validation(args)
+    elif function == "distance_matrix":
+        coords_len = len(args['locations'])
+        val = _distance_matrix_validation(args, coords_len)
+    elif function == "pelias_search":
+        val = _search_validation(args)
+    elif function == "pelias_structured":
+        val = _structured_validation(args)
+    elif function == "pelias_reverse":
+        val = _reverse_validation(args)
+    elif function == "pois":
+        val = _pois_validation(args)
+        
+    if val.errors:
+        raise exceptions.ValidationError(val.errors)
 
 
-def directions_validation(params, coords_len):
+def _directions_validation(params, coords_len):
     schema = {
         'coordinates': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
                                   {'type': ['list', 'tuple'],
@@ -53,7 +74,7 @@ def directions_validation(params, coords_len):
                                 'cycling-road', 'cycling-safe', 'cycling-mountain', 'cycling-tour',
                                 'cycling-electric'], 'required': True},
         'preference': {'type': 'string', 'allowed': ['fastest', 'shortest', 'recommended'], 'default': 'fastest'},
-        'format': {'type': 'string', 'allowed': ['json', 'geojson', 'gpx'], 'default': 'json'},
+        'format_out': {'type': 'string', 'allowed': ['json', 'geojson', 'gpx'], 'default': 'json'},
         'units': {'type': 'string', 'allowed': ['m', 'km', 'mi'], 'default': 'm'},
         'language': {'type': 'string',
                      'allowed': ['en', 'de', 'cn', 'es', 'ru', 'dk', 'fr', 'it', 'nl', 'br', 'se', 'tr', 'gr'],
@@ -195,7 +216,8 @@ def directions_validation(params, coords_len):
                                                }},
                                                'avoid_polygons': {}
                                                }},
-        'id': {'type': 'string'}
+        'id': {'type': 'string'},
+        'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
     }
 
     v.validate(params, schema)
@@ -203,7 +225,7 @@ def directions_validation(params, coords_len):
     return v
 
 
-def isochrones_validation(params):
+def _isochrones_validation(params):
     schema = {
         'locations': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
                                 {'type': ['list', 'tuple'],
@@ -214,8 +236,8 @@ def isochrones_validation(params):
                                 'cycling-road', 'cycling-safe', 'cycling-mountain', 'cycling-tour',
                                 'cycling-electric'], 'default': 'driving-car', 'required': True},
         'range_type': {'type': 'string', 'allowed': ['time', 'distance'], 'default': 'time'},
-        'range': {'type': ['list', 'tuple'], 'schema': {'type': 'integer'}, 'required': True},
-        'interval': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'integer'}},
+        'intervals': {'type': ['list', 'tuple'], 'schema': {'type': 'integer'}, 'required': True},
+        'segments': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'integer'}},
                                {'type': 'integer'}]},
         'units': {'type': 'string', 'allowed': ['m', 'km', 'mi'], 'default': 'm'},
         'location_type': {'type': 'string', 'allowed': ['start', 'destination'], 'default': 'start'},
@@ -324,7 +346,8 @@ def isochrones_validation(params):
                                                }},
         'intersections': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'false'},
         'id': {'type': 'string'},
-        'smoothing': {"type": "float", 'min': 0, 'max': 1}
+        'smoothing': {"type": "float", 'min': 0, 'max': 1},
+        'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
     }
 
     v.validate(params, schema)
@@ -332,7 +355,7 @@ def isochrones_validation(params):
     return v
 
 
-def distance_matrix_validation(params, coords_len):
+def _distance_matrix_validation(params, coords_len):
     schema = {
         'locations': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
                                 {'type': ['list', 'tuple'],
@@ -352,7 +375,8 @@ def distance_matrix_validation(params, coords_len):
         'resolve_locations': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'false'},
         'units': {'type': 'string', 'allowed': ['m', 'km', 'mi'], 'default': 'm'},
         'optimized': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'true'},
-        'id': {'type': 'string'}
+        'id': {'type': 'string'},
+        'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
     }
 
     v.validate(params, schema)
@@ -360,7 +384,7 @@ def distance_matrix_validation(params, coords_len):
     return v
 
 
-def search_validation(params):
+def _search_validation(params):
     schema = {
         'text': {'type': 'string', 'required': True},
         'focus_point': {'type': 'list', 'schema': {'type': 'float'}},
@@ -387,7 +411,7 @@ def search_validation(params):
     return v
 
 
-def structured_validation(params):
+def _structured_validation(params):
     schema = {
         'address': {'type': 'string'},
         'neighbourhood': {'type': 'string'},
@@ -397,6 +421,7 @@ def structured_validation(params):
         'region': {'type': 'string'},
         'postalcode': {'type': 'string'},
         'country': {'type': 'string'},
+        'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
     }
 
     v.validate(params, schema)
@@ -404,7 +429,7 @@ def structured_validation(params):
     return v
 
 
-def reverse_validation(params):
+def _reverse_validation(params):
     schema = {
         'point': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}, 'required': True},
         'circle_radius': {'type': 'integer'},
@@ -417,6 +442,7 @@ def reverse_validation(params):
                                'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse']},
         'country': {'type': 'string'},
         'size': {'type': 'integer', 'default': 10},
+        'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
     }
 
     v.validate(params, schema)
@@ -424,7 +450,7 @@ def reverse_validation(params):
     return v
 
 
-def pois_validation(params):
+def _pois_validation(params):
     schema = {
         'request': {'type': 'string', 'allowed': ['pois', 'list', 'stats'], 'default': 'pois', 'required': True},
         # 'geometry': {'type': 'dict', 'schema': {
@@ -435,9 +461,12 @@ def pois_validation(params):
             'coordinates': {'anyof': [
                 {'type': 'list', 'schema': {'type': 'float', 'maxlength': 2}, 'dependencies': {'type': 'Point'}},
                 {'type': 'list',
+                 'schema': {'type': 'list', 'schema': {'type': 'float', 'minlength': 2}},
+                 'dependencies': {'type': ['LineString']}},
+                {'type': 'list',
                  'schema': {'type': 'list',
                             'schema': {'type': 'list', 'schema': {'type': 'float', 'minlength': 2}}},
-                 'dependencies': {'type': ['Polygon', 'LineString']}}]
+                 'dependencies': {'type': ['Polygon']}}]
             }, }},
         'buffer': {'type': 'integer', 'default': 500},
         # }},
@@ -454,7 +483,8 @@ def pois_validation(params):
             'fee': {'type': 'list', 'schema': {'type': 'string', 'allowed': ['yes', 'no']}}}},
         # }},
         'limit': {'type': 'integer', 'max': 1000},
-        'sortby': {'type': 'string', 'allowed': ['category', 'distance']}
+        'sortby': {'type': 'string', 'allowed': ['category', 'distance']},
+        'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
     }
 
     v.validate(params, schema)

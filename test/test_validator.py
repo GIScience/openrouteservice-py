@@ -16,10 +16,7 @@
 
 """Tests for the validator module."""
 
-import responses
-
-import openrouteservice
-from openrouteservice import validator
+from openrouteservice import validator, exceptions
 import test as _test
 
 params = {
@@ -48,11 +45,10 @@ class ValidatorTest(_test.TestCase):
     def setUp(self):
         self.coords_point = (8.34234, 48.23424)
         self.coords_linestring = ((8.34234, 48.23424), (8.34423, 48.26424))
-
+    
     def test_directions_correct_schema(self):
         params['coordinates'] = self.coords_linestring
-        v = validator.validator(params, 'directions', 2)
-        self.assertEqual(0, len(v.errors))
+        validator.validator(params, 'directions')
 
     def test_directions_wrong_schema(self):
         params['coordinates'] = self.coords_linestring
@@ -63,23 +59,29 @@ class ValidatorTest(_test.TestCase):
         params['bearings'] = [[100, 100], [200, 200]]
         params['options'] = {'maximum_speed': '20'}
 
-        v = validator.validator(params, 'directions', 2)
-        self.assertEqual('unallowed value best', v.errors['preference'][0])
-        self.assertEqual('unknown field', v.errors['attributeds'][0])
-        self.assertEqual('max length is 2', v.errors['radiuses'][0])
-        self.assertEqual("depends on these values: {'optimized': 'false'}", v.errors['bearings'][0])
-        self.assertEqual('must be of integer type', v.errors['options'][0]['maximum_speed'][0])
+        with self.assertRaises(exceptions.ValidationError) as e:
+            validator.validator(params, 'directions')
+        em = e.exception
+        print(em)
+        
+        self.assertIn('unallowed value best', str(em))
+        self.assertIn('unknown field', str(em))
+        self.assertIn('max length is 2', str(em))
+        self.assertIn('must be of integer type', str(em))
 
     def test_isochrones_wrong_schema(self):
-        params = {'locations': self.coords_linestring,
-                  'profile': 'cycling-regular',
-                  'range_type': 'time',
+        params = {'range_type': 'time',
                   'attributes': ['area', 'reachfactor'],
-                  'interval': ['30']
+                  'intervals': ['30']
                   }
-        v = validator.validator(params, "isochrones", 2)
-        self.assertEqual('required field', v.errors['range'][0])
-        self.assertEqual('must be of integer type', v.errors['interval'][0][0][0])
+        
+        with self.assertRaises(exceptions.ValidationError) as e:
+            validator.validator(params, 'isochrones')
+        em = e.exception        
+        print(em)
+        
+        self.assertIn('required field', str(em))
+        self.assertIn('must be of integer type', str(em))
 
     def test_distance_matrix_wrong_schema(self):
         params = {'locations': self.coords_linestring,
@@ -89,9 +91,14 @@ class ValidatorTest(_test.TestCase):
                   'resolve_locations': 'true',
                   'units': 'm',
                   'optimizedd': 'false'}
-        v = validator.validator(params, 'distance_matrix', 2)
-        self.assertEqual('no definitions validate', v.errors['sources'][0])
-        self.assertEqual('unknown field', v.errors['optimizedd'][0])
+        
+        with self.assertRaises(exceptions.ValidationError) as e:
+            validator.validator(params, 'distance_matrix')
+        em = e.exception        
+        print(em)
+        
+        self.assertIn('no definitions validate', str(em))
+        self.assertIn('unknown field', str(em))
 
 
     def test_search_wrong_schema(self):
@@ -105,9 +112,14 @@ class ValidatorTest(_test.TestCase):
                   'layers': ['locality', 'name'],
                   'size': 5
                   }
-        v = validator.validator(params, 'search', None)
-        self.assertEqual("unallowed values ['name']", v.errors['layers'][0])
-        self.assertEqual('must be of integer type', v.errors['circle_radius'][0])
+        
+        with self.assertRaises(exceptions.ValidationError) as e:
+            validator.validator(params, 'pelias_search')
+        em = e.exception        
+        print(em)
+        
+        self.assertIn("unallowed values ['name']", str(em))
+        self.assertIn('must be of integer type', str(em))
 
     def test_structured_wrong_schema(self):
         params = {'address': {'Berliner Straße 45'},
@@ -119,8 +131,13 @@ class ValidatorTest(_test.TestCase):
                   'postalcode': '69120',
                   'country': 'de',
                   }
-        v = validator.validator(params, 'structured', None)
-        self.assertEqual('must be of string type', v.errors['address'][0])
+        
+        with self.assertRaises(exceptions.ValidationError) as e:
+            validator.validator(params, 'pelias_structured')
+        em = e.exception        
+        print(em)
+        
+        self.assertIn('must be of string type', str(em))
 
     def test_reverse_wrong_schema(self):
         params = {'point': self.coords_point,
@@ -130,9 +147,14 @@ class ValidatorTest(_test.TestCase):
                   'country': 35,
                   'size': 5,
                   }
-        v = validator.validator(params, 'reverse', None)
-        self.assertEqual('must be of string type', v.errors['country'][0])
-        self.assertEqual("unallowed values ['gm']", v.errors['sources'][0])
+        
+        with self.assertRaises(exceptions.ValidationError) as e:
+            validator.validator(params, 'pelias_reverse')
+        em = e.exception        
+        print(em)
+        
+        self.assertIn('must be of string type', str(em))
+        self.assertIn("unallowed values ['gm']", str(em))
 
     def test_pois_wrong_schema(self):
         params = {'request': 'pois',
@@ -142,7 +164,12 @@ class ValidatorTest(_test.TestCase):
                   'filter_category_ids': [180, 245],
                   'filters_custom': {'wheelchair': ['maybe']}
                   }
-        v = validator.validator(params, 'pois', 1)
-        self.assertEqual("field 'coordinates' is required", v.errors['geojson'][0]['type'][0])
-        self.assertEqual('max value is 1000', v.errors['limit'][0])
-        self.assertEqual('unallowed value maybe', v.errors['filters_custom'][0]['wheelchair'][0][0][0])
+        
+        with self.assertRaises(exceptions.ValidationError) as e:
+            validator.validator(params, 'pois')
+        em = e.exception        
+        print(em)
+        
+        self.assertIn("field 'coordinates' is required", str(em))
+        self.assertIn('max value is 1000', str(em))
+        self.assertIn('unallowed value maybe', str(em))

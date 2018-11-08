@@ -32,15 +32,6 @@ class DistanceMatrixTest(_test.TestCase):
                              [115.663757, 38.106467],
                              [8.34234, 48.23424]]
 
-    def test_too_many_locations(self):
-        with self.assertRaises(openrouteservice.exceptions.ApiError):
-            self.client.isochrones(self.coords_valid * 2)
-
-    def test_units_with_time(self):
-        with self.assertRaises(ValueError):
-            self.client.isochrones(self.coords_valid[0],
-                                   units='km')
-
     @responses.activate
     def test_basic_params(self):
         responses.add(responses.GET,
