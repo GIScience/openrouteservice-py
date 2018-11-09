@@ -16,7 +16,7 @@
 
 """Performs requests to the ORS isochrones API."""
 
-from openrouteservice import convert
+from openrouteservice import convert, validator
 
 
 def isochrones(client, locations,
@@ -87,25 +87,13 @@ def isochrones(client, locations,
     :rtype: call to Client.request()
     """
 
+    validator.validator(locals(), 'isochrones')
+
     params = {
         "locations": convert._build_coords(locations)
     }
 
     if profile:
-        # NOTE(broady): the mode parameter is not validated by the Maps API
-        # server. Check here to prevent silent failures.
-        if profile not in ["driving-car",
-                           "driving-hgv",
-                           "foot-walking",
-                           "foot-hiking",
-                           "cycling-regular",
-                           "cycling-road",
-                           "cycling-safe",
-                           "cycling-mountain",
-                           "cycling-tour", 
-                           "cycling-electric",
-                           ]:
-            raise ValueError("Invalid travel mode.")
         params["profile"] = profile
 
     if range_type:
@@ -118,8 +106,8 @@ def isochrones(client, locations,
         params["interval"] = str(segments)
         
     if units:
-        if units and (range_type == None or range_type == 'time'):
-            raise ValueError("For range_type time, units cannot be specified.")
+        # if units and (range_type == None or range_type == 'time'):
+        #     raise ValueError("For range_type time, units cannot be specified.")
         params["units"] = units
 
     if location_type:

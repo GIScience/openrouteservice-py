@@ -20,23 +20,23 @@
 
 import json
 
-from openrouteservice import convert
+from openrouteservice import convert, validator
 
 def directions(client,
                coordinates,
-               profile='driving-car', 
+               profile='driving-car',
                format_out=None,
-               preference=None, 
-               units=None, 
+               preference=None,
+               units=None,
                language=None,
-               geometry=None, 
-               geometry_format=None, 
-               geometry_simplify=None, 
+               geometry=None,
+               geometry_format=None,
+               geometry_simplify=None,
                instructions=None,
-               instructions_format=None, 
-               roundabout_exits=None, 
+               instructions_format=None,
+               roundabout_exits=None,
                attributes=None,
-               #maneuvers=None, 
+               # maneuvers=None,
                radiuses=None,
                bearings=None,
                continue_straight=None,
@@ -46,7 +46,7 @@ def directions(client,
                options=None,
                dry_run=None):
     """Get directions between an origin point and a destination point.
-    
+
     For more information, visit https://go.openrouteservice.org/documentation/.
 
     :param coordinates: The coordinates tuple the route should be calculated
@@ -56,7 +56,7 @@ def directions(client,
     :param profile: Specifies the mode of transport to use when calculating
         directions. One of ["driving-car", "driving-hgv", "foot-walking",
         "foot-hiking", "cycling-regular", "cycling-road",requests_kwargs
-        "cycling-safe", "cycling-mountain", "cycling-tour", 
+        "cycling-safe", "cycling-mountain", "cycling-tour",
         "cycling-electric",]. Default "driving-car".
     :type mode: string
 
@@ -82,7 +82,7 @@ def directions(client,
         One of ["encodedpolyline", "geojson", "polyline"]. Default: "encodedpolyline".
     :type geometry_format: string
 
-    :param geometry_simplify: Specifies whether to simplify the geometry. 
+    :param geometry_simplify: Specifies whether to simplify the geometry.
         "true" or "false". Default "false".
     :type geometry_simplify: boolean as string
 
@@ -94,13 +94,13 @@ def directions(client,
         One of ["text", "html"]. Default "text".
     :type instructions_format: string
 
-    :param roundabout_exits: Provides bearings of the entrance and all passed 
-        roundabout exits. Adds the 'exit_bearings' array to the 'step' object 
+    :param roundabout_exits: Provides bearings of the entrance and all passed
+        roundabout exits. Adds the 'exit_bearings' array to the 'step' object
         in the response. "true" or "false". Default "false".
     :type roundabout_exits: string
 
     :param attributes: Returns route attributes on ["avgspeed", "detourfactor", "percentage"].
-        Must be a list of strings. Default None. 
+        Must be a list of strings. Default None.
     :type attributes: list or tuple of strings
 
     :param radiuses: A list of maximum distances (measured in
@@ -111,8 +111,8 @@ def directions(client,
     :type radiuses: list or tuple
 
     :param bearings: Specifies a list of pairs (bearings and
-        deviations) to filter the segments of the road network a waypoint can 
-        snap to. For example bearings=[[45,10],[120,20]]. Each pair is a 
+        deviations) to filter the segments of the road network a waypoint can
+        snap to. For example bearings=[[45,10],[120,20]]. Each pair is a
         comma-separated list that can consist of one or two float values, where
         the first value is the bearing and the second one is the allowed deviation
         from the bearing. The bearing can take values between 0 and 360 clockwise
@@ -144,16 +144,18 @@ def directions(client,
         Default "true".
     :type optimized: boolean as string
 
-    :param options: Refer to https://go.openrouteservice.org/documentation for 
+    :param options: Refer to https://go.openrouteservice.org/documentation for
         detailed documentation. Construct your own dict() following the example
         of the minified options object. Will be converted to json automatically.
     :type options: dict
-    
+
     :raises ValueError: When parameter has wrong value.
     :raises TypeError: When parameter is of wrong type.
-    
+
     :rtype: call to Client.request()
     """
+    
+    validator.validator(locals(), 'directions')
 
     params = {
         "coordinates": convert._build_coords(coordinates)
@@ -162,18 +164,6 @@ def directions(client,
     if profile:
         # NOTE(broady): the mode parameter is not validated by the Maps API
         # server. Check here to prevent silent failures.
-        if profile not in ["driving-car",
-                           "driving-hgv",
-                           "foot-walking",
-                           "foot-hiking",
-                           "cycling-regular",
-                           "cycling-road",
-                           "cycling-safe",
-                           "cycling-mountain",
-                           "cycling-tour", 
-                           "cycling-electric",
-                           ]:
-            raise ValueError("Invalid travel mode.")
         params["profile"] = profile
 
     if format_out:
@@ -190,7 +180,6 @@ def directions(client,
 
     if geometry:
         # not checked on backend, check here
-        convert._checkBool(geometry)
         params["geometry"] = geometry
 
     if geometry_format:
@@ -198,7 +187,6 @@ def directions(client,
         
     if geometry_simplify:
         # not checked on backend, check here
-        convert._checkBool(geometry_simplify)
         if extra_info:
             params["geometry_simplify"] = 'false'
         else:
@@ -206,7 +194,6 @@ def directions(client,
         
     if instructions:
         # not checked on backend, check here
-        convert._checkBool(instructions)
         params["instructions"] = instructions
 
     if instructions_format:
@@ -214,56 +201,32 @@ def directions(client,
 
     if roundabout_exits:
         # not checked on backend, check here
-        convert._checkBool(roundabout_exits)
         params["roundabout_exits"] = roundabout_exits
 
     if attributes:
         # not checked on backend, check here
-        opts = ["avgspeed", "detourfactor", "percentage"]
-        if not all((attribute in opts) for attribute in attributes) :
-            raise ValueError("Contains invalid attributes parameter(s).")
-            
         params["attributes"] = convert._pipe_list(attributes)
         
     if radiuses:
-        if len(radiuses) != len(coordinates):
-            raise ValueError("Amount of radiuses must match the number of waypoints.")
         params["radiuses"] = convert._pipe_list(radiuses)
         
     if bearings:
-        if len(bearings) != len(coordinates) and len(bearings) != len(coordinates)-1:
-            raise ValueError("Provide as many bearings as waypoints or one less.")
-        if not convert._is_list(bearings):
-            raise TypeError(
-            "Expected a list or tuple of bearing pairs, "
-            "but got {}".format(type(bearings).__name__))
-        if not all(convert._is_list(t) for t in bearings):
-            raise TypeError("Expected bearing pairs to be a list or tuple")
-            
         params["bearings"] = convert._pipe_list([convert._comma_list(pair) for pair in bearings])
         
     if continue_straight:
         # not checked on backend, check here
-        convert._checkBool(continue_straight)
         params["continue_straight"] = continue_straight
 
     if elevation:
         # not checked on backend, check here
-        convert._checkBool(elevation)
         params["elevation"] = elevation
 
     if extra_info:
         # not checked on backend, check here
-        opts = ["steepness", "suitability", "surface", "waycategory",
-                   "waytype", "tollways", "traildifficulty"]
-        if not all((info in opts) for info in extra_info) :
-            raise ValueError("Contains invalid extra_info parameter(s).")
-        
         params["extra_info"] = convert._pipe_list(extra_info)
 
     if optimized:
         # not checked on backend, check here
-        convert._checkBool(optimized)
         if optimized == 'true' and (bearings or continue_straight == 'true'):
             params["optimized"] = 'false'
             print("Set optimized='false' due to incompatible parameter settings.")
@@ -271,10 +234,6 @@ def directions(client,
             params["optimized"] = optimized
     
     if options:
-        # check if valid dict
-        if not isinstance(options, dict):
-            raise TypeError("Expected options object to be a dict, but got {}".format(type(options)))
         params['options'] = json.dumps(options)
-        
 
     return client.request("/directions", params, dry_run=dry_run)

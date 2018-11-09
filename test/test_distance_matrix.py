@@ -31,14 +31,6 @@ class DistanceMatrixTest(_test.TestCase):
                             [9.207916,49.153868],
                             [37.573242,55.801281],
                             [115.663757,38.106467]]
-        
-    def test_invalid_sources_destinations(self):
-        with self.assertRaises(openrouteservice.exceptions.ApiError):
-            self.client.distance_matrix(self.coords_valid,
-                                   sources=[0,1,2,3,4,5,6])
-        with self.assertRaises(openrouteservice.exceptions.ApiError):
-            self.client.distance_matrix(self.coords_valid,
-                                   destinations=[0,1,2,3,4,5,6])
             
     @responses.activate
     def test_basic_params(self):

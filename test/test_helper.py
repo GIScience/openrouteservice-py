@@ -1,0 +1,106 @@
+# -*- coding: utf-8 -*-
+
+PARAM_POINT = [8.34234, 48.23424]
+PARAM_LINE = [(8.34234, 48.23424), (8.34423, 48.26424)]
+PARAM_POLY = [[(8.34234, 48.23424), (8.34423, 48.26424)]]
+
+PARAM_INT_BIG = 500
+PARAM_INT_SMALL = 50
+PARAM_LIST_ONE = [PARAM_INT_SMALL, PARAM_INT_SMALL]
+PARAM_LIST_TWO = [PARAM_LIST_ONE, PARAM_LIST_ONE]
+
+PARAM_GEOJSON_POINT = {'type': 'Point', 'coordinates': PARAM_POINT}
+PARAM_GEOJSON_LINE = {'type': 'LineString', 'coordinates': PARAM_LINE}
+PARAM_GEOJSON_POLY = {'type': 'Polygon', 'coordinates': PARAM_POLY}
+
+ENDPOINT_DICT = {'directions': {'coordinates': PARAM_LINE,
+                                'profile': 'foot-walking',
+                                'preference': 'fastest',
+                                'units': 'mi',
+                                'language': 'en',
+                                'geometry': 'true',
+                                'geometry_format': 'geojson',
+                                'geometry_simplify': 'false',
+                                'instructions': 'false',
+                                'instructions_format': 'html',
+                                'roundabout_exits': 'true',
+                                'attributes': ['avgspeed'],
+                                'radiuses': PARAM_LIST_ONE,
+                                'bearings': PARAM_LIST_TWO,
+                                'continue_straight': 'true',
+                                'elevation': 'true',
+                                'extra_info': ['steepness', 'suitability'],
+                                'optimized': 'false',
+                                'options': {'maximum_speed': PARAM_INT_SMALL}
+                            },
+                'isochrones': {'locations': PARAM_LINE,
+                                 'profile': 'cycling-regular',
+                                 'range_type': 'distance',
+                                 'intervals': [PARAM_INT_BIG],
+                                 'units': 'm',
+                                 'location_type': 'destination',
+                                 'attributes': ['area', 'reachfactor'],
+                                 'segments': [PARAM_INT_SMALL]
+                             },
+                'distance_matrix': {'locations': PARAM_LINE,
+                                     'sources': [1],
+                                     'destinations': 'all',
+                                     'profile': 'cycling-regular',
+                                     'metrics': ['duration', 'distance'],
+                                     'resolve_locations': 'true',
+                                     'units': 'mi',
+                                     'optimized': 'false'
+                                    },
+                'elevation_point': {'format_in': 'geojson',
+                                     'format_out': 'point',
+                                     'geometry': PARAM_GEOJSON_POINT,
+                                     'dataset': 'srtm'
+                                     },
+                'elevation_line': {'format_in': 'geojson',
+                                     'format_out': 'polyline',
+                                     'geometry': PARAM_GEOJSON_LINE,
+                                     'dataset': 'srtm'
+                                     },
+                'pelias_search': {'text': 'Heidelberg',
+                                   'focus_point': PARAM_POINT,
+                                   'rect_min_x': PARAM_INT_BIG,
+                                   'rect_min_y': PARAM_INT_BIG,
+                                   'rect_max_x': PARAM_INT_BIG,
+                                   'rect_max_y': PARAM_INT_BIG,
+                                   'circle_point': PARAM_POINT,
+                                   'circle_radius': PARAM_INT_SMALL,
+                                   'sources': ['osm', 'wof', 'gn'],
+                                   'layers': ['locality', 'county', 'region'],
+                                   'country': 'de',
+                                   'size': PARAM_INT_SMALL,
+                                   },
+                'pelias_structured':{'address': 'Berliner Straße 45',
+                                       'neighbourhood': 'Neuenheimer Feld',
+                                       'borough': 'Heidelberg',
+                                       'locality': 'Heidelberg',
+                                       'county': 'Rhein-Neckar-Kreis',
+                                       'region': 'Baden-Württemberg',
+                                       'postalcode': 69120,
+                                       'country': 'de',
+                                       },
+                'pelias_reverse': {'point': PARAM_POINT,
+                                    'circle_radius': PARAM_INT_SMALL,
+                                    'sources': ['osm', 'wof', 'gn'],
+                                    'layers': ['locality', 'county', 'region'],
+                                    'country': 'de',
+                                    'size': PARAM_INT_SMALL,
+                                    },
+                'pois': {'request': 'pois',
+                         'geojson': PARAM_GEOJSON_POINT,
+                         'bbox': PARAM_LINE,
+                         'buffer': PARAM_INT_SMALL,
+                         'filter_category_ids': [PARAM_INT_SMALL],
+                         'filter_category_group_ids': [PARAM_INT_BIG],
+                         'filters_custom': {'name': 'Deli',
+                                            'wheelchair': ['yes', 'limited'],
+                                            'smoking': ['dedicated', 'separated'],
+                                            'fee': ['yes', 'no']},
+                         'limit': PARAM_INT_SMALL,
+                         'sortby': 'distance',
+                         }    
+                }

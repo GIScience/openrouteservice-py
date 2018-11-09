@@ -18,7 +18,7 @@
 
 """Performs requests to the ORS Matrix API."""
 
-from openrouteservice import convert
+from openrouteservice import convert, validator
 
 
 def distance_matrix(client, locations,
@@ -76,27 +76,17 @@ def distance_matrix(client, locations,
     :rtype: call to Client.request()
     """
 
+    validator.validator(locals(), 'distance_matrix')
+    
     params = {
-        "locations": locations,
-        "sources": sources,
-        "destinations": destinations
-    }
+            "locations": locations,
+            "sources": sources,
+            "destinations": destinations
+            }
     
     get_params = {}
 
     if profile:
-        if profile not in ["driving-car",
-                           "driving-hgv",
-                           "foot-walking",
-                           "foot-hiking",
-                           "cycling-regular",
-                           "cycling-road",
-                           "cycling-safe",
-                           "cycling-mountain",
-                           "cycling-tour", 
-                           "cycling-electric",
-                           ]:
-            raise ValueError("Invalid travel mode.")
         params["profile"] = profile
         get_params['profile'] = profile
 
@@ -123,7 +113,7 @@ def distance_matrix(client, locations,
 
     if optimized:
         # not checked on backend, check here
-        convert._checkBool(optimized)
+        # convert._checkBool(optimized)
         params["optimized"] = optimized
 
 

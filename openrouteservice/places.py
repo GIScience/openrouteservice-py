@@ -17,7 +17,7 @@
 
 """Performs requests to the ORS Places API."""
 
-from openrouteservice import convert
+from openrouteservice import convert, validator
 
 def places(client, request,
                 geojson=None,
@@ -38,8 +38,8 @@ def places(client, request,
         'list': returns mapping of category ID's to textual representation.
     :type request: string
 
-    :param geojson: GeoJSON object used for the query.
-    :type profile: JSON object
+    :param geojson: GeoJSON dict used for the query.
+    :type geojson: dict
 
     :param buffer: Buffers geometry of 'geojson' or 'bbox' with the specified
         value in meters.
@@ -74,6 +74,8 @@ def places(client, request,
     
     :rtype: call to Client.request()
     """
+
+    validator.validator(locals(), 'pois')
     
     params = {'request': request,
               'filters': dict(),
@@ -94,7 +96,7 @@ def places(client, request,
             params['filters']['category_ids'] = filter_category_ids
                     
         if filter_category_group_ids and convert._is_list(filter_category_group_ids):
-            params['filters']['categroy_group_ids'] = filter_category_group_ids
+            params['filters']['category_group_ids'] = filter_category_group_ids
                     
         if filters_custom:
             for f in filters_custom:

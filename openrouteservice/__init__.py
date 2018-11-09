@@ -16,12 +16,11 @@
 # the License.
 #
 
-__version__ = "1.0b"
+__version__ = "1.0b-dev"
 
 # Make sure QGIS plugin can import openrouteservice-py
 try:
     from openrouteservice.client import Client
-    import openrouteservice.exceptions
 except ModuleNotFoundError:
     pass
 ## Allow sphinx to pick up these symbols for the documentation.

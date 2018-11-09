@@ -17,23 +17,7 @@
 #
 
 """Performs requests to the ORS geocode API (direct Pelias clone)."""
-from openrouteservice import convert
-
-valid_layers = ['venue',
-                'address',
-                'street',
-                'neighbourhood',
-                'borough',
-                'localadmin',
-                'locality',
-                'county',
-                'macrocounty',
-                'region',
-                'macroregion',
-                'county',
-                'coarse']
-
-valid_sources = ['osm', 'oa', 'wof', 'gn']
+from openrouteservice import convert, validator
 
 
 def pelias_search(client, text,
@@ -103,6 +87,8 @@ def pelias_search(client, text,
     :rtype: call to Client.request()
     """
 
+    validator.validator(locals(), 'pelias_search')
+
     params = {'text': text}
 
     if focus_point:
@@ -110,41 +96,31 @@ def pelias_search(client, text,
         params['focus.point.lat'] = convert._format_float(focus_point[1])
 
     if rect_min_x:
-        params['boundary.rect.min_lon	'] = convert._format_float(rect_min_x)
+        params['boundary.rect.min_lon'] = convert._format_float(rect_min_x)  #
 
     if rect_min_y:
-        params['boundary.rect.min_lat	'] = convert._format_float(rect_min_y)
+        params['boundary.rect.min_lat'] = convert._format_float(rect_min_y)  #
 
     if rect_max_x:
-        params['boundary.rect.max_lon	'] = convert._format_float(rect_max_x)
+        params['boundary.rect.max_lon'] = convert._format_float(rect_max_x)  #
 
     if rect_max_y:
-        params['boundary.rect.max_lat	'] = convert._format_float(rect_max_y)
+        params['boundary.rect.max_lat'] = convert._format_float(rect_max_y)  #
 
     if circle_point:
-        params['boundary.circle.lon'] = convert._format_float(circle_point[0])
-        params['boundary.circle.lat'] = convert._format_float(circle_point[1])
+        params['boundary.circle.lon'] = convert._format_float(circle_point[0])  #
+        params['boundary.circle.lat'] = convert._format_float(circle_point[1])  #
 
     if circle_radius:
         params['boundary.circle.radius'] = circle_radius
 
     if sources:
-        if not convert._is_list(sources):
-            raise TypeError('Data source invalid.')
-        if not all((source in valid_sources) for source in sources):
-            raise ValueError("Source must be one or more of {}".format(valid_sources))
         params['sources'] = convert._comma_list(sources)
 
     if layers:
-        if not convert._is_list(layers):
-            raise TypeError('Invalid layer type for geocoding.')
-        if not all((layer in valid_layers) for layer in layers):
-            raise ValueError("Source must be one or more of ".format(valid_layers))
         params['layers'] = convert._comma_list(layers)
 
     if country:
-        if not isinstance(country, str):
-            raise TypeError('Country must be a string.')
         params['country'] = country
 
     if size:
@@ -259,7 +235,9 @@ def pelias_structured(client,
                       region=None,
                       postalcode=None,
                       country=None,
-                      dry_run=None):
+                      dry_run=None,
+                      # size=None
+                      ):
     """
     With structured geocoding, you can search for the individual parts of a location.
     Structured geocoding is an option on the search endpoint,
@@ -274,6 +252,9 @@ def pelias_structured(client,
     :param neighbourhood: Neighbourhoods are vernacular geographic entities that
         may not necessarily be official administrative divisions but are important nonetheless.
     :type neighbourhood: string
+
+    # Check all passed arguments
+    convert._is_valid_args(locals())
 
     :param borough: Mostly known in the context of New York City, even though they may exist in other cities.
     :type borough: string
@@ -292,7 +273,7 @@ def pelias_structured(client,
 
     :param postalcode: Dictated by an administrative division, which is almost always countries.
         Postal codes are unique within a country.
-    :type postalcode: string
+    :type postalcode: integer
 
     :param country: Highest-level divisions supported in a search. Can be a full name or abbreviation.
     :type country: string
@@ -302,46 +283,32 @@ def pelias_structured(client,
     :rtype: dict from JSON response
     """
 
+    validator.validator(locals(), 'pelias_structured')
+
     params = dict()
 
     if address:
-        if not isinstance(address, str):
-            raise TypeError('Address must be a string.')
         params['address'] = address
 
     if neighbourhood:
-        if not isinstance(neighbourhood, str):
-            raise TypeError('Neighbourhood must be a string.')
         params['neighbourhood'] = neighbourhood
 
     if borough:
-        if not isinstance(borough, str):
-            raise TypeError('Borough must be a string.')
         params['borough'] = borough
 
     if locality:
-        if not isinstance(locality, str):
-            raise TypeError('Locality must be a string.')
         params['locality'] = locality
 
     if county:
-        if not isinstance(county, str):
-            raise TypeError('County must be a string.')
         params['county'] = county
 
     if region:
-        if not isinstance(region, str):
-            raise TypeError('Region must be a string.')
         params['region'] = region
 
     if postalcode:
-        if not isinstance(postalcode, str):
-            raise TypeError('Postalcode must be a string.')
         params['postalcode'] = postalcode
 
     if country:
-        if not isinstance(country, str):
-            raise TypeError('Country must be a string.')
         params['country'] = country
 
     return client.request("/geocode/search/structured", params, dry_run=dry_run)
@@ -388,10 +355,9 @@ def pelias_reverse(client, point,
     :rtype: dict from JSON response
     """
 
-    params = dict()
+    validator.validator(locals(), 'pelias_reverse')
 
-    if not convert._is_list(point):
-        raise TypeError('Point must be a list/tuple of coordinates.')
+    params = dict()
 
     params['point.lon'] = convert._format_float(point[0])
     params['point.lat'] = convert._format_float(point[1])
@@ -400,23 +366,12 @@ def pelias_reverse(client, point,
         params['boundary.circle.radius'] = str(circle_radius)
 
     if sources:
-        if not convert._is_list(sources):
-            raise TypeError('Data source invalid.')
-        if not all((source in valid_sources) for source in sources):
-            raise ValueError("Source must be one or more of {}".format(valid_sources))
         params['sources'] = convert._comma_list(sources)
 
     if layers:
-        if not convert._is_list(layers):
-            raise TypeError('Invalid layer type for geocoding.')
-        if not all((layer in valid_layers) for layer in layers):
-            raise ValueError("Source must be one or more of ".format(valid_layers))
         params['layers'] = convert._comma_list(layers)
 
     if country:
-        if not isinstance(country, str):
-            raise TypeError('Country must be a string.')
-
         params['country'] = country
 
     if size:

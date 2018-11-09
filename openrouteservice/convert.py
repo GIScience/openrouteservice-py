@@ -19,9 +19,6 @@
 """Converts Python types to string representations suitable for ORS API server.
 """
 
-import time as _time
-
-
 def _pipe_list(arg):
     """Convert list of values to pipe-delimited string"""
     if not _is_list(arg):
