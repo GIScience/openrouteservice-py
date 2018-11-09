@@ -52,6 +52,8 @@ def validator(args, function):
         val = _distance_matrix_validation(args, coords_len)
     elif function == "pelias_search":
         val = _search_validation(args)
+    elif function == "pelias_autocomplete":
+        val = _autocomplete_validation(args)
     elif function == "pelias_structured":
         val = _structured_validation(args)
     elif function == "pelias_reverse":
@@ -405,6 +407,30 @@ def _search_validation(params):
                                'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse']},
         'country': {'type': 'string'},
         'size': {'type': 'integer', 'default': 10},
+        'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
+    }
+
+    v.validate(params, schema)
+
+    return v
+
+
+def _autocomplete_validation(params):
+    schema = {
+        'text': {'type': 'string', 'required': True},
+        'focus_point': {'type': 'list', 'schema': {'type': 'float'}},
+        'rect_min_x': {'type': 'float'},
+        'rect_min_y': {'type': 'float'},
+        'rect_max_x': {'type': 'float'},
+        'rect_max_y': {'type': 'float'},
+        'sources': {'type': 'list', 'schema': {'type': 'string'}, 'allowed': ['osm', 'oa', 'wof', 'gn'],
+                    'default': ['osm', 'oa', 'wof', 'gn']},
+        'layers': {'type': 'list', 'schema': {'type': 'string'},
+                   'allowed': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
+                               'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse'],
+                   'default': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
+                               'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse']},
+        'country': {'type': 'string'},
         'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
     }
 

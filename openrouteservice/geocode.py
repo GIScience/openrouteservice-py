@@ -186,6 +186,8 @@ def pelias_autocomplete(client, text,
     :rtype: dict from JSON response
     """
 
+    validator.validator(locals(), 'pelias_autocomplete')
+
     params = {'text': text}
 
     if focus_point:
@@ -205,22 +207,12 @@ def pelias_autocomplete(client, text,
         params['boundary.rect.max_lon	'] = convert._format_float(rect_max_y)
 
     if country:
-        if not isinstance(country, str):
-            raise TypeError('Country must be a string.')
         params['boundary.country'] = country
 
     if sources:
-        if not convert._is_list(sources):
-            raise TypeError('Data source invalid.')
-        if not all((source in valid_sources) for source in sources):
-            raise ValueError("Source must be one or more of {}".format(valid_sources))
         params['sources'] = convert._comma_list(sources)
 
     if layers:
-        if not convert._is_list(layers):
-            raise TypeError('Invalid layer type for geocoding.')
-        if not all((layer in valid_layers) for layer in layers):
-            raise ValueError("Source must be one or more of ".format(valid_layers))
         params['layers'] = convert._comma_list(layers)
 
     return client.request("/geocode/autocomplete", params, dry_run=dry_run)

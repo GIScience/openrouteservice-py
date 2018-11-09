@@ -96,6 +96,21 @@ class ValidatorTest(_test.TestCase):
         
         self.assertIn("unallowed values ['name']", str(em))
         self.assertIn('must be of integer type', str(em))
+
+    def test_autocomplete_correct_schema(self):
+        validator.validator(ENDPOINT_DICT['pelias_autocomplete'], 'pelias_autocomplete')
+
+    def test_autocomplete_wrong_schema(self):
+        ENDPOINT_DICT['pelias_autocomplete'].update({
+                  'layers': ['locality', 'name'],
+                })
+        
+        with self.assertRaises(exceptions.ValidationError) as e:
+            validator.validator(ENDPOINT_DICT['pelias_autocomplete'], 'pelias_autocomplete')
+        em = e.exception        
+        print(em)
+        
+        self.assertIn("unallowed values ['name']", str(em))
         
     def test_structured_correct_schema(self):
         validator.validator(ENDPOINT_DICT['pelias_structured'], 'pelias_structured')
