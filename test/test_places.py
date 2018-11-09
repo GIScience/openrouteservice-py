@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2014 Google Inc. All rights reserved.
 #
 # Modifications Copyright (C) 2018 HeiGIT, University of Heidelberg.

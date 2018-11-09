@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2018 HeiGIT, University of Heidelberg.
 #
 # Modifications Copyright (C) 2018 HeiGIT, University of Heidelberg.
