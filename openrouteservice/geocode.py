@@ -95,16 +95,16 @@ def pelias_search(client, text,
         params['focus.point.lat'] = convert._format_float(focus_point[1])
 
     if rect_min_x:
-        params['boundary.rect.min_lon	'] = convert._format_float(rect_min_x)  #
+        params['boundary.rect.min_lon'] = convert._format_float(rect_min_x)  #
 
     if rect_min_y:
-        params['boundary.rect.min_lat	'] = convert._format_float(rect_min_y)  #
+        params['boundary.rect.min_lat'] = convert._format_float(rect_min_y)  #
 
     if rect_max_x:
-        params['boundary.rect.max_lon	'] = convert._format_float(rect_max_x)  #
+        params['boundary.rect.max_lon'] = convert._format_float(rect_max_x)  #
 
     if rect_max_y:
-        params['boundary.rect.max_lon	'] = convert._format_float(rect_max_y)  #
+        params['boundary.rect.max_lat'] = convert._format_float(rect_max_y)  #
 
     if circle_point:
         params['boundary.circle.lon'] = convert._format_float(circle_point[0])  #

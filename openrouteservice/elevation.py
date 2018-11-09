@@ -21,7 +21,8 @@ from openrouteservice import validator
 
 def elevation_point(client, format_in, geometry,
                     format_out='geojson',
-                    dataset='srtm'):
+                    dataset='srtm',
+                    dry_run=None):
     """
     POSTs 2D point to be enriched with elevation.
     
@@ -43,6 +44,39 @@ def elevation_point(client, format_in, geometry,
     """
     
     validator.validator(locals(), 'elevation_point')
+
+    params = {'format_in': format_in,
+              'geometry': geometry,
+              'format_out': format_out,
+              'dataset': dataset}    
+            
+    return client.request('/elevation/point', {}, post_json=params, dry_run=dry_run)
+
+def elevation_line(client, format_in, geometry,
+                    format_out='geojson',
+                    dataset='srtm',
+                    dry_run=None):
+    """
+    POSTs 2D point to be enriched with elevation.
+    
+    :param format_in: Format of input geometry. One of ['geojson',
+        'point']
+    :type format_in: string
+    
+    :param geometry: Point geometry 
+    :type geometry: depending on format_in, either list of coordinates or Point geojson
+    
+    :param format_out: Format of output geometry, one of ['geojson', 'point']
+    :type format_out: string
+    
+    :param dataset: Elevation dataset to be used. Currently only SRTM v4.1 available.
+    :type dataset: string
+    
+    :returns: correctly formatted parameters
+    :rtype: Client.request()
+    """
+    
+    validator.validator(locals(), 'elevation_line')
 
     params = {'format_in': format_in,
               'geometry': geometry,

@@ -18,49 +18,21 @@
 
 from openrouteservice import validator, exceptions
 import test as _test
-
-params = {
-    'profile': 'foot-walking',
-    'preference': 'fastest',
-    'units': 'mi',
-    'language': 'en',
-    'geometry': 'true',
-    'geometry_format': 'geojson',
-    'geometry_simplify': 'false',
-    'instructions': 'false',
-    'instructions_format': 'html',
-    'roundabout_exits': 'true',
-    'attributes': ['avgspeed'],
-    'radiuses': [10000, 10000],
-    'bearings': [[100, 100], [200, 200]],
-    'continue_straight': 'true',
-    'elevation': 'true',
-    'extra_info': ['steepness', 'suitability'],
-    'optimized': 'false',
-    'options': {'maximum_speed': 20}}
-
+from test.test_helper import *
 
 class ValidatorTest(_test.TestCase):
-
-    def setUp(self):
-        self.coords_point = (8.34234, 48.23424)
-        self.coords_linestring = ((8.34234, 48.23424), (8.34423, 48.26424))
     
     def test_directions_correct_schema(self):
-        params['coordinates'] = self.coords_linestring
-        validator.validator(params, 'directions')
+        validator.validator(ENDPOINT_DICT['directions'], 'directions')
 
     def test_directions_wrong_schema(self):
-        params['coordinates'] = self.coords_linestring
-        params['preference'] = 'best'
-        params['attributeds'] = ['avgspeed']
-        params['optimized'] = 'true'
-        params['radiuses'] = [10000, 10000, 10000, 10000]
-        params['bearings'] = [[100, 100], [200, 200]]
-        params['options'] = {'maximum_speed': '20'}
+        ENDPOINT_DICT['directions']['preference'] = 'best'
+        ENDPOINT_DICT['directions']['attributeds'] = ['avgspeed']
+        ENDPOINT_DICT['directions']['radiuses'] = 2 * PARAM_LIST_ONE
+        ENDPOINT_DICT['directions']['options'] = {'maximum_speed': '20'}
 
         with self.assertRaises(exceptions.ValidationError) as e:
-            validator.validator(params, 'directions')
+            validator.validator(ENDPOINT_DICT['directions'], 'directions')
         em = e.exception
         print(em)
         
@@ -68,60 +40,71 @@ class ValidatorTest(_test.TestCase):
         self.assertIn('unknown field', str(em))
         self.assertIn('max length is 2', str(em))
         self.assertIn('must be of integer type', str(em))
+        
+    def test_isochrones_correct_schema(self):
+        validator.validator(ENDPOINT_DICT['isochrones'], 'isochrones')
 
     def test_isochrones_wrong_schema(self):
-        params = {'range_type': 'time',
-                  'attributes': ['area', 'reachfactor'],
+        del ENDPOINT_DICT['isochrones']['locations']
+        ENDPOINT_DICT['isochrones'].update(
+                { 'attributes': ['areas', 'reachfactor'],
                   'intervals': ['30']
-                  }
+                  })
         
         with self.assertRaises(exceptions.ValidationError) as e:
-            validator.validator(params, 'isochrones')
+            validator.validator(ENDPOINT_DICT['isochrones'], 'isochrones')
         em = e.exception        
         print(em)
         
         self.assertIn('required field', str(em))
+        self.assertIn('unallowed value', str(em))
         self.assertIn('must be of integer type', str(em))
 
+    def test_distance_matrix_correct_schema(self):
+        validator.validator(ENDPOINT_DICT['distance_matrix'], 'distance_matrix')
+
     def test_distance_matrix_wrong_schema(self):
-        params = {'locations': self.coords_linestring,
-                  'profile': 'driving-car',
-                  'sources': [0, 1, 2],
+        ENDPOINT_DICT['distance_matrix'].update(
+                { 'sources': [0, 1, 2],
                   'metrics': ['duration', 'distance'],
                   'resolve_locations': 'true',
                   'units': 'm',
                   'optimizedd': 'false'}
+                )
         
         with self.assertRaises(exceptions.ValidationError) as e:
-            validator.validator(params, 'distance_matrix')
+            validator.validator(ENDPOINT_DICT['distance_matrix'], 'distance_matrix')
         em = e.exception        
         print(em)
         
         self.assertIn('no definitions validate', str(em))
         self.assertIn('unknown field', str(em))
 
+    def test_search_correct_schema(self):
+        validator.validator(ENDPOINT_DICT['pelias_search'], 'pelias_search')
 
     def test_search_wrong_schema(self):
-        params = {'text': 'Heidelberg',
-                  'focus_point': self.coords_point,
-                  'rect_min_x': 8.573179,
-                  'rect_min_y': 49.351764,
-                  'rect_max_x': 8.79405,
-                  'rect_max_y': 49.459693,
-                  'circle_radius': {50},
+        ENDPOINT_DICT['pelias_search'].update({
                   'layers': ['locality', 'name'],
-                  'size': 5
-                  }
+                  'circle_radius': {50},
+                })
         
         with self.assertRaises(exceptions.ValidationError) as e:
-            validator.validator(params, 'pelias_search')
+            validator.validator(ENDPOINT_DICT['pelias_search'], 'pelias_search')
         em = e.exception        
         print(em)
         
         self.assertIn("unallowed values ['name']", str(em))
         self.assertIn('must be of integer type', str(em))
-
+        
+    def test_structured_correct_schema(self):
+        validator.validator(ENDPOINT_DICT['pelias_structured'], 'pelias_structured')
+        
     def test_structured_wrong_schema(self):
+        ENDPOINT_DICT['pelias_structured'].update({
+                'address': {'Berliner Straße 45'},
+                'postalcode': '69120',                
+                })
         params = {'address': {'Berliner Straße 45'},
                   'neighbourhood': 'Neuenheimer Feld',
                   'borough': 'Heidelberg',
@@ -133,40 +116,54 @@ class ValidatorTest(_test.TestCase):
                   }
         
         with self.assertRaises(exceptions.ValidationError) as e:
-            validator.validator(params, 'pelias_structured')
+            validator.validator(ENDPOINT_DICT['pelias_structured'], 'pelias_structured')
         em = e.exception        
         print(em)
         
+        self.assertIn('must be of integer type', str(em))
         self.assertIn('must be of string type', str(em))
 
+    def test_reverse_correct_schema(self):
+        validator.validator(ENDPOINT_DICT['pelias_reverse'], 'pelias_reverse')
+        
     def test_reverse_wrong_schema(self):
-        params = {'point': self.coords_point,
-                  'circle_radius': 50,
-                  'sources': ['osm', 'wof', 'gm'],
-                  'layers': ['locality', 'county', 'region'],
+        ENDPOINT_DICT['pelias_reverse'].update({
                   'country': 35,
-                  'size': 5,
-                  }
+                  'sources': ['osm', 'wof', 'gm'],                
+                })
         
         with self.assertRaises(exceptions.ValidationError) as e:
-            validator.validator(params, 'pelias_reverse')
+            validator.validator(ENDPOINT_DICT['pelias_reverse'], 'pelias_reverse')
         em = e.exception        
         print(em)
         
         self.assertIn('must be of string type', str(em))
         self.assertIn("unallowed values ['gm']", str(em))
-
+        
+    def test_pois_correct_schema(self):
+        validator.validator(ENDPOINT_DICT['pois'], 'pois')
+        
+        ENDPOINT_DICT['pois']['geojson'] = PARAM_GEOJSON_LINE
+        validator.validator(ENDPOINT_DICT['pois'], 'pois')
+        
+        ENDPOINT_DICT['pois']['geojson'] = PARAM_GEOJSON_POLY
+        validator.validator(ENDPOINT_DICT['pois'], 'pois')
+        
+        ENDPOINT_DICT['pois']['request'] = 'stats'
+        validator.validator(ENDPOINT_DICT['pois'], 'pois')
+    
+        ENDPOINT_DICT['pois'] = {'request': 'list'}
+        validator.validator(ENDPOINT_DICT['pois'], 'pois')        
+        
     def test_pois_wrong_schema(self):
-        params = {'request': 'pois',
+        ENDPOINT_DICT['pois'].update({
                   'geojson': {'type': 'Point'},
-                  'buffer': 100,
+                  'filters_custom': {'wheelchair': ['maybe']},
                   'limit': 1200,
-                  'filter_category_ids': [180, 245],
-                  'filters_custom': {'wheelchair': ['maybe']}
-                  }
+                })
         
         with self.assertRaises(exceptions.ValidationError) as e:
-            validator.validator(params, 'pois')
+            validator.validator(ENDPOINT_DICT['pois'], 'pois')
         em = e.exception        
         print(em)
         

@@ -58,6 +58,8 @@ def validator(args, function):
         val = _reverse_validation(args)
     elif function == "pois":
         val = _pois_validation(args)
+    elif function in ["elevation_point", "elevation_line"]:
+        val = _elevation_validation(args)
         
     if val.errors:
         raise exceptions.ValidationError(val.errors)
@@ -419,7 +421,7 @@ def _structured_validation(params):
         'locality': {'type': 'string'},
         'county': {'type': 'string'},
         'region': {'type': 'string'},
-        'postalcode': {'type': 'string'},
+        'postalcode': {'type': 'integer'},
         'country': {'type': 'string'},
         'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
     }
@@ -461,11 +463,10 @@ def _pois_validation(params):
             'coordinates': {'anyof': [
                 {'type': 'list', 'schema': {'type': 'float', 'maxlength': 2}, 'dependencies': {'type': 'Point'}},
                 {'type': 'list',
-                 'schema': {'type': 'list', 'schema': {'type': 'float', 'minlength': 2}},
-                 'dependencies': {'type': ['LineString']}},
+                 'schema': {'type': 'list', 'schema': {'type': 'float', 'maxlength': 2}}, 'dependencies': {'type': ['LineString']}},
                 {'type': 'list',
                  'schema': {'type': 'list',
-                            'schema': {'type': 'list', 'schema': {'type': 'float', 'minlength': 2}}},
+                            'schema': {'type': 'list', 'schema': {'type': 'float', 'maxlength': 2}}},
                  'dependencies': {'type': ['Polygon']}}]
             }, }},
         'buffer': {'type': 'integer', 'default': 500},
@@ -473,14 +474,14 @@ def _pois_validation(params):
         # 'filters': {'type': 'dict', 'schema': {
         'filter_category_group_ids': {'type': 'list', 'schema': {'type': 'integer'}},
         'filter_category_ids': {'type': 'list', 'schema': {'type': 'integer'}},
-        'name': {'type': 'list', 'schema': {'type': 'string'}},
         'filters_custom': {'type': 'dict', 'schema': {
             'wheelchair': {'type': 'list',
                            'schema': {'type': 'string', 'allowed': ['yes', 'no', 'limited', 'designated']}},
             'smoking': {'type': 'list', 'schema': {'type': 'string',
                                                    'allowed': ['dedicated', 'yes', 'no', 'separated', 'isolated',
                                                                'outside']}},
-            'fee': {'type': 'list', 'schema': {'type': 'string', 'allowed': ['yes', 'no']}}}},
+            'fee': {'type': 'list', 'schema': {'type': 'string', 'allowed': ['yes', 'no']}},
+            'name': {'type': 'string'},}},
         # }},
         'limit': {'type': 'integer', 'max': 1000},
         'sortby': {'type': 'string', 'allowed': ['category', 'distance']},
@@ -489,4 +490,46 @@ def _pois_validation(params):
 
     v.validate(params, schema)
 
+    return v
+
+def _elevation_validation(params):
+    schema = {
+            'format_in': {'type': 'string', 'allowed': ['geojson', 'point', 'polyline', 'encodedpolyline'], 'required': True},
+            'format_out': {'type': 'string', 'allowed': ['geojson', 'point', 'polyline', 'encodedpolyline'], 'default': 'geojson'},
+            'dataset': {'type': 'string', 'allowed': ['srtm'], 'default': 'srtm'},
+            'geometry': {'anyof': [
+                    {'type': 'dict', 'schema':
+                        {'type': {'type': 'string', 'allowed': ['Point', 'LineString'], 'required': True},
+                        'coordinates': {
+                                'anyof': [
+                                    {'type': 'list', 
+                                     'schema': {'type': 'float', 'minlength': 2, 'maxlength': 2}},                       
+                                    {'type': 'list',
+                                     'schema': {'type': 'list', 'schema': {'type': 'float',
+                                                                           'minlength': 2,
+                                                                           'maxlength': 2}}}
+                                    ],
+                                'required': True
+                                }
+                        },
+                    'dependencies': {'^format_in': 'geojson'},
+                    },
+                    {'type': 'list',
+                     'schema': {'type': 'float', 'minlength': 2, 'maxlength': 2},
+                     'dependencies': {'^format_in': 'point'}
+                     },
+                    {'type': ['list', 'tuple'],
+                     'schema': {'type': ['list', 'tuple'],
+                              'schema': {'type': 'float', 'minlength': 2, 'maxlength': 2}},
+                     'dependencies': {'^format_in': 'polyline'}
+                     },
+                    {'type': 'string',
+                     'dependencies': {'^format_in': 'encodedpolyline'}
+                     }
+                     ],
+                    'required': True},
+            'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
+                }
+    v.validate(params, schema)
+    
     return v

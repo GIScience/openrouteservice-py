@@ -268,6 +268,8 @@ class Client(object):
 
 from openrouteservice.directions import directions
 from openrouteservice.distance_matrix import distance_matrix
+from openrouteservice.elevation import elevation_point
+from openrouteservice.elevation import elevation_line
 from openrouteservice.isochrones import isochrones
 from openrouteservice.geocoding import geocode
 from openrouteservice.geocoding import reverse_geocode
@@ -301,6 +303,8 @@ def _make_api_method(func):
 
 Client.directions = _make_api_method(directions)
 Client.distance_matrix = _make_api_method(distance_matrix)
+Client.elevation_point = _make_api_method(elevation_point)
+Client.elevation_line = _make_api_method(elevation_line)
 Client.isochrones = _make_api_method(isochrones)
 Client.geocode = _make_api_method(geocode)
 Client.reverse_geocode = _make_api_method(reverse_geocode)
