@@ -60,13 +60,15 @@ def elevation_line(client, format_in, geometry,
     POSTs 2D point to be enriched with elevation.
     
     :param format_in: Format of input geometry. One of ['geojson',
-        'point']
+        'polyline', 'encodedpolyline']
     :type format_in: string
     
     :param geometry: Point geometry 
-    :type geometry: depending on format_in, either list of coordinates or Point geojson
+    :type geometry: depending on format_in, either list of coordinates, LineString
+        geojson or string
     
-    :param format_out: Format of output geometry, one of ['geojson', 'point']
+    :param format_out: Format of output geometry, one of ['geojson',
+        'polyline', 'encodedpolyline']
     :type format_out: string
     
     :param dataset: Elevation dataset to be used. Currently only SRTM v4.1 available.

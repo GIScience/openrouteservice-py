@@ -272,8 +272,6 @@ from openrouteservice.distance_matrix import distance_matrix
 from openrouteservice.elevation import elevation_point
 from openrouteservice.elevation import elevation_line
 from openrouteservice.isochrones import isochrones
-from openrouteservice.geocoding import geocode
-from openrouteservice.geocoding import reverse_geocode
 from openrouteservice.geocode import pelias_search
 from openrouteservice.geocode import pelias_autocomplete
 from openrouteservice.geocode import pelias_structured
@@ -308,8 +306,6 @@ Client.distance_matrix = _make_api_method(distance_matrix)
 Client.elevation_point = _make_api_method(elevation_point)
 Client.elevation_line = _make_api_method(elevation_line)
 Client.isochrones = _make_api_method(isochrones)
-Client.geocode = _make_api_method(geocode)
-Client.reverse_geocode = _make_api_method(reverse_geocode)
 Client.pelias_search = _make_api_method(pelias_search)
 Client.pelias_autocomplete = _make_api_method(pelias_autocomplete)
 Client.pelias_structured = _make_api_method(pelias_structured)

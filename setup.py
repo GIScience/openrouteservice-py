@@ -10,14 +10,14 @@ except ImportError:
 def readme():
     with open('README.rst') as f:
         return f.read()
-  
+
 if sys.version_info <= (2, 6):
   error = 'Requires Python Version 2.7 or above... exiting.'
   print >> sys.stderr, error
   sys.exit(1)
 
 setup(name='openrouteservice',
-      version='1.0b',
+      version='1.0',
       description='Python client for requests to openrouteservice API services',
       long_description=readme(),
       classifiers=[

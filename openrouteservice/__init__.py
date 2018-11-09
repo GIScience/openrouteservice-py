@@ -17,7 +17,7 @@
 # the License.
 #
 
-__version__ = "1.0b-dev"
+__version__ = "1.0"
 
 # Make sure QGIS plugin can import openrouteservice-py
 try:

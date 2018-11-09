@@ -16,11 +16,14 @@ The openrouteservice library gives you painless access to the openrouteservice_ 
 It performs requests against our API's for
 
 - directions_
-- `Pelias geocoding`_
-- `Pelias reverse geocoding`_
 - isochrones_
 - `matrix routing calculations`_
 - places_
+- elevation_
+- `Pelias geocoding`_
+- `Pelias reverse geocoding`_
+- `Pelias structured geocoding`_
+- `Pelias autocomplete`_
 
 For further details, please visit:
 
@@ -41,7 +44,10 @@ By using this library, you agree to the ORS `terms and conditions`_.
 .. _directions: https://go.openrouteservice.org/documentation/#/reference/directions/directions/directions-service
 .. _`Pelias geocoding`: https://github.com/pelias/documentation/blob/master/search.md#available-search-parameters
 .. _`Pelias reverse geocoding`: https://github.com/pelias/documentation/blob/master/reverse.md#reverse-geocoding-parameters
+.. _`Pelias structured geocoding`: https://github.com/pelias/documentation/blob/master/structured-geocoding.md
+.. _`Pelias autocomplete`: https://github.com/pelias/documentation/blob/master/autocomplete.md
 .. _isochrones: https://go.openrouteservice.org/documentation/#/reference/isochrones/isochrones/isochrones-service
+.. _elevation: https://github.com/GIScience/openelevationservice/
 .. _`reverse geocoding`: https://go.openrouteservice.org/documentation/#/reference/geocoding/geocoding/geocoding-service
 .. _`matrix routing calculations`: https://go.openrouteservice.org/documentation/#/reference/matrix/matrix/matrix-service-(post)
 .. _places: https://github.com/GIScience/openpoiservice
@@ -77,7 +83,7 @@ For ``conda`` users, you can install using ``setuptools`` (required Python packa
 	git clone https://github.com/GIScience/openrouteservice-py
 	python setup.py install
 
-This comman group will install the library to your global environment. Also works in virtual environments.
+This command group will install the library to your global environment. Also works in virtual environments.
 
 
 Testing
