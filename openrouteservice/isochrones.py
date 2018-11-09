@@ -20,16 +20,17 @@ from openrouteservice import convert
 
 
 def isochrones(client, locations,
-                    profile='driving-car',
-                    range_type=None,
-                    intervals=[60],
-                    segments=30,
-                    units=None,
-                    location_type=None,
-                    attributes=None,
-                    #options=None,
-                    intersections=None,
-                    dry_run=None):
+               profile='driving-car',
+               range_type=None,
+               intervals=[60],
+               segments=30,
+               units=None,
+               location_type=None,
+               smoothing=None,
+               attributes=None,
+               # options=None,
+               intersections=None,
+               dry_run=None):
     """ Gets travel distance and time for a matrix of origins and destinations.
 
     :param locations: One pair of lng/lat values.
@@ -64,6 +65,10 @@ def isochrones(client, locations,
     :param location_type: 'start' treats the location(s) as starting point,
         'destination' as goal. Default 'start'.
     :type location_type: string
+
+    :param smoothing: Applies a level of generalisation to the isochrone polygons generated.
+        Value between 0 and 1, whereas a value closer to 1 will result in a more generalised shape.
+    :type smoothing: float
 
     :param attributes: 'area' returns the area of each polygon in its feature
         properties. 'reachfactor' returns a reachability score between 0 and 1.
@@ -119,6 +124,9 @@ def isochrones(client, locations,
 
     if location_type:
         params["location_type"] = location_type
+
+    if smoothing:
+        params["smoothing"] = convert._format_float(smoothing)
 
     if attributes:
         params["attributes"] = convert._pipe_list(attributes)

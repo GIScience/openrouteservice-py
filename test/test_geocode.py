@@ -83,7 +83,7 @@ class GeocodingPeliasTest(_test.TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
-            'https://api.openrouteservice.org/geocode/search?boundary.circle.lat=49.418431&boundary.circle.lon=8.675786&boundary.circle.radius=50&boundary.rect.max_lon%09=49.459693&boundary.rect.min_lat%09=49.351764&boundary.rect.min_lon%09=8.573179&country=de&focus.point.lat=49.418431&focus.point.lon=8.675786&layers=locality%2Ccounty%2Cregion&size=5&sources=osm%2Cwof%2Cgn&text=Heidelberg&api_key=sample_key'.format(
+            'https://api.openrouteservice.org/geocode/search?boundary.circle.lat=49.418431&boundary.circle.lon=8.675786&boundary.circle.radius=50&boundary.rect.max_lon%09=8.79405&boundary.rect.max_lat%09=49.459693&boundary.rect.min_lat%09=49.351764&boundary.rect.min_lon%09=8.573179&country=de&focus.point.lat=49.418431&focus.point.lon=8.675786&layers=locality%2Ccounty%2Cregion&size=5&sources=osm%2Cwof%2Cgn&text=Heidelberg&api_key=sample_key'.format(
                 self.key),
             responses.calls[0].request.url)
 
