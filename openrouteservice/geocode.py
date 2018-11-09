@@ -175,7 +175,7 @@ def pelias_structured(client,
 
     :param postalcode: Dictated by an administrative division, which is almost always countries.
         Postal codes are unique within a country.
-    :type postalcode: string
+    :type postalcode: integer
 
     :param country: Highest-level divisions supported in a search. Can be a full name or abbreviation.
     :type country: string

@@ -38,8 +38,8 @@ def places(client, request,
         'list': returns mapping of category ID's to textual representation.
     :type request: string
 
-    :param geojson: GeoJSON object used for the query.
-    :type profile: JSON object
+    :param geojson: GeoJSON dict used for the query.
+    :type geojson: dict
 
     :param buffer: Buffers geometry of 'geojson' or 'bbox' with the specified
         value in meters.
