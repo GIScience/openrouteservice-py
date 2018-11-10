@@ -37,22 +37,22 @@ For support, please ask our forum_.
 
 By using this library, you agree to the ORS `terms and conditions`_.
 
-.. _openrouteservice: https://go.openrouteservice.org
-.. _homepage: https://go.openrouteservice.org
-.. _`ORS API documentation`: https://go.openrouteservice.org/documentation/
+.. _openrouteservice: https://openrouteservice.org
+.. _homepage: https://openrouteservice.org
+.. _`ORS API documentation`: https://openrouteservice.org/documentation/
 .. _`openrouteservice-py documentation`: http://openrouteservice-py.readthedocs.io/en/latest/
-.. _directions: https://go.openrouteservice.org/documentation/#/reference/directions/directions/directions-service
+.. _directions: https://openrouteservice.org/documentation/#/reference/directions/directions/directions-service
 .. _`Pelias geocoding`: https://github.com/pelias/documentation/blob/master/search.md#available-search-parameters
 .. _`Pelias reverse geocoding`: https://github.com/pelias/documentation/blob/master/reverse.md#reverse-geocoding-parameters
 .. _`Pelias structured geocoding`: https://github.com/pelias/documentation/blob/master/structured-geocoding.md
 .. _`Pelias autocomplete`: https://github.com/pelias/documentation/blob/master/autocomplete.md
-.. _isochrones: https://go.openrouteservice.org/documentation/#/reference/isochrones/isochrones/isochrones-service
+.. _isochrones: https://openrouteservice.org/documentation/#/reference/isochrones/isochrones/isochrones-service
 .. _elevation: https://github.com/GIScience/openelevationservice/
-.. _`reverse geocoding`: https://go.openrouteservice.org/documentation/#/reference/geocoding/geocoding/geocoding-service
-.. _`matrix routing calculations`: https://go.openrouteservice.org/documentation/#/reference/matrix/matrix/matrix-service-(post)
+.. _`reverse geocoding`: https://openrouteservice.org/documentation/#/reference/geocoding/geocoding/geocoding-service
+.. _`matrix routing calculations`: https://openrouteservice.org/documentation/#/reference/matrix/matrix/matrix-service-(post)
 .. _places: https://github.com/GIScience/openpoiservice
 .. _here: https://github.com/GIScience/openrouteservice-examples/tree/master/python
-.. _`terms and conditions`: https://go.openrouteservice.org/terms-of-service/
+.. _`terms and conditions`: https://openrouteservice.org/terms-of-service/
 .. _forum: https://ask.openrouteservice.org/c/sdks
 
 Requirements
