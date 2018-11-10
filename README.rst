@@ -1,3 +1,7 @@
+.. image:: https://badge.fury.io/py/openrouteservice.svg
+    :target: https://badge.fury.io/py/openrouteservice
+    :alt: PyPI version
+
 .. image:: https://travis-ci.com/GIScience/openrouteservice-py.svg?branch=master
     :target: https://travis-ci.com/GIScience/openrouteservice-py
     :alt: Build status
