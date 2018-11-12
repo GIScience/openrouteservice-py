@@ -83,17 +83,32 @@ def _directions_validation(params, coords_len):
         'language': {'type': 'string',
                      'allowed': ['en', 'de', 'cn', 'es', 'ru', 'dk', 'fr', 'it', 'nl', 'br', 'se', 'tr', 'gr'],
                      'default': 'en'},
-        'geometry': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'true'},
+        'geometry': {'anyof': [
+                {'type': 'string', 'allowed': ['true', 'false']},
+                {'type': 'boolean'}
+                ]},
         'geometry_format': {'type': 'string', 'allowed': ['encodedpolyline', 'geojson', 'polyline'],
                             'default': 'encodedpolyline'},
-        'geometry_simplify': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'false'},
-        'instructions': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'true'},
+        'geometry_simplify': {'anyof': [
+                {'type': 'string', 'allowed': ['true', 'false']},
+                {'type': 'boolean'}
+                ]},
+        'instructions': {'anyof': [
+                {'type': 'string', 'allowed': ['true', 'false']},
+                {'type': 'boolean'}
+                ]},
         'instructions_format': {'type': 'string', 'allowed': ['text', 'html'], 'default': 'text'},
-        'roundabout_exits': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'false'},
+        'roundabout_exits': {'anyof': [
+                {'type': 'string', 'allowed': ['true', 'false']},
+                {'type': 'boolean'}
+                ]},
         'attributes': {'type': ['list', 'tuple'], 'schema': {'type': 'string',
                                                              'allowed': ['avgspeed',
                                                                          'detourfactor', 'percentage']}},
-        'maneuvers': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'false'},
+        'maneuvers': {'anyof': [
+                {'type': 'string', 'allowed': ['true', 'false']},
+                {'type': 'boolean'}
+                ]},
         'radiuses': {'type': ['list', 'tuple'], 'schema': {'type': 'integer', 'min': -1},
                      'minlength': coords_len, 'maxlength': coords_len},
         'bearings': {'type': ['list', 'tuple'],
@@ -102,21 +117,30 @@ def _directions_validation(params, coords_len):
                                 'items': [{'type': 'integer', 'min': 0, 'max': 360, 'required': True},
                                           {'type': 'integer', 'default': 100}], 'minlength': 1, 'maxlength': 2},
                      },
-        'continue_straight': {'schema': {
-            'type': 'string', 'allowed': ['true', 'false'], 'default': 'false'},
-            'dependencies': {
-                'profile': ['foot-walking', 'foot-hiking', 'cycling-regular',
-                            'cycling-road', 'cycling-safe', 'cycling-mountain',
-                            'cycling-tour',
-                            'cycling-electric']}},
-        'elevation': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'false'},
+        'continue_straight': {'anyof': [
+                                    {'type': 'string', 'allowed': ['true', 'false']},
+                                    {'type': 'boolean'}
+                                    ],
+                            'dependencies': {
+                                '^profile': ['foot-walking', 'foot-hiking', 'cycling-regular',
+                                            'cycling-road', 'cycling-safe', 'cycling-mountain',
+                                            'cycling-tour',
+                                            'cycling-electric']}
+                                },
+        'elevation': {'anyof': [
+                        {'type': 'string', 'allowed': ['true', 'false']},
+                        {'type': 'boolean'}
+                        ]},
         'extra_info': {'type': ['list', 'tuple'], 'schema': {'type': 'string',
                                                              'allowed': ['steepness', 'suitability',
                                                                          'surface',
                                                                          'waycategory', 'waytype',
                                                                          'tollways',
                                                                          'traildifficulty']}},
-        'optimized': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'true'},
+        'optimized': {'anyof': [
+                        {'type': 'string', 'allowed': ['true', 'false']},
+                        {'type': 'boolean'}
+                        ]},
         'options': {'type': 'dict', 'schema': {'maximum_speed': {'type': 'integer'},
                                                'avoid_features': {'type': 'list', 'schema': {'type': 'string',
                                                                                              'allowed': ['highways',
@@ -221,7 +245,11 @@ def _directions_validation(params, coords_len):
                                                'avoid_polygons': {}
                                                }},
         'id': {'type': 'string'},
-        'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
+        'dry_run': {'anyof': [
+                        {'type': 'string', 'allowed': ['true', 'false']},
+                        {'type': 'boolean'}
+                        ]}
+                        
     }
 
     v.validate(params, schema)
@@ -348,10 +376,16 @@ def _isochrones_validation(params):
                                                }},
                                                'avoid_polygons': {}
                                                }},
-        'intersections': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'false'},
+        'intersections': {'anyof': [
+                            {'type': 'string', 'allowed': ['true', 'false']},
+                            {'type': 'boolean'}
+                            ]},
         'id': {'type': 'string'},
         'smoothing': {"type": "float", 'min': 0, 'max': 1},
-        'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
+        'dry_run': {'anyof': [
+                        {'type': 'string', 'allowed': ['true', 'false']},
+                        {'type': 'boolean'}
+                        ]}
     }
 
     v.validate(params, schema)
@@ -376,11 +410,20 @@ def _distance_matrix_validation(params, coords_len):
             {'type': 'list', 'schema': {'type': 'integer', 'min': 0, 'max': coords_len - 1}},
             {'type': 'string', 'allowed': ['all']}]},
         'metrics': {'type': 'list', 'schema': {'type': 'string'}, 'allowed': ['distance', 'duration']},
-        'resolve_locations': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'false'},
+        'resolve_locations': {'anyof': [
+                                    {'type': 'string', 'allowed': ['true', 'false']},
+                                    {'type': 'boolean'}
+                                    ]},
         'units': {'type': 'string', 'allowed': ['m', 'km', 'mi'], 'default': 'm'},
-        'optimized': {'type': 'string', 'allowed': ['true', 'false'], 'default': 'true'},
+        'optimized': {'anyof': [
+                        {'type': 'string', 'allowed': ['true', 'false']},
+                        {'type': 'boolean'}
+                        ]},
         'id': {'type': 'string'},
-        'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
+        'dry_run': {'anyof': [
+                        {'type': 'string', 'allowed': ['true', 'false']},
+                        {'type': 'boolean'}
+                        ]}
     }
 
     v.validate(params, schema)
@@ -407,7 +450,10 @@ def _search_validation(params):
                                'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse']},
         'country': {'type': 'string'},
         'size': {'type': 'integer', 'default': 10},
-        'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
+        'dry_run': {'anyof': [
+                        {'type': 'string', 'allowed': ['true', 'false']},
+                        {'type': 'boolean'}
+                        ]}
     }
 
     v.validate(params, schema)
@@ -431,7 +477,10 @@ def _autocomplete_validation(params):
                    'default': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
                                'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse']},
         'country': {'type': 'string'},
-        'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
+        'dry_run': {'anyof': [
+                        {'type': 'string', 'allowed': ['true', 'false']},
+                        {'type': 'boolean'}
+                        ]}
     }
 
     v.validate(params, schema)
@@ -449,7 +498,10 @@ def _structured_validation(params):
         'region': {'type': 'string'},
         'postalcode': {'type': 'integer'},
         'country': {'type': 'string'},
-        'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
+        'dry_run': {'anyof': [
+                        {'type': 'string', 'allowed': ['true', 'false']},
+                        {'type': 'boolean'}
+                        ]}
     }
 
     v.validate(params, schema)
@@ -470,7 +522,10 @@ def _reverse_validation(params):
                                'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse']},
         'country': {'type': 'string'},
         'size': {'type': 'integer', 'default': 10},
-        'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
+        'dry_run': {'anyof': [
+                        {'type': 'string', 'allowed': ['true', 'false']},
+                        {'type': 'boolean'}
+                        ]}
     }
 
     v.validate(params, schema)
@@ -511,7 +566,10 @@ def _pois_validation(params):
         # }},
         'limit': {'type': 'integer', 'max': 1000},
         'sortby': {'type': 'string', 'allowed': ['category', 'distance']},
-        'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
+        'dry_run': {'anyof': [
+                        {'type': 'string', 'allowed': ['true', 'false']},
+                        {'type': 'boolean'}
+                        ]}
     }
 
     v.validate(params, schema)
@@ -554,7 +612,10 @@ def _elevation_validation(params):
                      }
                      ],
                     'required': True},
-            'dry_run': {'type': 'string', 'allowed': ['true', 'false']}
+            'dry_run': {'anyof': [
+                            {'type': 'string', 'allowed': ['true', 'false']},
+                            {'type': 'boolean'}
+                            ]}
                 }
     v.validate(params, schema)
     

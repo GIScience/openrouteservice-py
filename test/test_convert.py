@@ -26,7 +26,7 @@ from openrouteservice import convert
 
 class ConvertTest(unittest.TestCase):
 
-    def test_single_coord_tuple(self):
+    def test_build_single_coord_tuple(self):
         expected = "1,2"
         ll = (1, 2)
         self.assertEqual(expected, convert._build_coords(ll))
@@ -45,7 +45,7 @@ class ConvertTest(unittest.TestCase):
             convert._build_coords('1,2')
             
             
-    def test_multi_coord_tuple(self):
+    def test_build_multi_coord_tuple(self):
         expected = "1,2|3,4"
 
         ll = ((1,2),(3,4))
@@ -66,9 +66,15 @@ class ConvertTest(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             convert._build_coords('[1,2],[3,4]')
+            
     
+    def test_convert_bool(self):
+        self.assertEqual('true', convert._convert_bool('True'))
+        self.assertEqual('true', convert._convert_bool('true'))
+        self.assertEqual('true', convert._convert_bool(True))
+        
     
-    def test_polyline_decode(self):
+    def test_polyline_decode_3d(self):
         syd_mel_route = (r"mlqlHat`t@OiACMvAs@HCPGJ?JAJBRFTRLJPNHDNDJ"
                          "@D?fACRAZCPAb@AF?HAfBQJEDAn@QFC@QD_@@QFe@Bg"
                          "@@KBy@?M@a@@q@?iE?C?OGgAkEwUQ{@c@gBQeAYeCIe"

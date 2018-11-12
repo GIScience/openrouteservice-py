@@ -29,7 +29,7 @@ def distance_matrix(client, locations,
                     metrics=None,
                     resolve_locations=None,
                     units=None,
-                    optimized='true',
+                    optimized=True,
                     dry_run=None):
     """ Gets travel distance and time for a matrix of origins and destinations.
 
@@ -59,8 +59,8 @@ def distance_matrix(client, locations,
     :param resolve_locations: Specifies whether given locations are resolved or
         not. If set 'true', every element in destinations and sources will 
         contain the name element that identifies the name of the closest street.
-        'true' or 'false'. Default 'false'.
-    :type resolve_locations: boolean as string
+        Default False.
+    :type resolve_locations: boolean
 
     :param units: Specifies the unit system to use when displaying results.
         One of ["m", "km", "m"]. Default "m".
@@ -69,8 +69,11 @@ def distance_matrix(client, locations,
     :param optimized: Specifies whether Dijkstra algorithm ('false') or any 
         available technique to speed up shortest-path routing ('true') is used. 
         For normal Dijkstra the number of visited nodes is limited to 100000.
-        Default 'true'.
-    :type optimized: boolean as string
+        Default True
+    :type optimized: boolean
+    
+    :param dry_run: Print URL and parameters without sending the request.
+    :param dry_run: boolean
     
     :raises ValueError: When profile parameter has wrong value.
     

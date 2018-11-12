@@ -83,6 +83,9 @@ def isochrones(client, locations,
     :param intersections: not implented right now.
     :type intersections: boolean as string
     
+    :param dry_run: Print URL and parameters without sending the request.
+    :param dry_run: boolean
+    
     :raises ValueError: When parameter has invalid value(s).
     
     :rtype: call to Client.request()

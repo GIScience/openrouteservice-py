@@ -39,6 +39,9 @@ def elevation_point(client, format_in, geometry,
     :param dataset: Elevation dataset to be used. Currently only SRTM v4.1 available.
     :type dataset: string
     
+    :param dry_run: Print URL and parameters without sending the request.
+    :param dry_run: boolean
+    
     :returns: correctly formatted parameters
     :rtype: Client.request()
     """
@@ -73,6 +76,9 @@ def elevation_line(client, format_in, geometry,
     
     :param dataset: Elevation dataset to be used. Currently only SRTM v4.1 available.
     :type dataset: string
+    
+    :param dry_run: Print URL and parameters without sending the request.
+    :param dry_run: boolean
     
     :returns: correctly formatted parameters
     :rtype: Client.request()

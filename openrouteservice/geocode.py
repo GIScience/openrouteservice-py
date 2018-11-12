@@ -81,6 +81,9 @@ def pelias_search(client, text,
 
     :param size: The amount of results returned. Default 10.
     :type size: integer
+    
+    :param dry_run: Print URL and parameters without sending the request.
+    :param dry_run: boolean
 
     :raises ValueError: When parameter has invalid value(s).
     :raises TypeError: When parameter is of the wrong type.
@@ -180,6 +183,9 @@ def pelias_autocomplete(client, text,
         https://github.com/pelias/documentation/blob/master/search.md#filter-by-data-type
         for details.
     :type layers: list of strings
+    
+    :param dry_run: Print URL and parameters without sending the request.
+    :param dry_run: boolean
 
     :raises ValueError: When parameter has invalid value(s).
     :raises TypeError: When parameter is of the wrong type.
@@ -270,6 +276,9 @@ def pelias_structured(client,
 
     :param country: Highest-level divisions supported in a search. Can be a full name or abbreviation.
     :type country: string
+    
+    :param dry_run: Print URL and parameters without sending the request.
+    :param dry_run: boolean
 
     :raises TypeError: When parameter is of the wrong type.
 
@@ -342,6 +351,9 @@ def pelias_reverse(client, point,
 
     :param size: The amount of results returned. Default 10.
     :type size: integer
+    
+    :param dry_run: Print URL and parameters without sending the request.
+    :param dry_run: boolean
 
     :raises ValueError: When parameter has invalid value(s).
 

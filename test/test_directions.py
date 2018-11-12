@@ -31,15 +31,6 @@ class DirectionsTest(_test.TestCase):
         self.key = 'sample_key'
         self.client = openrouteservice.Client(self.key)
         self.coords_valid = ((8.34234,48.23424),(8.34423,48.26424))
-        self.coords_invalid = ((1,2), (3,4))
-        
-
-    def test_invalid_coordinates(self):
-        # With mode of transit, we need a departure_time or an
-        # arrival_time specified
-        with self.assertRaises(openrouteservice.exceptions.ApiError):
-            self.client.directions(self.coords_invalid)
-
 
     @responses.activate
     def test_simple_directions(self):

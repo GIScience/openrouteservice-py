@@ -72,6 +72,9 @@ def places(client, request,
         For request='pois' only.
     :type sortby: string
     
+    :param dry_run: Print URL and parameters without sending the request.
+    :param dry_run: boolean
+    
     :rtype: call to Client.request()
     """
 

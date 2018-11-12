@@ -43,7 +43,7 @@ def directions(client,
                continue_straight=None,
                elevation=None,
                extra_info=None,
-               optimized='true',
+               optimized=True,
                options=None,
                dry_run=None):
     """Get directions between an origin point and a destination point.
@@ -75,21 +75,20 @@ def directions(client,
     :param language: The language in which to return results.
     :type language: string
 
-    :param geometry: Specifies whether geometry should be returned. "true" or "false".
-        Default "true".
-    :type geometry: string
+    :param geometry: Specifies whether geometry should be returned. Default True.
+    :type geometry: boolean
 
     :param geometry_format: Specifies which geometry format should be returned.
         One of ["encodedpolyline", "geojson", "polyline"]. Default: "encodedpolyline".
     :type geometry_format: string
 
     :param geometry_simplify: Specifies whether to simplify the geometry.
-        "true" or "false". Default "false".
-    :type geometry_simplify: boolean as string
+        Default False.
+    :type geometry_simplify: boolean
 
     :param instructions: Specifies whether to return turn-by-turn instructions.
-        "true" or "false". Default "true".
-    :type instructions: string
+        Default True.
+    :type instructions: boolean
 
     :param instructions_format: Specifies the the output format for instructions.
         One of ["text", "html"]. Default "text".
@@ -97,8 +96,8 @@ def directions(client,
 
     :param roundabout_exits: Provides bearings of the entrance and all passed
         roundabout exits. Adds the 'exit_bearings' array to the 'step' object
-        in the response. "true" or "false". Default "false".
-    :type roundabout_exits: string
+        in the response. Default False.
+    :type roundabout_exits: boolean
 
     :param attributes: Returns route attributes on ["avgspeed", "detourfactor", "percentage"].
         Must be a list of strings. Default None.
@@ -133,26 +132,30 @@ def directions(client,
     :type continue_straight: boolean
 
     :param elevation: Specifies whether to return elevation values for points.
-        "true" or "false". Default "false".
-    :type elevation: boolean as string
+        Default False.
+    :type elevation: boolean
 
     :param extra_info: Returns additional information on ["steepness", "suitability",
         "surface", "waycategory", "waytype", "tollways", "traildifficulty"].
         Must be a list of strings. Default None.
     :type extra_info: list or tuple of strings
 
-    :param optimized: If set True, uses Contraction Hierarchies. "true" or "false".
-        Default "true".
-    :type optimized: boolean as string
+    :param optimized: If set True, uses Contraction Hierarchies.
+        Default True.
+    :type optimized: boolean
 
     :param options: Refer to https://go.openrouteservice.org/documentation for
         detailed documentation. Construct your own dict() following the example
         of the minified options object. Will be converted to json automatically.
     :type options: dict
+    
+    :param dry_run: Print URL and parameters without sending the request.
+    :param dry_run: boolean
 
     :raises ValueError: When parameter has wrong value.
     :raises TypeError: When parameter is of wrong type.
 
+    :returns: sanitized set of pararmeters
     :rtype: call to Client.request()
     """
     
@@ -181,7 +184,7 @@ def directions(client,
 
     if geometry:
         # not checked on backend, check here
-        params["geometry"] = geometry
+        params["geometry"] = convert._convert_bool(geometry)
 
     if geometry_format:
         params["geometry_format"] = geometry_format
@@ -191,18 +194,18 @@ def directions(client,
         if extra_info:
             params["geometry_simplify"] = 'false'
         else:
-            params["geometry_simplify"] = geometry_simplify
+            params["geometry_simplify"] = convert._convert_bool(geometry_simplify)
         
     if instructions:
         # not checked on backend, check here
-        params["instructions"] = instructions
+        params["instructions"] = convert._convert_bool(instructions)
 
     if instructions_format:
         params["instructions_format"] = instructions_format
 
     if roundabout_exits:
         # not checked on backend, check here
-        params["roundabout_exits"] = roundabout_exits
+        params["roundabout_exits"] = convert._convert_bool(roundabout_exits)
 
     if attributes:
         # not checked on backend, check here
@@ -216,11 +219,11 @@ def directions(client,
         
     if continue_straight:
         # not checked on backend, check here
-        params["continue_straight"] = continue_straight
+        params["continue_straight"] = convert._convert_bool(continue_straight)
 
     if elevation:
         # not checked on backend, check here
-        params["elevation"] = elevation
+        params["elevation"] = convert._convert_bool(elevation)
 
     if extra_info:
         # not checked on backend, check here
@@ -228,11 +231,11 @@ def directions(client,
 
     if optimized:
         # not checked on backend, check here
-        if optimized == 'true' and (bearings or continue_straight == 'true'):
+        if optimized == 'true' and (bearings or continue_straight in (True, 'true')):
             params["optimized"] = 'false'
             print("Set optimized='false' due to incompatible parameter settings.")
         else:
-            params["optimized"] = optimized
+            params["optimized"] = convert._convert_bool(optimized)
     
     if options:
         params['options'] = json.dumps(options)

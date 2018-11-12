@@ -38,12 +38,10 @@ def _comma_list(arg):
     return ",".join(map(str,arg))
 
 
-def _checkBool(boolean):
-    """Check whether passed boolean is a string"""
-    if boolean not in ["true", "false"]:
-        raise ValueError("Give boolean as string 'true' or 'false'.")
+def _convert_bool(boolean):
+    """Convert to stringified boolean"""
         
-    return
+    return str(boolean).lower()
 
 
 def _format_float(arg):
