@@ -20,9 +20,7 @@
 __version__ = "1.1.0"
 
 # Make sure QGIS plugin can import openrouteservice-py
-try:
-    from openrouteservice.client import Client
-except ModuleNotFoundError:
-    pass
+
+from openrouteservice.client import Client
 ## Allow sphinx to pick up these symbols for the documentation.
 #__all__ = ["Client"]
