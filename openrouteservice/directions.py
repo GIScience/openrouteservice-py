@@ -231,7 +231,7 @@ def directions(client,
 
     if optimized:
         # not checked on backend, check here
-        if optimized == 'true' and (bearings or continue_straight in (True, 'true')):
+        if bearings or continue_straight in (True, 'true'):
             params["optimized"] = 'false'
             print("Set optimized='false' due to incompatible parameter settings.")
         else:

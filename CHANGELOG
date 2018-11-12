@@ -1,14 +1,23 @@
-## v1.0
+### v1.1.0
+
+- fix decoding of 2D polylines
+- add support for true booleans
+
+# v1.0
+
 - add Pelias Autocomplete
 - add elevation endpoint
 - proper parameter validation via Cerberus
 
 ## v0.4
+
 - add Pelias geocoding endpoints
 
 ## v0.3
+
 - add options object to directions API
 
 ## v0.2
+
 - Integrate openpoiservice (#1)
 - add dry_run
