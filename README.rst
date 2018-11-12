@@ -1,14 +1,18 @@
-.. image:: https://badge.fury.io/py/openrouteservice.svg
-    :target: https://badge.fury.io/py/openrouteservice
-    :alt: PyPI version
-
 .. image:: https://travis-ci.com/GIScience/openrouteservice-py.svg?branch=master
     :target: https://travis-ci.com/GIScience/openrouteservice-py
     :alt: Build status
 
+.. image:: https://coveralls.io/repos/github/GIScience/openrouteservice-py/badge.svg?branch=master
+    :target: https://coveralls.io/github/GIScience/openrouteservice-py?branch=master
+    :alt: Coveralls coverage
+
 .. image:: https://readthedocs.org/projects/openrouteservice-py/badge/?version=latest
    :target: http://openrouteservice-py.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
+
+.. image:: https://badge.fury.io/py/openrouteservice.svg
+    :target: https://badge.fury.io/py/openrouteservice
+    :alt: PyPI version
 
 
 Quickstart
