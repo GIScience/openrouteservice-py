@@ -13,7 +13,9 @@
 .. image:: https://badge.fury.io/py/openrouteservice.svg
     :target: https://badge.fury.io/py/openrouteservice
     :alt: PyPI version
-
+.. image:: https://anaconda.org/nilsnolde/openrouteservice/badges/installer/conda.svg
+    :target: https://conda.anaconda.org/nilsnolde/openrouteservice
+    :alt: Conda install
 
 Quickstart
 ==================================================
@@ -86,10 +88,9 @@ To install the latest and greatest from source::
 
    	pip install git+git://github.com/GIScience/openrouteservice-py
 
-For ``conda`` users, you can install using ``setuptools`` (required Python package)::
+For ``conda`` users::
 
-	git clone https://github.com/GIScience/openrouteservice-py
-	python setup.py install
+  conda install -c nilsnolde openrouteservice 
 
 This command group will install the library to your global environment. Also works in virtual environments.
 
