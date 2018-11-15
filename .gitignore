@@ -6,8 +6,9 @@ build/
 /docs/build
 test.py
 
-#Spyder
+#IDE
 .spyproject/
+.idea/
 
 cover/
 conda/
