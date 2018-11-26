@@ -91,4 +91,4 @@ def elevation_line(client, format_in, geometry,
               'format_out': format_out,
               'dataset': dataset}    
             
-    return client.request('/elevation/point', {}, post_json=params, dry_run=dry_run)
+    return client.request('/elevation/line', {}, post_json=params, dry_run=dry_run)
