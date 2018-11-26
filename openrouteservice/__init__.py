@@ -17,7 +17,7 @@
 # the License.
 #
 
-__version__ = "1.1.4"
+__version__ = "1.1.5"
 
 # Make sure QGIS plugin can import openrouteservice-py
 
