@@ -20,7 +20,7 @@ def readme():
         return f.read()
 
 setup(name='openrouteservice',
-      version='1.1.5',
+      version='1.1.6',
       description='Python client for requests to openrouteservice API services',
       long_description=readme(),
       classifiers=[
