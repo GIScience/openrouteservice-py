@@ -81,7 +81,7 @@ def isochrones(client, locations,
     :type options: dict
     
     :param intersections: not implented right now.
-    :type intersections: boolean as string
+    :type intersections: boolean
     
     :param dry_run: Print URL and parameters without sending the request.
     :param dry_run: boolean

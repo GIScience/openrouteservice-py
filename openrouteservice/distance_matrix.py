@@ -109,13 +109,13 @@ def distance_matrix(client, locations,
     if metrics:
         params["metrics"] = convert._pipe_list(metrics)
 
-    if resolve_locations:
+    if resolve_locations is not None:
         params["resolve_locations"] = resolve_locations
 
     if units:
         params["units"] = units
 
-    if optimized:
+    if optimized is not None:
         # not checked on backend, check here
         # convert._checkBool(optimized)
         params["optimized"] = optimized
