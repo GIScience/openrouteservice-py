@@ -182,28 +182,28 @@ def directions(client,
     if language:
         params["language"] = language
 
-    if geometry:
+    if geometry is not None:
         # not checked on backend, check here
         params["geometry"] = convert._convert_bool(geometry)
 
     if geometry_format:
         params["geometry_format"] = geometry_format
         
-    if geometry_simplify:
+    if geometry_simplify is not None:
         # not checked on backend, check here
         if extra_info:
             params["geometry_simplify"] = 'false'
         else:
             params["geometry_simplify"] = convert._convert_bool(geometry_simplify)
         
-    if instructions:
+    if instructions is not None:
         # not checked on backend, check here
         params["instructions"] = convert._convert_bool(instructions)
 
     if instructions_format:
         params["instructions_format"] = instructions_format
 
-    if roundabout_exits:
+    if roundabout_exits is not None:
         # not checked on backend, check here
         params["roundabout_exits"] = convert._convert_bool(roundabout_exits)
 
@@ -217,11 +217,11 @@ def directions(client,
     if bearings:
         params["bearings"] = convert._pipe_list([convert._comma_list(pair) for pair in bearings])
         
-    if continue_straight:
+    if continue_straight is not None:
         # not checked on backend, check here
         params["continue_straight"] = convert._convert_bool(continue_straight)
 
-    if elevation:
+    if elevation is not None:
         # not checked on backend, check here
         params["elevation"] = convert._convert_bool(elevation)
 
@@ -229,7 +229,7 @@ def directions(client,
         # not checked on backend, check here
         params["extra_info"] = convert._pipe_list(extra_info)
 
-    if optimized:
+    if optimized is not None:
         # not checked on backend, check here
         if bearings or continue_straight in (True, 'true'):
             params["optimized"] = 'false'
