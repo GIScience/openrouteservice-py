@@ -47,7 +47,7 @@ class Client(object):
 
     def __init__(self, key=None,
                  base_url=_DEFAULT_BASE_URL, 
-                 timeout=None, 
+                 timeout=60,
                  retry_timeout=60, 
                  requests_kwargs=None,
                  queries_per_minute=40,
