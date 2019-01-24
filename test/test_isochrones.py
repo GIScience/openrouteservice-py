@@ -22,7 +22,7 @@ import test as _test
 import openrouteservice
 
 
-class DistanceMatrixTest(_test.TestCase):
+class IsochronesTest(_test.TestCase):
 
     def setUp(self):
         self.key = 'sample_key'
@@ -41,12 +41,13 @@ class DistanceMatrixTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        isochrone = self.client.isochrones(self.coords_valid[0])
+        isochrone = self.client.isochrones(self.coords_valid[0],
+                                           intervals=[60])
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://api.openrouteservice.org/isochrones?api_key={}&'
                             'locations=9.970093%2C48.477473&'
-                            'profile=driving-car&range=60&interval=30'.format(self.key),
+                            'profile=driving-car&range=60&range_type=time'.format(self.key),
                             responses.calls[0].request.url)
 
     @responses.activate
@@ -67,16 +68,6 @@ class DistanceMatrixTest(_test.TestCase):
                                            attributes=['area', 'reachfactor']
                                            )
 
-        iso_parameter = {'locations': [[9.970093, 48.477473], [9.207916, 49.153868]],
-                         'profile': 'cycling-regular',
-                         'range_type': 'distance',
-                         'range': [1000, 2000],
-                         'units': 'm',
-                         'location_type': 'destination',
-                         'attributes': ['area', 'reachfactor'],
-                         'interval': [30]
-                         }
-
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual('https://api.openrouteservice.org/isochrones?api_key={}&'
                             'locations=9.970093%2C48.477473%7C9.207916'
@@ -85,5 +76,5 @@ class DistanceMatrixTest(_test.TestCase):
                             'range_type=distance&range=1000%2C2000&'
                             'units=m&location_type=destination&'
                             'smoothing=0.5&'
-                            'attributes=area|reachfactor&interval=30'.format(self.key),
+                            'attributes=area|reachfactor'.format(self.key),
                             responses.calls[0].request.url)

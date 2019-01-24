@@ -75,9 +75,9 @@ def pelias_search(client, text,
         for details.
     :type layers: list of strings
 
-    :param country: Constrain query by country. Accepts alpha-2 or alpha-3
-        digit ISO-3166 country codes.
-    :type country: list of strings
+    :param country: Constrain query by country. Accepts a alpha-2 or alpha-3
+        digit ISO-3166 country code.
+    :type country: str
 
     :param size: The amount of results returned. Default 10.
     :type size: integer
@@ -125,7 +125,7 @@ def pelias_search(client, text,
         params['layers'] = convert._comma_list(layers)
 
     if country:
-        params['country'] = country
+        params['boundary.country'] = country
 
     if size:
         params['size'] = size
@@ -170,9 +170,9 @@ def pelias_autocomplete(client, text,
     :param rect_max_y: Max latitude by which to constrain request geographically.
     :type rect_max_y: float
 
-    :param country: Constrain query by country. Accepts alpha-2 or alpha-3
+    :param country: Constrain query by country. Accepts a alpha-2 or alpha-3
         digit ISO-3166 country codes.
-    :type country: list of strings
+    :type country: str
 
     :param sources: The originating source of the data. One or more of
         ['osm', 'oa', 'wof', 'gn']. Currently only 'osm', 'wof' and 'gn' are
@@ -345,9 +345,9 @@ def pelias_reverse(client, point,
         for details.
     :type layers: list of strings
 
-    :param country: Constrain query by country. Accepts alpha-2 or alpha-3
+    :param country: Constrain query by country. Accepts a alpha-2 or alpha-3
         digit ISO-3166 country codes.
-    :type country: list of strings
+    :type country: str
 
     :param size: The amount of results returned. Default 10.
     :type size: integer
@@ -377,7 +377,7 @@ def pelias_reverse(client, point,
         params['layers'] = convert._comma_list(layers)
 
     if country:
-        params['country'] = country
+        params['boundary.country'] = country
 
     if size:
         params['size'] = size

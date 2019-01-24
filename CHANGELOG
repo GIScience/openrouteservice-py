@@ -1,3 +1,8 @@
+### v1.1.7
+
+- fix boundary.country for pelias_search (#30)
+- change isochrone defaults (#31)
+
 ### v1.1.6
 
 - fix boolean parameters (#28)
