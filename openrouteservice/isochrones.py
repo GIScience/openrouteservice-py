@@ -22,9 +22,9 @@ from openrouteservice import convert, validator
 
 def isochrones(client, locations,
                profile='driving-car',
-               range_type=None,
-               intervals=[60],
-               segments=30,
+               range_type='time',
+               intervals=None,
+               segments=None,
                units=None,
                location_type=None,
                smoothing=None,
