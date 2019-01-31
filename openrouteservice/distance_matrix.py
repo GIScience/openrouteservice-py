@@ -87,27 +87,18 @@ def distance_matrix(client, locations,
             "sources": sources,
             "destinations": destinations
             }
-    
-    get_params = {}
 
     if profile:
         params["profile"] = profile
-        get_params['profile'] = profile
 
     if sources:
-        if sources == 'all': 
-            params["sources"] = sources
-        else:
-            params["sources"] = convert._comma_list(sources)
+        params["sources"] = sources
 
     if destinations:
-        if destinations == 'all': 
-            params["destinations"] = destinations
-        else:
-            params["destinations"] = convert._comma_list(destinations)
+        params["destinations"] = destinations
 
     if metrics:
-        params["metrics"] = convert._pipe_list(metrics)
+        params["metrics"] = metrics
 
     if resolve_locations is not None:
         params["resolve_locations"] = resolve_locations
@@ -116,9 +107,6 @@ def distance_matrix(client, locations,
         params["units"] = units
 
     if optimized is not None:
-        # not checked on backend, check here
-        # convert._checkBool(optimized)
         params["optimized"] = optimized
 
-
-    return client.request("/matrix", get_params, post_json=params, dry_run=dry_run) 
+    return client.request("/v2/matrix/" + profile + '/json', {}, post_json=params, dry_run=dry_run)

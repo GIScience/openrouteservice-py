@@ -29,8 +29,7 @@ class DirectionsTest(_test.TestCase):
             
     def setUp(self):
         self.key = 'sample_key'
-        self.client = openrouteservice.Client(self.key)
-        self.coords_valid = ((8.34234,48.23424),(8.34423,48.26424))
+        self.client = openrouteservice.Client(self.key, base_url='http://129.206.5.136:8080/ors')
 
     @responses.activate
     def test_simple_directions(self):

@@ -25,6 +25,7 @@ from datetime import datetime
 from datetime import timedelta
 import functools
 import requests
+import json
 import random
 import time
 import collections
@@ -46,7 +47,7 @@ class Client(object):
     """Performs requests to the ORS API services."""
 
     def __init__(self, key=None,
-                 base_url=_DEFAULT_BASE_URL, 
+                 base_url='http://129.206.5.136:8080/ors',
                  timeout=60,
                  retry_timeout=60, 
                  requests_kwargs=None,
@@ -85,35 +86,40 @@ class Client(object):
         self.session = requests.Session()
         self.key = key
         self.base_url = base_url
-        
+
+        if self.base_url == _DEFAULT_BASE_URL and key is None:
+            raise ValueError("No API key was specified. Please visit https://openrouteservice.org/sign-up to create one.")
+
         self.timeout = timeout
         self.retry_over_query_limit = retry_over_query_limit
         self.retry_timeout = timedelta(seconds=retry_timeout)
         self.requests_kwargs = requests_kwargs or {}
         self.requests_kwargs.update({
             "headers": {"User-Agent": _USER_AGENT,
-                        'Content-type': 'application/json'},
-            "timeout": self.timeout
+                        'Content-type': 'application/json',
+                        "Authorization": self.key},
+            "timeout": self.timeout,
         })
 
         self.queries_per_minute = queries_per_minute
         self.sent_times = collections.deque("", queries_per_minute)
 
-    def request(self, 
-                 url, params, 
-                 first_request_time=None, 
-                 retry_counter=0,
-                 requests_kwargs=None, 
-                 post_json=None,
-                 dry_run=None):
+    def request(self,
+                url,
+                get_params=None,
+                first_request_time=None,
+                retry_counter=0,
+                requests_kwargs=None,
+                post_json=None,
+                dry_run=None):
         """Performs HTTP GET/POST with credentials, returning the body as
         JSON.
 
         :param url: URL path for the request. Should begin with a slash.
         :type url: string
 
-        :param params: HTTP GET parameters.
-        :type params: dict or list of key/value tuples
+        :param get_params: HTTP GET parameters.
+        :type get_params: dict or list of key/value tuples
 
         :param first_request_time: The time of the first request (None if no
             retries have occurred).
@@ -158,7 +164,7 @@ class Client(object):
             time.sleep(delay_seconds * (random.random() + 0.5))
 
         authed_url = self._generate_auth_url(url,
-                                             params,
+                                             get_params,
                                              )
 
         # Default to the client-level self.requests_kwargs, with method-level
@@ -187,7 +193,7 @@ class Client(object):
         # Only print URL and parameters for dry_run
         if dry_run:
             print("url:\n{}\nParameters:\n{}".format(self.base_url+authed_url,
-                                                    final_requests_kwargs))
+                                                    json.dumps(final_requests_kwargs)))
             return
         
         try:
@@ -195,15 +201,15 @@ class Client(object):
                                        **final_requests_kwargs)
         except requests.exceptions.Timeout:
             raise exceptions.Timeout()
-        except Exception as e:
-            raise exceptions.TransportError(e)
+        # except Exception as e:
+        #     raise exceptions.TransportError(e)
 
         if response.status_code in _RETRIABLE_STATUSES:
             # Retry request.
             print('Server down.\nRetrying for the {}th time.'.format(retry_counter + 1))
             
-            return self.request(url, params, first_request_time,
-                                 retry_counter + 1, requests_kwargs, post_json)
+            return self.request(url, get_params, first_request_time,
+                                retry_counter + 1, requests_kwargs, post_json)
 
         try:
             result = self._get_body(response)
@@ -215,11 +221,9 @@ class Client(object):
             
             print('Rate limit exceeded.\nRetrying for the {}th time.'.format(retry_counter + 1))
             # Retry request.
-            return self.request(url, params, first_request_time,
-                                 retry_counter + 1, requests_kwargs,
-                                 post_json)
-        except:
-            raise
+            return self.request(url, get_params, first_request_time,
+                                retry_counter + 1, requests_kwargs,
+                                post_json)
 
 
     def _get_body(self, response):        
@@ -254,17 +258,7 @@ class Client(object):
         if type(params) is dict:
             params = sorted(dict(**params).items())
         
-        # Only auto-add API key when using ORS. If own instance, API key must
-        # be explicitly added to params
-        if self.key:
-            params.append(("api_key", self.key))
-            return path + "?" + _urlencode_params(params)
-        elif self.base_url != _DEFAULT_BASE_URL:
-            return path + "?" + _urlencode_params(params)
-
-        raise ValueError("No API key specified. "
-                         "Visit https://go.openrouteservice.org/dev-dashboard/ "
-                         "to create one.")
+        return path + "?" + _urlencode_params(params)
 
 
 from openrouteservice.directions import directions

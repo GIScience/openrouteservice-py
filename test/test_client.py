@@ -133,7 +133,7 @@ class ClientTest(_test.TestCase):
                       content_type='application/json')
         
         client = openrouteservice.Client(key=self.key)
-        req = client.request(params={'format_out': 'geojson'},
+        req = client.request(get_params={'format_out': 'geojson'},
                              url='directions/',
                              dry_run='true')
         

@@ -19,14 +19,13 @@
 
 """Performs requests to the ORS directions API."""
 
-import json
-
-from openrouteservice import convert, validator
+from openrouteservice import convert, validator, deprecation
 
 def directions(client,
                coordinates,
                profile='driving-car',
                format_out=None,
+               format='json',
                preference=None,
                units=None,
                language=None,
@@ -43,7 +42,7 @@ def directions(client,
                continue_straight=None,
                elevation=None,
                extra_info=None,
-               optimized=True,
+               optimized=None,
                options=None,
                dry_run=None):
     """Get directions between an origin point and a destination point.
@@ -136,7 +135,7 @@ def directions(client,
     :type elevation: boolean
 
     :param extra_info: Returns additional information on ["steepness", "suitability",
-        "surface", "waycategory", "waytype", "tollways", "traildifficulty"].
+        "surface", "waycategory", "waytype", "tollways", "traildifficulty", "roadaccessrestrictions"].
         Must be a list of strings. Default None.
     :type extra_info: list or tuple of strings
 
@@ -161,17 +160,16 @@ def directions(client,
     
     validator.validator(locals(), 'directions')
 
-    params = {
-        "coordinates": convert._build_coords(coordinates)
-        }
+    params = {"coordinates": coordinates}
 
     if profile:
-        # NOTE(broady): the mode parameter is not validated by the Maps API
-        # server. Check here to prevent silent failures.
         params["profile"] = profile
 
     if format_out:
-        params["format"] = format_out
+        deprecation.warning('format_out', 'format')
+
+    format = format_out or format
+    params['format'] = format
 
     if preference:
         params["preference"] = preference
@@ -183,8 +181,7 @@ def directions(client,
         params["language"] = language
 
     if geometry is not None:
-        # not checked on backend, check here
-        params["geometry"] = convert._convert_bool(geometry)
+        params["geometry"] = geometry
 
     if geometry_format:
         params["geometry_format"] = geometry_format
@@ -192,52 +189,45 @@ def directions(client,
     if geometry_simplify is not None:
         # not checked on backend, check here
         if extra_info:
-            params["geometry_simplify"] = 'false'
+            params["geometry_simplify"] = False
         else:
-            params["geometry_simplify"] = convert._convert_bool(geometry_simplify)
+            params["geometry_simplify"] = geometry_simplify
         
     if instructions is not None:
-        # not checked on backend, check here
-        params["instructions"] = convert._convert_bool(instructions)
+        params["instructions"] = instructions
 
     if instructions_format:
         params["instructions_format"] = instructions_format
 
     if roundabout_exits is not None:
-        # not checked on backend, check here
-        params["roundabout_exits"] = convert._convert_bool(roundabout_exits)
+        params["roundabout_exits"] = roundabout_exits
 
     if attributes:
-        # not checked on backend, check here
-        params["attributes"] = convert._pipe_list(attributes)
+        params["attributes"] = attributes
         
     if radiuses:
-        params["radiuses"] = convert._pipe_list(radiuses)
+        params["radiuses"] = radiuses
         
     if bearings:
-        params["bearings"] = convert._pipe_list([convert._comma_list(pair) for pair in bearings])
+        params["bearings"] = bearings
         
     if continue_straight is not None:
-        # not checked on backend, check here
-        params["continue_straight"] = convert._convert_bool(continue_straight)
+        params["continue_straight"] = continue_straight
 
     if elevation is not None:
-        # not checked on backend, check here
-        params["elevation"] = convert._convert_bool(elevation)
+        params["elevation"] = elevation
 
     if extra_info:
-        # not checked on backend, check here
-        params["extra_info"] = convert._pipe_list(extra_info)
+        params["extra_info"] = extra_info
 
     if optimized is not None:
-        # not checked on backend, check here
         if bearings or continue_straight in (True, 'true'):
             params["optimized"] = 'false'
             print("Set optimized='false' due to incompatible parameter settings.")
         else:
-            params["optimized"] = convert._convert_bool(optimized)
+            params["optimized"] = optimized
     
     if options:
-        params['options'] = json.dumps(options)
+        params['options'] = options
 
-    return client.request("/directions", params, dry_run=dry_run)
+    return client.request("/v2/directions/" + profile + '/' + format, {}, post_json=params, dry_run=dry_run)

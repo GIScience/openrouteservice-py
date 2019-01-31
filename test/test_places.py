@@ -24,7 +24,7 @@ import test as _test
 import openrouteservice
 from test.test_helper import *
 
-class DistanceMatrixTest(_test.TestCase):
+class PlacesTest(_test.TestCase):
 
     def setUp(self):
         self.key = 'sample_key'
@@ -35,7 +35,7 @@ class DistanceMatrixTest(_test.TestCase):
         query = ENDPOINT_DICT['pois']
         responses.add(responses.POST,
                       'https://api.openrouteservice.org/pois',
-                      json= query,
+                      json=query,
                       status=200,
                       content_type='application/json')
         

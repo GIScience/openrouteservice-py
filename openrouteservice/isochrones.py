@@ -17,14 +17,16 @@
 
 """Performs requests to the ORS isochrones API."""
 
-from openrouteservice import convert, validator
+from openrouteservice import convert, validator, deprecation
 
 
 def isochrones(client, locations,
                profile='driving-car',
                range_type='time',
+               range=None,
                intervals=None,
                segments=None,
+               interval=None,
                units=None,
                location_type=None,
                smoothing=None,
@@ -48,16 +50,22 @@ def isochrones(client, locations,
         Default 'time'.
     :type sources: string
 
-    :param intervals: Ranges to calculate distances/durations for. This can be
+    :param intervals: [SOON DEPRECATED] replaced by `range`.
+    :type intervals: list of integer(s)
+
+    :param range: Ranges to calculate distances/durations for. This can be
         a list of multiple ranges, e.g. [600, 1200, 1400] or a single value list.
         In the latter case, you can also specify the 'segments' variable to break
         the single value into more isochrones. In meters or seconds. Default [60].
-    :type intervals: list of integer(s)
+    :type range: list of integer(s)
 
-    :param segments: Segments isochrones or equidistants for one 'intervals' value.
+    :param segments: [SOON DEPRECATED] replaced by `interval`.
+    :type segments: integer
+
+    :param interval: Segments isochrones or equidistants for one 'intervals' value.
         Only has effect if used with a single value 'intervals' parameter.
         In meters or seconds. Default 20.
-    :type segments: integer
+    :type interval: integer
 
     :param units: Specifies the unit system to use when displaying results.
         One of ["m", "km", "m"]. Default "m".
@@ -94,7 +102,7 @@ def isochrones(client, locations,
     validator.validator(locals(), 'isochrones')
 
     params = {
-        "locations": convert._build_coords(locations)
+        "location": locations
     }
 
     if profile:
@@ -104,23 +112,28 @@ def isochrones(client, locations,
         params["range_type"] = range_type
 
     if intervals:
-        params["range"] = convert._comma_list(intervals)
+        deprecation.warning('intervals', 'range')
+
+    range = range or intervals
+    params['range'] = range
 
     if segments:
-        params["interval"] = str(segments)
+        deprecation.warning('segments', 'interval')
+
+    interval = interval or segments
+    if interval:
+        params['interval'] = interval
         
     if units:
-        # if units and (range_type == None or range_type == 'time'):
-        #     raise ValueError("For range_type time, units cannot be specified.")
         params["units"] = units
 
     if location_type:
         params["location_type"] = location_type
 
     if smoothing:
-        params["smoothing"] = convert._format_float(smoothing)
+        params["smoothing"] = smoothing
 
     if attributes:
-        params["attributes"] = convert._pipe_list(attributes)
+        params["attributes"] = attributes
 
-    return client.request("/isochrones", params, dry_run=dry_run)
+    return client.request("/v2/isochrones/" + profile + '/geojson', {}, post_json=params, dry_run=dry_run)

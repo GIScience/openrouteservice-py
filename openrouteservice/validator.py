@@ -40,7 +40,7 @@ def validator(args, function):
     """
     
     # Sanitize locals() variables
-    args = {arg: args[arg] for arg in args if arg!='client' and args[arg] is not None}
+    args = {arg: args[arg] for arg in args if arg != 'client' and args[arg] is not None}
         
     if function == 'directions':
         coords_len = len(args['coordinates'])
@@ -69,9 +69,8 @@ def validator(args, function):
 
 def _directions_validation(params, coords_len):
     schema = {
-        'coordinates': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
-                                  {'type': ['list', 'tuple'],
-                                   'schema': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}}}],
+        'coordinates': {'type': ['list', 'tuple'],
+                        'schema': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
                         'required': True},
         'profile': {'type': 'string',
                     'allowed': ['driving-car', 'driving-hgv', 'foot-walking', 'foot-hiking', 'cycling-regular',
@@ -79,6 +78,7 @@ def _directions_validation(params, coords_len):
                                 'cycling-electric'], 'required': True},
         'preference': {'type': 'string', 'allowed': ['fastest', 'shortest', 'recommended'], 'default': 'fastest'},
         'format_out': {'type': 'string', 'allowed': ['json', 'geojson', 'gpx'], 'default': 'json'},
+        'format': {'type': 'string', 'allowed': ['json', 'geojson', 'gpx'], 'default': 'json'},
         'units': {'type': 'string', 'allowed': ['m', 'km', 'mi'], 'default': 'm'},
         'language': {'type': 'string',
                      'allowed': ['en', 'de', 'cn', 'es', 'ru', 'dk', 'fr', 'it', 'nl', 'br', 'se', 'tr', 'gr'],
@@ -104,7 +104,8 @@ def _directions_validation(params, coords_len):
                 ]},
         'attributes': {'type': ['list', 'tuple'], 'schema': {'type': 'string',
                                                              'allowed': ['avgspeed',
-                                                                         'detourfactor', 'percentage']}},
+                                                                         'detourfactor',
+                                                                         'percentage']}},
         'maneuvers': {'anyof': [
                 {'type': 'string', 'allowed': ['true', 'false']},
                 {'type': 'boolean'}
@@ -136,9 +137,10 @@ def _directions_validation(params, coords_len):
                                                                          'surface',
                                                                          'waycategory', 'waytype',
                                                                          'tollways',
-                                                                         'traildifficulty']}},
+                                                                         'traildifficulty',
+                                                                         'roadaccessrestrictions']}},
         'optimized': {'anyof': [
-                        {'type': 'string', 'allowed': ['true', 'false']},
+                        {'type': 'string', 'allowed': ['false', 'true']},
                         {'type': 'boolean'}
                         ]},
         'options': {'type': 'dict', 'schema': {'maximum_speed': {'type': 'integer'},
@@ -268,8 +270,11 @@ def _isochrones_validation(params):
                                 'cycling-road', 'cycling-safe', 'cycling-mountain', 'cycling-tour',
                                 'cycling-electric'], 'default': 'driving-car', 'required': True},
         'range_type': {'type': 'string', 'allowed': ['time', 'distance'], 'default': 'time'},
-        'intervals': {'type': ['list', 'tuple'], 'schema': {'type': 'integer'}, 'required': True},
+        'intervals': {'type': ['list', 'tuple'], 'schema': {'type': 'integer'}},
+        'range': {'type': ['list', 'tuple'], 'schema': {'type': 'integer'}},
         'segments': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'integer'}},
+                               {'type': 'integer'}]},
+        'interval': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'integer'}},
                                {'type': 'integer'}]},
         'units': {'type': 'string', 'allowed': ['m', 'km', 'mi'], 'default': 'm'},
         'location_type': {'type': 'string', 'allowed': ['start', 'destination'], 'default': 'start'},
