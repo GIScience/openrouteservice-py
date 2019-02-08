@@ -143,24 +143,18 @@ def _directions_validation(params, coords_len):
                         {'type': 'string', 'allowed': ['false', 'true']},
                         {'type': 'boolean'}
                         ]},
-        'options': {'type': 'dict', 'schema': {'maximum_speed': {'type': 'integer'},
-                                               'avoid_features': {'type': 'list', 'schema': {'type': 'string',
+        'options': {'type': 'dict', 'schema': {'avoid_features': {'type': 'list', 'schema': {'type': 'string',
                                                                                              'allowed': ['highways',
                                                                                                          'tollways',
                                                                                                          'ferries',
-                                                                                                         'tunnels',
-                                                                                                         'pavedroads',
-                                                                                                         'unpavedroads',
-                                                                                                         'tracks',
                                                                                                          'fords',
-                                                                                                         'steps',
-                                                                                                         'hills']}
+                                                                                                         'steps']}
                                                                   },
                                                'avoid_borders': {'type': 'string',
                                                                  'allowed': ['all', 'controlled'],
                                                                  'dependencies': {
                                                                      '^profile': ['driving-car', 'driving-hgv']}},
-                                               'avoid_countries': {'schema': {'type': 'string'},
+                                               'avoid_countries': {'schema': {'type': 'integer'},
                                                                    'dependencies': {
                                                                        '^profile': ['driving-car', 'driving-hgv']}},
                                                'vehicle_type': {'type': 'string',
@@ -171,15 +165,15 @@ def _directions_validation(params, coords_len):
                                                'profile_params': {'type': 'dict', 'schema': {
                                                    'weightings': {'type': 'dict', 'schema': {
                                                        'steepness_difficulty': {'type': 'dict', 'schema': {
-                                                           'level': {'type': 'integer', 'min': 0,
+                                                           'level': {'type': 'integer', 'min1': 0,
                                                                      'max': 3}},
-                                                                                'dependencies': {
-                                                                                    '^profile': ['cycling-regular',
-                                                                                                 'cycling-road',
-                                                                                                 'cycling-safe',
-                                                                                                 'cycling-mountain',
-                                                                                                 'cycling-tour',
-                                                                                                 'cycling-electric']}},
+                                                                    'dependencies': {
+                                                                        '^profile': ['cycling-regular',
+                                                                                     'cycling-road',
+                                                                                     'cycling-safe',
+                                                                                     'cycling-mountain',
+                                                                                     'cycling-tour',
+                                                                                     'cycling-electric']}},
                                                        'green': {'type': 'dict', 'schema': {
                                                            'factor': {'type': 'float', 'min': 0,
                                                                       'max': 1}},
@@ -408,12 +402,8 @@ def _distance_matrix_validation(params, coords_len):
                     'allowed': ['driving-car', 'driving-hgv', 'foot-walking', 'foot-hiking', 'cycling-regular',
                                 'cycling-road', 'cycling-safe', 'cycling-mountain', 'cycling-tour',
                                 'cycling-electric'], 'default': 'driving-car', 'required': True},
-        'sources': {'anyof': [
-            {'type': 'list', 'schema': {'type': 'integer', 'min': 0, 'max': coords_len - 1}},
-            {'type': 'string', 'allowed': ['all']}]},
-        'destinations': {'anyof': [
-            {'type': 'list', 'schema': {'type': 'integer', 'min': 0, 'max': coords_len - 1}},
-            {'type': 'string', 'allowed': ['all']}]},
+        'sources': {'type': 'list', 'schema': {'type': 'integer', 'min': 0, 'max': coords_len - 1}},
+        'destinations': {'type': 'list', 'schema': {'type': 'integer', 'min': 0, 'max': coords_len - 1}},
         'metrics': {'type': 'list', 'schema': {'type': 'string'}, 'allowed': ['distance', 'duration']},
         'resolve_locations': {'anyof': [
                                     {'type': 'string', 'allowed': ['true', 'false']},
