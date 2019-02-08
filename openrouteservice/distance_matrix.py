@@ -24,8 +24,8 @@ from openrouteservice import convert, validator
 
 def distance_matrix(client, locations,
                     profile='driving-car',
-                    sources='all',
-                    destinations='all',
+                    sources=None,
+                    destinations=None,
                     metrics=None,
                     resolve_locations=None,
                     units=None,
@@ -45,12 +45,12 @@ def distance_matrix(client, locations,
     :type profile: string
 
     :param sources: A list of indices that refer to the list of locations
-        (starting with 0) or 'all'. Default 'all'.
-    :type sources: One or more indices inside a list; or 'all' (string).
+        (starting with 0). If not passed, all indices are considered.
+    :type sources: list or tuple
 
     :param destinations: A list of indices that refer to the list of locations
-        (starting with 0) or 'all'. Default 'all'.
-    :type destinations: One or more indices inside a list; or 'all' (string).
+        (starting with 0). If not passed, all indices are considered.
+    :type destinations: list or tuple
 
     :param metrics: Specifies a list of returned metrics. One or more of ["distance",
         "duration"]. Default ['duration'].
