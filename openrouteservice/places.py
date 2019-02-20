@@ -28,6 +28,7 @@ def places(client, request,
                 filters_custom=None,
                 limit=None,
                 sortby=None,
+                validate=True,
                 dry_run=None
                     ):
     """ Gets POI's filtered by specified parameters.
@@ -78,7 +79,8 @@ def places(client, request,
     :rtype: call to Client.request()
     """
 
-    validator.validator(locals(), 'pois')
+    if validate:
+        validator.validator(locals(), 'pois')
     
     params = {'request': request,
               'filters': dict(),

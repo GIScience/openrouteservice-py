@@ -21,48 +21,23 @@
 import responses
 import test as _test
 
-import openrouteservice
-from test.test_helper import *
+from test.test_helper import ENDPOINT_DICT, PARAM_LINE
+
 
 class DistanceMatrixTest(_test.TestCase):
 
-    def setUp(self):
-        self.key = 'sample_key'
-        self.client = openrouteservice.Client(self.key, base_url="http://129.206.5.136:8080/ors", requests_kwargs={'verify': False})
-        self.valid_query = ENDPOINT_DICT['distance_matrix']
+    valid_query = ENDPOINT_DICT['distance_matrix']
 
     @responses.activate
-    def test_all_params(self):
-        query = self.valid_query
-        
+    def test_matrix(self):
+        query = self.valid_query.copy()
+        query['locations'] = tuple([tuple(x) for x in PARAM_LINE])
+
         responses.add(responses.POST,
                       'https://api.openrouteservice.org/v2/matrix/{}/json'.format(query['profile']),
                       json=query,
                       status=200,
                       content_type='application/json')
 
-        #TODO: how does the API call work here?! Can I get the header from resp?
         resp = self.client.distance_matrix(**query)
-
-        self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('https://api.openrouteservice.org/v2/matrix/{}/json'.format(query['profile']),
-                            responses.calls[0].request.url)
-        self.assertEqual(resp, self.valid_query)
-
-    @responses.activate
-    def test_tuple_parameter(self):
-        query = self.valid_query
-        query['locations'] = tuple([tuple(x) for x in PARAM_LINE])
-
-        responses.add(responses.POST,
-                      'https://api.openrouteservice.org/matrix',
-                      json=query,
-                      status=200,
-                      content_type='application/json')
-
-        resp = self.client.distance_matrix(**query)
-
-        print(resp)
-        print(responses.calls[0])
-
         self.assertEqual(resp, self.valid_query)

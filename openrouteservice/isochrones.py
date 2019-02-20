@@ -17,7 +17,7 @@
 
 """Performs requests to the ORS isochrones API."""
 
-from openrouteservice import convert, validator, deprecation
+from openrouteservice import validator, deprecation
 
 
 def isochrones(client, locations,
@@ -31,8 +31,8 @@ def isochrones(client, locations,
                location_type=None,
                smoothing=None,
                attributes=None,
-               # options=None,
                intersections=None,
+               validate=True,
                dry_run=None):
     """ Gets travel distance and time for a matrix of origins and destinations.
 
@@ -55,16 +55,16 @@ def isochrones(client, locations,
 
     :param range: Ranges to calculate distances/durations for. This can be
         a list of multiple ranges, e.g. [600, 1200, 1400] or a single value list.
-        In the latter case, you can also specify the 'segments' variable to break
-        the single value into more isochrones. In meters or seconds. Default [60].
+        In the latter case, you can also specify the 'interval' variable to break
+        the single value into more isochrones. In meters or seconds.
     :type range: list of integer(s)
 
     :param segments: [SOON DEPRECATED] replaced by `interval`.
     :type segments: integer
 
-    :param interval: Segments isochrones or equidistants for one 'intervals' value.
-        Only has effect if used with a single value 'intervals' parameter.
-        In meters or seconds. Default 20.
+    :param interval: Segments isochrones or equidistants for one 'range' value.
+        Only has effect if used with a single value 'range' value.
+        In meters or seconds.
     :type interval: integer
 
     :param units: Specifies the unit system to use when displaying results.
@@ -84,9 +84,6 @@ def isochrones(client, locations,
         'total_pop' returns population statistics from https://ghsl.jrc.ec.europa.eu/about.php.
         One or more of ['area', 'reachfactor', 'total_pop']. Default 'area'.
     :type attributes: list of string(s)
-
-    :param options: not implemented right now.
-    :type options: dict
     
     :param intersections: not implented right now.
     :type intersections: boolean
@@ -99,10 +96,11 @@ def isochrones(client, locations,
     :rtype: call to Client.request()
     """
 
-    validator.validator(locals(), 'isochrones')
+    if validate:
+        validator.validator(locals(), 'isochrones')
 
     params = {
-        "location": locations
+        "locations": locations
     }
 
     if profile:

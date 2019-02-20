@@ -19,7 +19,7 @@
 
 """Performs requests to the ORS directions API."""
 
-from openrouteservice import convert, validator, deprecation
+from openrouteservice import validator, deprecation
 
 def directions(client,
                coordinates,
@@ -30,20 +30,21 @@ def directions(client,
                units=None,
                language=None,
                geometry=None,
-               geometry_format=None,
                geometry_simplify=None,
                instructions=None,
                instructions_format=None,
                roundabout_exits=None,
                attributes=None,
-               # maneuvers=None,
+               maneuvers=None,
                radiuses=None,
                bearings=None,
                continue_straight=None,
                elevation=None,
                extra_info=None,
+               suppress_warnings=None,
                optimized=None,
                options=None,
+               validate=True,
                dry_run=None):
     """Get directions between an origin point and a destination point.
 
@@ -59,6 +60,10 @@ def directions(client,
         "cycling-safe", "cycling-mountain", "cycling-tour",
         "cycling-electric",]. Default "driving-car".
     :type mode: string
+
+    :param format: Specifies the response format. One of ['json', 'geojson', 'gpx'].
+        The GPX schema the response is validated against can be found here:
+        https://raw.githubusercontent.com/GIScience/openrouteservice-schema/master/gpx/v1/ors-gpx.xsd.
 
     :param preference: Specifies the routing preference. One of ["fastest, "shortest",
         "recommended"]. Default "fastest".
@@ -76,10 +81,6 @@ def directions(client,
 
     :param geometry: Specifies whether geometry should be returned. Default True.
     :type geometry: boolean
-
-    :param geometry_format: Specifies which geometry format should be returned.
-        One of ["encodedpolyline", "geojson", "polyline"]. Default: "encodedpolyline".
-    :type geometry_format: string
 
     :param geometry_simplify: Specifies whether to simplify the geometry.
         Default False.
@@ -101,6 +102,9 @@ def directions(client,
     :param attributes: Returns route attributes on ["avgspeed", "detourfactor", "percentage"].
         Must be a list of strings. Default None.
     :type attributes: list or tuple of strings
+
+    :param maneuvers: Specifies whether the maneuver object is included into the step object or not. Default: false.
+    :type maneuvers bool
 
     :param radiuses: A list of maximum distances (measured in
         meters) that limit the search of nearby road segments to every given waypoint.
@@ -139,14 +143,20 @@ def directions(client,
         Must be a list of strings. Default None.
     :type extra_info: list or tuple of strings
 
-    :param optimized: If set True, uses Contraction Hierarchies.
-        Default True.
-    :type optimized: boolean
+    :param suppress_warnings: Tells the system to not return any warning messages and corresponding extra_info.
+        For false the extra information can still be explicitly requested by adding it with the extra_info parameter.
+    :type suppress_warnings: bool
+
+    :param optimized: If set False, forces to not use Contraction Hierarchies.
+    :type optimized: bool
 
     :param options: Refer to https://go.openrouteservice.org/documentation for
         detailed documentation. Construct your own dict() following the example
         of the minified options object. Will be converted to json automatically.
     :type options: dict
+
+    :param validate: Specifies whether parameters should be validated. Default True.
+    :type validate: bool
     
     :param dry_run: Print URL and parameters without sending the request.
     :param dry_run: boolean
@@ -154,22 +164,19 @@ def directions(client,
     :raises ValueError: When parameter has wrong value.
     :raises TypeError: When parameter is of wrong type.
 
-    :returns: sanitized set of pararmeters
+    :returns: sanitized set of parameters
     :rtype: call to Client.request()
     """
-    
-    validator.validator(locals(), 'directions')
+
+    if validate:
+        validator.validator(locals(), 'directions')
 
     params = {"coordinates": coordinates}
-
-    if profile:
-        params["profile"] = profile
 
     if format_out:
         deprecation.warning('format_out', 'format')
 
     format = format_out or format
-    params['format'] = format
 
     if preference:
         params["preference"] = preference
@@ -182,9 +189,6 @@ def directions(client,
 
     if geometry is not None:
         params["geometry"] = geometry
-
-    if geometry_format:
-        params["geometry_format"] = geometry_format
         
     if geometry_simplify is not None:
         # not checked on backend, check here
@@ -207,6 +211,9 @@ def directions(client,
         
     if radiuses:
         params["radiuses"] = radiuses
+
+    if maneuvers is not None:
+        params['maneuvers'] = maneuvers
         
     if bearings:
         params["bearings"] = bearings
@@ -220,8 +227,11 @@ def directions(client,
     if extra_info:
         params["extra_info"] = extra_info
 
+    if suppress_warnings is not None:
+        params['suppress_warnings'] = suppress_warnings
+
     if optimized is not None:
-        if bearings or continue_straight in (True, 'true'):
+        if (bearings or continue_straight) and optimized in (True, 'true'):
             params["optimized"] = 'false'
             print("Set optimized='false' due to incompatible parameter settings.")
         else:

@@ -47,14 +47,14 @@ class Client(object):
     """Performs requests to the ORS API services."""
 
     def __init__(self, key=None,
-                 base_url='http://129.206.5.136:8080/ors',
+                 base_url=_DEFAULT_BASE_URL,
                  timeout=60,
                  retry_timeout=60, 
                  requests_kwargs=None,
                  queries_per_minute=40,
                  retry_over_query_limit=False):
         """
-        :param key: ORS API key. Required.
+        :param key: ORS API key.
         :type key: string
 
         :param base_url: The base URL for the request. Defaults to the ORS API
@@ -69,6 +69,12 @@ class Client(object):
             seconds.
         :type retry_timeout: int
 
+        :param requests_kwargs: Extra keyword arguments for the requests
+            library, which among other things allow for proxy auth to be
+            implemented. See the official requests docs for more info:
+            http://docs.python-requests.org/en/latest/api/#main-interface
+        :type requests_kwargs: dict
+
         :param queries_per_minute: Number of queries per second permitted.
             If the rate limit is reached, the client will sleep for the
             appropriate amount of time before it runs the current query.
@@ -76,11 +82,8 @@ class Client(object):
             trouble of raised exceptions.
         :type queries_per_second: int
 
-        :param requests_kwargs: Extra keyword arguments for the requests
-            library, which among other things allow for proxy auth to be
-            implemented. See the official requests docs for more info:
-            http://docs.python-requests.org/en/latest/api/#main-interface
-        :type requests_kwargs: dict
+        :param retry_over_query_limit: If True, the client will retry when query
+            limit is reached (HTTP 429). Default False.
         """
 
         self.session = requests.Session()
@@ -103,6 +106,8 @@ class Client(object):
 
         self.queries_per_minute = queries_per_minute
         self.sent_times = collections.deque("", queries_per_minute)
+
+        self.req = None
 
     def request(self,
                 url,
@@ -179,11 +184,10 @@ class Client(object):
             elapsed_since_earliest = time.time() - self.sent_times[0]
             if elapsed_since_earliest < 60:
                 print("Request limit of {} per minute exceeded. Wait for {} seconds".format(self.queries_per_minute, 
-                                                                                              60 - elapsed_since_earliest))
+                                                                                            60 - elapsed_since_earliest))
                 time.sleep(60 - elapsed_since_earliest)
         
         # Determine GET/POST.
-        # post_json is so far only sent from matrix call
         requests_method = self.session.get
         
         if post_json is not None:
@@ -192,17 +196,17 @@ class Client(object):
         
         # Only print URL and parameters for dry_run
         if dry_run:
-            print("url:\n{}\nParameters:\n{}".format(self.base_url+authed_url,
-                                                    json.dumps(final_requests_kwargs)))
+            print("url:\n{}\nHeaders:\n{}".format(self.base_url+authed_url,
+                                                                   json.dumps(final_requests_kwargs, indent=2)))
             return
         
         try:
             response = requests_method(self.base_url + authed_url,
                                        **final_requests_kwargs)
+            self.req = response.request
+
         except requests.exceptions.Timeout:
             raise exceptions.Timeout()
-        # except Exception as e:
-        #     raise exceptions.TransportError(e)
 
         if response.status_code in _RETRIABLE_STATUSES:
             # Retry request.
@@ -214,6 +218,7 @@ class Client(object):
         try:
             result = self._get_body(response)
             self.sent_times.append(time.time())
+
             return result
         except exceptions._RetriableRequest as e:
             if isinstance(e, exceptions._OverQueryLimit) and not self.retry_over_query_limit:
@@ -225,7 +230,6 @@ class Client(object):
                                 retry_counter + 1, requests_kwargs,
                                 post_json)
 
-
     def _get_body(self, response):        
         body = response.json()
 #        error = body.get('error')
@@ -233,10 +237,14 @@ class Client(object):
         
         if status_code == 429:
             raise exceptions._OverQueryLimit(
-                str(status_code), body)
+                status_code,
+                body
+            )
         if status_code != 200:
-            raise exceptions.ApiError(status_code,
-                                                       body)
+            raise exceptions.ApiError(
+                status_code,
+                body
+            )
 
         return body
 

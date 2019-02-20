@@ -21,14 +21,9 @@
 import responses
 import test as _test
 
-import openrouteservice
-from test.test_helper import *
+from test.test_helper import ENDPOINT_DICT
 
 class PlacesTest(_test.TestCase):
-
-    def setUp(self):
-        self.key = 'sample_key'
-        self.client = openrouteservice.Client(self.key)
         
     @responses.activate
     def test_pois(self):        
@@ -42,5 +37,4 @@ class PlacesTest(_test.TestCase):
         resp = self.client.places(**query)
         
         self.assertEquals(len(responses.calls), 1)
-        self.assertURLEqual('https://api.openrouteservice.org/pois?api_key={}'.format(self.key),
-                            responses.calls[0].request.url)        
+        self.assertEqual(resp, query)

@@ -38,7 +38,7 @@ def validator(args, function):
     
     :raises: ValidationError    
     """
-    
+    # return
     # Sanitize locals() variables
     args = {arg: args[arg] for arg in args if arg != 'client' and args[arg] is not None}
         
@@ -69,183 +69,614 @@ def validator(args, function):
 
 def _directions_validation(params, coords_len):
     schema = {
-        'coordinates': {'type': ['list', 'tuple'],
-                        'schema': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
-                        'required': True},
-        'profile': {'type': 'string',
-                    'allowed': ['driving-car', 'driving-hgv', 'foot-walking', 'foot-hiking', 'cycling-regular',
-                                'cycling-road', 'cycling-safe', 'cycling-mountain', 'cycling-tour',
-                                'cycling-electric'], 'required': True},
-        'preference': {'type': 'string', 'allowed': ['fastest', 'shortest', 'recommended'], 'default': 'fastest'},
-        'format_out': {'type': 'string', 'allowed': ['json', 'geojson', 'gpx'], 'default': 'json'},
-        'format': {'type': 'string', 'allowed': ['json', 'geojson', 'gpx'], 'default': 'json'},
-        'units': {'type': 'string', 'allowed': ['m', 'km', 'mi'], 'default': 'm'},
-        'language': {'type': 'string',
-                     'allowed': ['en', 'de', 'cn', 'es', 'ru', 'dk', 'fr', 'it', 'nl', 'br', 'se', 'tr', 'gr'],
-                     'default': 'en'},
-        'geometry': {'anyof': [
-                {'type': 'string', 'allowed': ['true', 'false']},
-                {'type': 'boolean'}
-                ]},
-        'geometry_format': {'type': 'string', 'allowed': ['encodedpolyline', 'geojson', 'polyline'],
-                            'default': 'encodedpolyline'},
-        'geometry_simplify': {'anyof': [
-                {'type': 'string', 'allowed': ['true', 'false']},
-                {'type': 'boolean'}
-                ]},
-        'instructions': {'anyof': [
-                {'type': 'string', 'allowed': ['true', 'false']},
-                {'type': 'boolean'}
-                ]},
-        'instructions_format': {'type': 'string', 'allowed': ['text', 'html'], 'default': 'text'},
-        'roundabout_exits': {'anyof': [
-                {'type': 'string', 'allowed': ['true', 'false']},
-                {'type': 'boolean'}
-                ]},
-        'attributes': {'type': ['list', 'tuple'], 'schema': {'type': 'string',
-                                                             'allowed': ['avgspeed',
-                                                                         'detourfactor',
-                                                                         'percentage']}},
-        'maneuvers': {'anyof': [
-                {'type': 'string', 'allowed': ['true', 'false']},
-                {'type': 'boolean'}
-                ]},
-        'radiuses': {'type': ['list', 'tuple'], 'schema': {'type': 'integer', 'min': -1},
-                     'minlength': coords_len, 'maxlength': coords_len},
-        'bearings': {'type': ['list', 'tuple'],
-                     'minlength': coords_len - 1, 'maxlength': coords_len,
-                     'schema': {'type': 'list',
-                                'items': [{'type': 'integer', 'min': 0, 'max': 360, 'required': True},
-                                          {'type': 'integer', 'default': 100}], 'minlength': 1, 'maxlength': 2},
-                     },
-        'continue_straight': {'anyof': [
-                                    {'type': 'string', 'allowed': ['true', 'false']},
-                                    {'type': 'boolean'}
-                                    ],
-                            'dependencies': {
-                                '^profile': ['foot-walking', 'foot-hiking', 'cycling-regular',
-                                            'cycling-road', 'cycling-safe', 'cycling-mountain',
-                                            'cycling-tour',
-                                            'cycling-electric']}
-                                },
-        'elevation': {'anyof': [
-                        {'type': 'string', 'allowed': ['true', 'false']},
-                        {'type': 'boolean'}
-                        ]},
-        'extra_info': {'type': ['list', 'tuple'], 'schema': {'type': 'string',
-                                                             'allowed': ['steepness', 'suitability',
-                                                                         'surface',
-                                                                         'waycategory', 'waytype',
-                                                                         'tollways',
-                                                                         'traildifficulty',
-                                                                         'roadaccessrestrictions']}},
-        'optimized': {'anyof': [
-                        {'type': 'string', 'allowed': ['false', 'true']},
-                        {'type': 'boolean'}
-                        ]},
-        'options': {'type': 'dict', 'schema': {'avoid_features': {'type': 'list', 'schema': {'type': 'string',
-                                                                                             'allowed': ['highways',
-                                                                                                         'tollways',
-                                                                                                         'ferries',
-                                                                                                         'fords',
-                                                                                                         'steps']}
-                                                                  },
-                                               'avoid_borders': {'type': 'string',
-                                                                 'allowed': ['all', 'controlled'],
-                                                                 'dependencies': {
-                                                                     '^profile': ['driving-car', 'driving-hgv']}},
-                                               'avoid_countries': {'schema': {'type': 'integer'},
-                                                                   'dependencies': {
-                                                                       '^profile': ['driving-car', 'driving-hgv']}},
-                                               'vehicle_type': {'type': 'string',
-                                                                'allowed': ['hgv', 'bus', 'agricultural',
-                                                                            'delivery',
-                                                                            'forestry', 'goods'],
-                                                                'dependencies': {'^profile': 'driving-hgv'}},
-                                               'profile_params': {'type': 'dict', 'schema': {
-                                                   'weightings': {'type': 'dict', 'schema': {
-                                                       'steepness_difficulty': {'type': 'dict', 'schema': {
-                                                           'level': {'type': 'integer', 'min1': 0,
-                                                                     'max': 3}},
-                                                                    'dependencies': {
-                                                                        '^profile': ['cycling-regular',
-                                                                                     'cycling-road',
-                                                                                     'cycling-safe',
-                                                                                     'cycling-mountain',
-                                                                                     'cycling-tour',
-                                                                                     'cycling-electric']}},
-                                                       'green': {'type': 'dict', 'schema': {
-                                                           'factor': {'type': 'float', 'min': 0,
-                                                                      'max': 1}},
-                                                                 'dependencies': {'^profile': ['foot-walking',
-                                                                                               'foot-hiking']}},
-                                                       'quiet': {'type': 'dict', 'schema': {
-                                                           'factor': {'type': 'float', 'min': 0,
-                                                                      'max': 1}},
-                                                                 'dependencies': {'^profile': ['foot-walking',
-                                                                                               'foot-hiking']}}}},
-                                                   'restrictions': {'type': 'dict', 'schema': {
-                                                       'gradient': {'type': 'integer', 'min': 1, 'max': 15,
-                                                                    'dependencies': {
-                                                                        '^profile': ['cycling-regular',
-                                                                                     'cycling-road',
-                                                                                     'cycling-safe',
-                                                                                     'cycling-mountain',
-                                                                                     'cycling-tour',
-                                                                                     'cycling-electric']}},
-                                                       'length': {'type': 'integer',
-                                                                  'dependencies': {  # '^vehicle_type',
-                                                                      '^profile': 'driving-hgv'
+       'coordinates':{
+          'type':[
+             'list',
+             'tuple'
+          ],
+          'schema':{
+             'type':[
+                'list',
+                'tuple'
+             ],
+             'schema':{
+                'type':'float'
+             }
+          },
+          'required':True
+       },
+       'profile':{
+          'type':'string',
+          'allowed':[
+             'driving-car',
+             'driving-hgv',
+             'foot-walking',
+             'foot-hiking',
+             'cycling-regular',
+             'cycling-road',
+             'cycling-safe',
+             'cycling-mountain',
+             'cycling-tour',
+             'cycling-electric'
+          ],
+          'required':True
+       },
+       'preference':{
+          'type':'string',
+          'allowed':[
+             'fastest',
+             'shortest',
+             'recommended'
+          ],
+          'default':'fastest'
+       },
+       'format_out':{
+          'type':'string',
+          'allowed':[
+             'json',
+             'geojson',
+             'gpx'
+          ],
+          'default':'json'
+       },
+       'format':{
+          'type':'string',
+          'allowed':[
+             'json',
+             'geojson',
+             'gpx'
+          ],
+          'default':'json'
+       },
+       'units':{
+          'type':'string',
+          'allowed':[
+             'm',
+             'km',
+             'mi'
+          ],
+          'default':'m'
+       },
+       'language':{
+          'type':'string',
+          'allowed':[
+             'en',
+             'de',
+             'cn',
+             'es',
+             'ru',
+             'dk',
+             'fr',
+             'it',
+             'nl',
+             'br',
+             'se',
+             'tr',
+             'gr'
+          ],
+          'default':'en'
+       },
+       'geometry':{
+          'anyof':[
+             {
+                'type':'string',
+                'allowed':[
+                   'true',
+                   'false'
+                ]
+             },
+             {
+                'type':'boolean'
+             }
+          ]
+       },
+       'geometry_format':{
+          'type':'string',
+          'allowed':[
+             'encodedpolyline',
+             'geojson',
+             'polyline'
+          ],
+          'default':'encodedpolyline'
+       },
+       'geometry_simplify':{
+          'anyof':[
+             {
+                'type':'string',
+                'allowed':[
+                   'true',
+                   'false'
+                ]
+             },
+             {
+                'type':'boolean'
+             }
+          ]
+       },
+       'instructions':{
+          'anyof':[
+             {
+                'type':'string',
+                'allowed':[
+                   'true',
+                   'false'
+                ]
+             },
+             {
+                'type':'boolean'
+             }
+          ]
+       },
+       'instructions_format':{
+          'type':'string',
+          'allowed':[
+             'text',
+             'html'
+          ],
+          'default':'text'
+       },
+       'roundabout_exits':{
+          'anyof':[
+             {
+                'type':'string',
+                'allowed':[
+                   'true',
+                   'false'
+                ]
+             },
+             {
+                'type':'boolean'
+             }
+          ]
+       },
+       'attributes':{
+          'type':[
+             'list',
+             'tuple'
+          ],
+          'schema':{
+             'type':'string',
+             'allowed':[
+                'avgspeed',
+                'detourfactor',
+                'percentage'
+             ]
+          }
+       },
+       'maneuvers':{
+          'anyof':[
+             {
+                'type':'string',
+                'allowed':[
+                   'true',
+                   'false'
+                ]
+             },
+             {
+                'type':'boolean'
+             }
+          ]
+       },
+       'radiuses':{
+          'type':[
+             'list',
+             'tuple'
+          ],
+          'schema':{
+             'type':'integer',
+             'min':-1
+          },
+          'minlength':coords_len,
+          'maxlength':coords_len
+       },
+       'bearings':{
+          'type':[
+             'list',
+             'tuple'
+          ],
+          'minlength':coords_len - 1,
+          'maxlength':coords_len,
+          'schema':{
+             'type':'list',
+             'items':[
+                {
+                   'type':'integer',
+                   'min':0,
+                   'max':360,
+                   'required':True
+                },
+                {
+                   'type':'integer',
+                   'default':100
+                }
+             ],
+             'minlength':1,
+             'maxlength':2
+          },
 
-                                                                  }},
-                                                       'width': {'type': 'integer',
-                                                                 'dependencies': {'^profile': 'driving-hgv',
-                                                                                  # 'vehicle_type': True
-                                                                                  }},
-                                                       'height': {'type': 'integer',
-                                                                  'dependencies': {'^profile': 'driving-hgv',
-                                                                                   # 'vehicle_type': True
-                                                                                   }},
-                                                       'axleload': {'type': 'integer',
-                                                                    'dependencies': {'^profile': 'driving-hgv',
-                                                                                     # 'vehicle_type': True
-                                                                                     }},
-                                                       'weight': {'type': 'integer',
-                                                                  'dependencies': {'^profile': 'driving-hgv',
-                                                                                   # 'vehicle_type': True
-                                                                                   }},
-                                                       'hazmat': {'type': 'string', 'allowed': ['true', 'false'],
-                                                                  'default': 'false',
-                                                                  'dependencies': {'^profile': 'driving-hgv',
-                                                                                   # 'vehicle_type': True
-                                                                                   }},
-                                                       # 'surface_type': {'type': 'string',
-                                                       #                  'default': 'cobblestone:flattened',
-                                                       #                  'dependencies': {'^profile': 'wheelchair'}},
-                                                       # 'track_type': {'type': 'string', 'default': 'grade1',
-                                                       #                'dependencies': {'^profile': 'wheelchair'}},
-                                                       # 'smoothness_type': {'type': 'string', 'default': 'good',
-                                                       #                     'dependencies': {'^profile': 'wheelchair'}},
-                                                       # 'maximum_sloped_curb': {'anyof': [
-                                                       #     {'type': 'float', 'allowed': [0.03, 0.06, 0.1],
-                                                       #      'default': 0.06},
-                                                       #     {'type': 'string', 'allowed': ['all']}], 'dependencies': {
-                                                       #     '^profile': 'wheelchair'}},
-                                                       # 'maximum_incline': {'anyof': [
-                                                       #     {'type': 'integer', 'allowed': [3, 6, 10, 15],
-                                                       #      'default': 6},
-                                                       #     {'type': 'string', 'allowed': ['all']}], 'dependencies': {
-                                                       #     '^profile': 'wheelchair'}}
-                                                   }}
-                                               }},
-                                               'avoid_polygons': {}
-                                               }},
-        'id': {'type': 'string'},
-        'dry_run': {'anyof': [
-                        {'type': 'string', 'allowed': ['true', 'false']},
-                        {'type': 'boolean'}
-                        ]}
-                        
+       },
+       'continue_straight':{
+          'anyof':[
+             {
+                'type':'string',
+                'allowed':[
+                   'true',
+                   'false'
+                ]
+             },
+             {
+                'type':'boolean'
+             }
+          ],
+          'dependencies':{
+             '^profile':[
+                'foot-walking',
+                'foot-hiking',
+                'cycling-regular',
+                'cycling-road',
+                'cycling-safe',
+                'cycling-mountain',
+                'cycling-tour',
+                'cycling-electric'
+             ]
+          }
+       },
+       'elevation':{
+          'anyof':[
+             {
+                'type':'string',
+                'allowed':[
+                   'true',
+                   'false'
+                ]
+             },
+             {
+                'type':'boolean'
+             }
+          ]
+       },
+       'extra_info':{
+          'type':[
+             'list',
+             'tuple'
+          ],
+          'schema':{
+             'type':'string',
+             'allowed':[
+                'steepness',
+                'suitability',
+                'surface',
+                'waycategory',
+                'waytype',
+                'tollways',
+                'traildifficulty',
+                'roadaccessrestrictions'
+             ]
+          }
+       },
+       'optimized':{
+          'anyof':[
+             {
+                'type':'string',
+                'allowed':[
+                   'false',
+                   'true'
+                ]
+             },
+             {
+                'type':'boolean'
+             }
+          ]
+       },
+       'options':{
+          'type':'dict',
+          'schema':{
+             'avoid_features':{
+                'type':'list',
+                'schema':{
+                   'type':'string',
+                   'allowed':[
+                      'highways',
+                      'tollways',
+                      'ferries',
+                      'fords',
+                      'steps'
+                   ]
+                }
+             },
+             'avoid_borders':{
+                'type':'string',
+                'allowed':[
+                   'all',
+                   'controlled'
+                ],
+                'dependencies':{
+                   '^profile':[
+                      'driving-car',
+                      'driving-hgv'
+                   ]
+                }
+             },
+             'avoid_countries':{
+                'schema':{
+                   'type':'integer'
+                },
+                'dependencies':{
+                   '^profile':[
+                      'driving-car',
+                      'driving-hgv'
+                   ]
+                }
+             },
+             'vehicle_type':{
+                'type':'string',
+                'allowed':[
+                   'hgv',
+                   'bus',
+                   'agricultural',
+                   'delivery',
+                   'forestry',
+                   'goods'
+                ],
+                'dependencies':{
+                   '^profile':'driving-hgv'
+                }
+             },
+             'profile_params':{
+                'type':'dict',
+                'schema':{
+                   'weightings':{
+                      'type':'dict',
+                      'schema':{
+                        'steepness_difficulty':{
+                            'type':'dict',
+                            'schema':{
+                                  'level':{
+                                      'type':'integer',
+                                      'allowed': [
+                                          0,
+                                          1,
+                                          2,
+                                          3
+                                      ]
+                                  }
+                            },
+                            'dependencies':{
+                                '^profile':[
+                                   'cycling-regular',
+                                   'cycling-road',
+                                   'cycling-safe',
+                                   'cycling-mountain',
+                                   'cycling-tour',
+                                   'cycling-electric'
+                               ]
+                            }
+                        },
+                        'green':{
+                            'type':'float',
+                            'min':0,
+                            'max':1,
+                            'dependencies':{
+                               '^profile':[
+                                  'foot-walking',
+                                  'foot-hiking'
+                               ]
+                            }
+                        },
+                        'quiet':{
+                            'type':'float',
+                            'min':0,
+                            'max':1,
+                            'dependencies':{
+                               '^profile':[
+                                  'foot-walking',
+                                  'foot-hiking'
+                               ]
+                            }
+                        }
+                      }
+                   },
+                   'restrictions':{
+                      'type':'dict',
+                      'schema':{
+                         'length':{
+                            'type':[
+                               'integer'
+                            ],
+                            'dependencies':{
+                               '^profile':'driving-hgv'
+                            }
+                         },
+                         'width':{
+                            'type':[
+                               'integer'
+                            ],
+                            'dependencies':{
+                               '^profile':'driving-hgv'
+                            }
+                         },
+                         'height':{
+                            'type':[
+                               'integer'
+                            ],
+                            'dependencies':{
+                               '^profile':'driving-hgv'
+                            }
+                         },
+                         'axleload':{
+                            'type':[
+                               'integer'
+                            ],
+                            'dependencies':{
+                               '^profile':'driving-hgv'
+                            }
+                         },
+                         'weight':{
+                            'type':[
+                               'integer'
+                            ],
+                            'dependencies':{
+                               '^profile':'driving-hgv'
+                            }
+                         },
+                         'hazmat':{
+                            'anyof':[{
+                                'type':'string',
+                                'allowed':[
+                                    'true',
+                                    'false'
+                                ]},
+                                {'type':'boolean'}
+                            ],
+                            'dependencies':{
+                               '^profile':'driving-hgv'
+                            }
+                         },
+                         'surface_type':{
+                            'type':'string',
+                            'dependencies':{
+                                '^profile':'wheelchair'
+                            }
+                         },
+                         'track_type':{
+                            'type':'string',
+                             'allowed': [
+                                 'grade1',
+                                 'grade2',
+                                 'grade3',
+                                 'grade4',
+                                 'grade5'
+                             ],
+                            'dependencies':{
+                               '^profile':'wheelchair'
+                            }
+                         },
+                         'smoothness_type':{
+                            'type':'string',
+                            'default':'good',
+                            'dependencies':{
+                               '^profile':'wheelchair'
+                            }
+                         },
+                         'maximum_sloped_curb':{
+                            'anyof':[
+                                {
+                                    'type':'float',
+                                    'allowed':[
+                                        0.03,
+                                        0.06,
+                                        0.1
+                                    ]
+                                },
+                                {
+                                    'type':'string',
+                                    'allowed':[
+                                        'all'
+                                    ]
+                                }
+                            ],
+                            'dependencies':{
+                                '^profile':'wheelchair'
+                            }
+                         },
+                         'maximum_incline':{
+                            'anyof':[
+                                {
+                                    'type':'integer',
+                                    'allowed':[
+                                        3,
+                                        6,
+                                        10,
+                                        15
+                                    ]
+                                },
+                                {
+                                    'type':'string',
+                                    'allowed':[
+                                         'all'
+                                    ]
+                                }
+                            ],
+                            'dependencies':{
+                                '^profile':'wheelchair'
+                            }
+                         }
+                      }
+                   }
+                }
+             },
+             'avoid_polygons': {
+                'type': 'dict',
+                'schema': {
+                    'coordinates': {
+                        'type': 'list',
+                        'schema': {
+                            'type': 'list',
+                            'schema': {
+                                'type': 'list',
+                                'schema': {
+                                    'anyof':[
+                                        {
+                                            'type': 'list',
+                                            'schema': {
+                                                'type': 'float',
+                                            },
+                                            'minlength': 2,
+                                            'maxlength': 2
+                                        },
+                                        {
+                                            'type': 'float',
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                    },
+                    'type': {
+                        'type': 'string',
+                        'allowed': [
+                            'Polygon',
+                            'MultiPolygon'
+                        ]
+                    }
+                }
+             }
+          }
+       },
+       'suppress_warnings': {
+          'anyof':[
+             {
+                'type':'string',
+                'allowed':[
+                   'true',
+                   'false'
+                ]
+             },
+             {
+                'type':'boolean'
+             }
+          ]
+       },
+       'id':{
+          'type':'string'
+       },
+        'validate': {
+           'type': 'boolean'
+        },
+       'dry_run':{
+          'anyof':[
+             {
+                'type':'string',
+                'allowed':[
+                   'true',
+                   'false'
+                ]
+             },
+             {
+                'type':'boolean'
+             }
+          ]
+       }
     }
 
     v.validate(params, schema)
@@ -255,136 +686,123 @@ def _directions_validation(params, coords_len):
 
 def _isochrones_validation(params):
     schema = {
-        'locations': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
-                                {'type': ['list', 'tuple'],
-                                 'schema': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}}}],
-                      'required': True},
-        'profile': {'type': 'string',
-                    'allowed': ['driving-car', 'driving-hgv', 'foot-walking', 'foot-hiking', 'cycling-regular',
-                                'cycling-road', 'cycling-safe', 'cycling-mountain', 'cycling-tour',
-                                'cycling-electric'], 'default': 'driving-car', 'required': True},
-        'range_type': {'type': 'string', 'allowed': ['time', 'distance'], 'default': 'time'},
-        'intervals': {'type': ['list', 'tuple'], 'schema': {'type': 'integer'}},
-        'range': {'type': ['list', 'tuple'], 'schema': {'type': 'integer'}},
-        'segments': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'integer'}},
-                               {'type': 'integer'}]},
-        'interval': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'integer'}},
-                               {'type': 'integer'}]},
-        'units': {'type': 'string', 'allowed': ['m', 'km', 'mi'], 'default': 'm'},
-        'location_type': {'type': 'string', 'allowed': ['start', 'destination'], 'default': 'start'},
-        'attributes': {'type': ['list', 'tuple'], 'schema': {'type': 'string',
-                                                             'allowed': ['area', 'reachfactor', 'total_pop']}},
-        'options': {'type': 'dict', 'schema': {'maximum_speed': {'type': 'integer'},
-                                               'avoid_features': {'type': 'list', 'schema': {'type': 'string',
-                                                                                             'allowed': ['highways',
-                                                                                                         'tollways',
-                                                                                                         'ferries',
-                                                                                                         'tunnels',
-                                                                                                         'pavedroads',
-                                                                                                         'unpavedroads',
-                                                                                                         'tracks',
-                                                                                                         'fords',
-                                                                                                         'steps',
-                                                                                                         'hills']}},
-                                               'avoid_borders': {'type': 'string',
-                                                                 'allowed': ['all', 'controlled'],
-                                                                 'dependencies': {
-                                                                     '^profile': ['driving-car', 'driving-hgv']}},
-                                               'avoid_countries': {'schema': {'type': 'string'},
-                                                                   'dependencies': {
-                                                                       '^profile': ['driving-car', 'driving-hgv']}},
-                                               'vehicle_type': {'type': 'string',
-                                                                'allowed': ['hgv', 'bus', 'agricultural',
-                                                                            'delivery',
-                                                                            'forestry', 'goods'],
-                                                                'dependencies': {'^profile': 'driving-hgv'}},
-                                               'profile_params': {'type': 'dict', 'schema': {
-                                                   'weightings': {'type': 'dict', 'schema': {
-                                                       'steepness_difficulty': {'type': 'dict', 'schema': {
-                                                           'level': {'type': 'integer', 'min': 0,
-                                                                     'max': 3}},
-                                                                                'dependencies': {
-                                                                                    '^profile': ['cycling-regular',
-                                                                                                 'cycling-road',
-                                                                                                 'cycling-safe',
-                                                                                                 'cycling-mountain',
-                                                                                                 'cycling-tour',
-                                                                                                 'cycling-electric']}},
-                                                       'green': {'type': 'dict', 'schema': {
-                                                           'factor': {'type': 'float', 'min': 0,
-                                                                      'max': 1}},
-                                                                 'dependencies': {'^profile': ['foot-walking',
-                                                                                               'foot-hiking']}},
-                                                       'quiet': {'type': 'dict', 'schema': {
-                                                           'factor': {'type': 'float', 'min': 0,
-                                                                      'max': 1}},
-                                                                 'dependencies': {'^profile': ['foot-walking',
-                                                                                               'foot-hiking']}}}},
-                                                   'restrictions': {'type': 'dict', 'schema': {
-                                                       'gradient': {'type': 'integer', 'min': 1, 'max': 15,
-                                                                    'dependencies': {
-                                                                        '^profile': ['cycling-regular',
-                                                                                     'cycling-road',
-                                                                                     'cycling-safe',
-                                                                                     'cycling-mountain',
-                                                                                     'cycling-tour',
-                                                                                     'cycling-electric']}},
-                                                       'length': {'type': 'integer',
-                                                                  'dependencies': {'^profile': 'driving-hgv',
-                                                                                   # 'vehicle_type': True
-                                                                                   }},
-                                                       'width': {'type': 'integer',
-                                                                 'dependencies': {'^profile': 'driving-hgv',
-                                                                                  # 'vehicle_type': True
-                                                                                  }},
-                                                       'height': {'type': 'integer',
-                                                                  'dependencies': {'^profile': 'driving-hgv',
-                                                                                   # 'vehicle_type': True
-                                                                                   }},
-                                                       'axleload': {'type': 'integer',
-                                                                    'dependencies': {'^profile': 'driving-hgv',
-                                                                                     # 'vehicle_type': True
-                                                                                     }},
-                                                       'weight': {'type': 'integer',
-                                                                  'dependencies': {'^profile': 'driving-hgv',
-                                                                                   # 'vehicle_type': True
-                                                                                   }},
-                                                       'hazmat': {'type': 'string', 'allowed': ['true', 'false'],
-                                                                  'default': 'false',
-                                                                  'dependencies': {'^profile': 'driving-hgv',
-                                                                                   # 'vehicle_type': True
-                                                                                   }},
-                                                       # 'surface_type': {'type': 'string',
-                                                       #                  'default': 'cobblestone:flattened',
-                                                       #                  'dependencies': {'^profile': 'wheelchair'}},
-                                                       # 'track_type': {'type': 'string', 'default': 'grade1',
-                                                       #                'dependencies': {'^profile': 'wheelchair'}},
-                                                       # 'smoothness_type': {'type': 'string', 'default': 'good',
-                                                       #                     'dependencies': {'^profile': 'wheelchair'}},
-                                                       # 'maximum_sloped_curb': {'anyof': [
-                                                       #     {'type': 'float', 'allowed': [0.03, 0.06, 0.1],
-                                                       #      'default': 0.06},
-                                                       #     {'type': 'string', 'allowed': ['all']}], 'dependencies': {
-                                                       #     '^profile': 'wheelchair'}},
-                                                       # 'maximum_incline': {'anyof': [
-                                                       #     {'type': 'integer', 'allowed': [3, 6, 10, 15],
-                                                       #      'default': 6},
-                                                       #     {'type': 'string', 'allowed': ['all']}], 'dependencies': {
-                                                       #     '^profile': 'wheelchair'}}
-                                                   }}
-                                               }},
-                                               'avoid_polygons': {}
-                                               }},
-        'intersections': {'anyof': [
-                            {'type': 'string', 'allowed': ['true', 'false']},
-                            {'type': 'boolean'}
-                            ]},
-        'id': {'type': 'string'},
-        'smoothing': {"type": "float", 'min': 0, 'max': 1},
-        'dry_run': {'anyof': [
-                        {'type': 'string', 'allowed': ['true', 'false']},
-                        {'type': 'boolean'}
-                        ]}
+        'locations': {
+            'anyof': [{
+                'type': ['list', 'tuple'],
+                'schema': {
+                    'type': 'float'
+                }
+            },
+                {
+                    'type': ['list', 'tuple'],
+                    'schema': {
+                        'type': ['list', 'tuple'],
+                        'schema': {
+                            'type': 'float'
+                        }
+                    }
+                }
+            ],
+            'required': True
+        },
+        'profile': {
+            'type': 'string',
+            'allowed': ['driving-car', 'driving-hgv', 'foot-walking', 'foot-hiking', 'cycling-regular',
+                        'cycling-road', 'cycling-safe', 'cycling-mountain', 'cycling-tour',
+                        'cycling-electric'
+                        ],
+            'default': 'driving-car',
+            'required': True
+        },
+        'range_type': {
+            'type': 'string',
+            'allowed': ['time', 'distance'],
+            'default': 'time'
+        },
+        'intervals': {
+            'type': ['list', 'tuple'],
+            'schema': {
+                'type': 'integer'
+            }
+        },
+        'range': {
+            'type': ['list', 'tuple'],
+            'schema': {
+                'type': 'integer'
+            }
+        },
+        'segments': {
+            'anyof': [{
+                'type': ['list', 'tuple'],
+                'schema': {
+                    'type': 'integer'
+                }
+            },
+                {
+                    'type': 'integer'
+                }
+            ]
+        },
+        'interval': {
+            'anyof': [{
+                'type': ['list', 'tuple'],
+                'schema': {
+                    'type': 'integer'
+                }
+            },
+                {
+                    'type': 'integer'
+                }
+            ]
+        },
+        'units': {
+            'type': 'string',
+            'allowed': ['m', 'km', 'mi'],
+            'default': 'm'
+        },
+        'location_type': {
+            'type': 'string',
+            'allowed': ['start', 'destination'],
+            'default': 'start'
+        },
+        'attributes': {
+            'type': ['list', 'tuple'],
+            'schema': {
+                'type': 'string',
+                'allowed': ['area', 'reachfactor', 'total_pop']
+            }
+        },
+        'intersections': {
+            'anyof': [{
+                'type': 'string',
+                'allowed': ['true', 'false']
+            },
+                {
+                    'type': 'boolean'
+                }
+            ]
+        },
+        'id': {
+            'type': 'string'
+        },
+        'smoothing': {
+            "type": "float",
+            'min': 0,
+            'max': 1
+        },
+        'validate': {
+           'type': 'boolean'
+        },
+        'dry_run': {
+            'anyof': [{
+                'type': 'string',
+                'allowed': ['true', 'false']
+            },
+                {
+                    'type': 'boolean'
+                }
+            ]
+        }
     }
 
     v.validate(params, schema)
@@ -394,31 +812,98 @@ def _isochrones_validation(params):
 
 def _distance_matrix_validation(params, coords_len):
     schema = {
-        'locations': {'anyof': [{'type': ['list', 'tuple'], 'schema': {'type': 'float'}},
-                                {'type': ['list', 'tuple'],
-                                 'schema': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}}}],
-                      'required': True},
-        'profile': {'type': 'string',
-                    'allowed': ['driving-car', 'driving-hgv', 'foot-walking', 'foot-hiking', 'cycling-regular',
-                                'cycling-road', 'cycling-safe', 'cycling-mountain', 'cycling-tour',
-                                'cycling-electric'], 'default': 'driving-car', 'required': True},
-        'sources': {'type': 'list', 'schema': {'type': 'integer', 'min': 0, 'max': coords_len - 1}},
-        'destinations': {'type': 'list', 'schema': {'type': 'integer', 'min': 0, 'max': coords_len - 1}},
-        'metrics': {'type': 'list', 'schema': {'type': 'string'}, 'allowed': ['distance', 'duration']},
-        'resolve_locations': {'anyof': [
-                                    {'type': 'string', 'allowed': ['true', 'false']},
-                                    {'type': 'boolean'}
-                                    ]},
-        'units': {'type': 'string', 'allowed': ['m', 'km', 'mi'], 'default': 'm'},
-        'optimized': {'anyof': [
-                        {'type': 'string', 'allowed': ['true', 'false']},
-                        {'type': 'boolean'}
-                        ]},
-        'id': {'type': 'string'},
-        'dry_run': {'anyof': [
-                        {'type': 'string', 'allowed': ['true', 'false']},
-                        {'type': 'boolean'}
-                        ]}
+        'locations': {
+            'anyof': [{
+                    'type': ['list', 'tuple'],
+                    'schema': {
+                        'type': 'float'
+                    }
+                },
+                {
+                    'type': ['list', 'tuple'],
+                    'schema': {
+                        'type': ['list', 'tuple'],
+                        'schema': {
+                            'type': 'float'
+                        }
+                    }
+                }
+            ],
+            'required': True
+        },
+        'profile': {
+            'type': 'string',
+            'allowed': ['driving-car', 'driving-hgv', 'foot-walking', 'foot-hiking', 'cycling-regular',
+                'cycling-road', 'cycling-safe', 'cycling-mountain', 'cycling-tour',
+                'cycling-electric'
+            ],
+            'default': 'driving-car',
+            'required': True
+        },
+        'sources': {
+            'type': 'list',
+            'schema': {
+                'type': 'integer',
+                'min': 0,
+                'max': coords_len - 1
+            }
+        },
+        'destinations': {
+            'type': 'list',
+            'schema': {
+                'type': 'integer',
+                'min': 0,
+                'max': coords_len - 1
+            }
+        },
+        'metrics': {
+            'type': 'list',
+            'schema': {
+                'type': 'string'
+            },
+            'allowed': ['distance', 'duration']
+        },
+        'resolve_locations': {
+            'anyof': [{
+                    'type': 'string',
+                    'allowed': ['true', 'false']
+                },
+                {
+                    'type': 'boolean'
+                }
+            ]
+        },
+        'units': {
+            'type': 'string',
+            'allowed': ['m', 'km', 'mi'],
+            'default': 'm'
+        },
+        'optimized': {
+            'anyof': [{
+                    'type': 'string',
+                    'allowed': ['true', 'false']
+                },
+                {
+                    'type': 'boolean'
+                }
+            ]
+        },
+        'id': {
+            'type': 'string'
+        },
+        'validate': {
+           'type': 'boolean'
+        },
+        'dry_run': {
+            'anyof': [{
+                    'type': 'string',
+                    'allowed': ['true', 'false']
+                },
+                {
+                    'type': 'boolean'
+                }
+            ]
+        }
     }
 
     v.validate(params, schema)
@@ -428,27 +913,78 @@ def _distance_matrix_validation(params, coords_len):
 
 def _search_validation(params):
     schema = {
-        'text': {'type': 'string', 'required': True},
-        'focus_point': {'type': 'list', 'schema': {'type': 'float'}},
-        'rect_min_x': {'type': 'float'},
-        'rect_min_y': {'type': 'float'},
-        'rect_max_x': {'type': 'float'},
-        'rect_max_y': {'type': 'float'},
-        'circle_point': {'type': 'list', 'schema': {'type': 'float'}},
-        'circle_radius': {'type': 'integer', 'default': 50},
-        'sources': {'type': 'list', 'schema': {'type': 'string'}, 'allowed': ['osm', 'oa', 'wof', 'gn'],
-                    'default': ['osm', 'oa', 'wof', 'gn']},
-        'layers': {'type': 'list', 'schema': {'type': 'string'},
-                   'allowed': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
-                               'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse'],
-                   'default': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
-                               'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse']},
-        'country': {'type': 'string'},
-        'size': {'type': 'integer', 'default': 10},
-        'dry_run': {'anyof': [
-                        {'type': 'string', 'allowed': ['true', 'false']},
-                        {'type': 'boolean'}
-                        ]}
+        'text': {
+            'type': 'string',
+            'required': True
+        },
+        'focus_point': {
+            'type': 'list',
+            'schema': {
+                'type': 'float'
+            }
+        },
+        'rect_min_x': {
+            'type': 'float'
+        },
+        'rect_min_y': {
+            'type': 'float'
+        },
+        'rect_max_x': {
+            'type': 'float'
+        },
+        'rect_max_y': {
+            'type': 'float'
+        },
+        'circle_point': {
+            'type': 'list',
+            'schema': {
+                'type': 'float'
+            }
+        },
+        'circle_radius': {
+            'type': 'integer',
+            'default': 50
+        },
+        'sources': {
+            'type': 'list',
+            'schema': {
+                'type': 'string'
+            },
+            'allowed': ['osm', 'oa', 'wof', 'gn'],
+            'default': ['osm', 'oa', 'wof', 'gn']
+        },
+        'layers': {
+            'type': 'list',
+            'schema': {
+                'type': 'string'
+            },
+            'allowed': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
+                'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse'
+            ],
+            'default': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
+                'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse'
+            ]
+        },
+        'country': {
+            'type': 'string'
+        },
+        'size': {
+            'type': 'integer',
+            'default': 10
+        },
+        'validate': {
+           'type': 'boolean'
+        },
+        'dry_run': {
+            'anyof': [{
+                    'type': 'string',
+                    'allowed': ['true', 'false']
+                },
+                {
+                    'type': 'boolean'
+                }
+            ]
+        }
     }
 
     v.validate(params, schema)
@@ -458,24 +994,64 @@ def _search_validation(params):
 
 def _autocomplete_validation(params):
     schema = {
-        'text': {'type': 'string', 'required': True},
-        'focus_point': {'type': 'list', 'schema': {'type': 'float'}},
-        'rect_min_x': {'type': 'float'},
-        'rect_min_y': {'type': 'float'},
-        'rect_max_x': {'type': 'float'},
-        'rect_max_y': {'type': 'float'},
-        'sources': {'type': 'list', 'schema': {'type': 'string'}, 'allowed': ['osm', 'oa', 'wof', 'gn'],
-                    'default': ['osm', 'oa', 'wof', 'gn']},
-        'layers': {'type': 'list', 'schema': {'type': 'string'},
-                   'allowed': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
-                               'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse'],
-                   'default': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
-                               'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse']},
-        'country': {'type': 'string'},
-        'dry_run': {'anyof': [
-                        {'type': 'string', 'allowed': ['true', 'false']},
-                        {'type': 'boolean'}
-                        ]}
+        'text': {
+            'type': 'string',
+            'required': True
+        },
+        'focus_point': {
+            'type': 'list',
+            'schema': {
+                'type': 'float'
+            }
+        },
+        'rect_min_x': {
+            'type': 'float'
+        },
+        'rect_min_y': {
+            'type': 'float'
+        },
+        'rect_max_x': {
+            'type': 'float'
+        },
+        'rect_max_y': {
+            'type': 'float'
+        },
+        'sources': {
+            'type': 'list',
+            'schema': {
+                'type': 'string'
+            },
+            'allowed': ['osm', 'oa', 'wof', 'gn'],
+            'default': ['osm', 'oa', 'wof', 'gn']
+        },
+        'layers': {
+            'type': 'list',
+            'schema': {
+                'type': 'string'
+            },
+            'allowed': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
+                'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse'
+            ],
+            'default': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
+                'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse'
+            ]
+        },
+        'country': {
+            'type': 'string'
+        },
+        'validate': {
+           'type': 'boolean'
+        },
+        'dry_run': {
+            'anyof': [{
+                    'type': 'string',
+                    'allowed': ['true', 'false']
+                },
+                {
+                    'type': 'boolean'
+                }
+            ]
+        }
     }
 
     v.validate(params, schema)
@@ -485,18 +1061,43 @@ def _autocomplete_validation(params):
 
 def _structured_validation(params):
     schema = {
-        'address': {'type': 'string'},
-        'neighbourhood': {'type': 'string'},
-        'borough': {'type': 'string'},
-        'locality': {'type': 'string'},
-        'county': {'type': 'string'},
-        'region': {'type': 'string'},
-        'postalcode': {'type': 'integer'},
-        'country': {'type': 'string'},
-        'dry_run': {'anyof': [
-                        {'type': 'string', 'allowed': ['true', 'false']},
-                        {'type': 'boolean'}
-                        ]}
+        'address': {
+            'type': 'string'
+        },
+        'neighbourhood': {
+            'type': 'string'
+        },
+        'borough': {
+            'type': 'string'
+        },
+        'locality': {
+            'type': 'string'
+        },
+        'county': {
+            'type': 'string'
+        },
+        'region': {
+            'type': 'string'
+        },
+        'postalcode': {
+            'type': 'integer'
+        },
+        'country': {
+            'type': 'string'
+        },
+        'validate': {
+           'type': 'boolean'
+        },
+        'dry_run': {
+            'anyof': [{
+                    'type': 'string',
+                    'allowed': ['true', 'false']
+                },
+                {
+                    'type': 'boolean'
+                }
+            ]
+        }
     }
 
     v.validate(params, schema)
@@ -506,21 +1107,56 @@ def _structured_validation(params):
 
 def _reverse_validation(params):
     schema = {
-        'point': {'type': ['list', 'tuple'], 'schema': {'type': 'float'}, 'required': True},
-        'circle_radius': {'type': 'integer'},
-        'sources': {'type': ['list', 'tuple'], 'schema': {'type': 'string'}, 'allowed': ['osm', 'oa', 'wof', 'gn'],
-                    'default': ['osm', 'oa', 'wof', 'gn']},
-        'layers': {'type': ['list', 'tuple'], 'schema': {'type': 'string'},
-                   'allowed': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
-                               'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse'],
-                   'default': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
-                               'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse']},
-        'country': {'type': 'string'},
-        'size': {'type': 'integer', 'default': 10},
-        'dry_run': {'anyof': [
-                        {'type': 'string', 'allowed': ['true', 'false']},
-                        {'type': 'boolean'}
-                        ]}
+        'point': {
+            'type': ['list', 'tuple'],
+            'schema': {
+                'type': 'float'
+            },
+            'required': True
+        },
+        'circle_radius': {
+            'type': 'integer'
+        },
+        'sources': {
+            'type': ['list', 'tuple'],
+            'schema': {
+                'type': 'string'
+            },
+            'allowed': ['osm', 'oa', 'wof', 'gn'],
+            'default': ['osm', 'oa', 'wof', 'gn']
+        },
+        'layers': {
+            'type': ['list', 'tuple'],
+            'schema': {
+                'type': 'string'
+            },
+            'allowed': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
+                'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse'
+            ],
+            'default': ['venue', 'address', 'street', 'neighbourhood', 'borough', 'localadmin', 'locality',
+                'county', 'macrocounty', 'region', 'macroregion', 'country', 'coarse'
+            ]
+        },
+        'country': {
+            'type': 'string'
+        },
+        'size': {
+            'type': 'integer',
+            'default': 10
+        },
+        'validate': {
+           'type': 'boolean'
+        },
+        'dry_run': {
+            'anyof': [{
+                    'type': 'string',
+                    'allowed': ['true', 'false']
+                },
+                {
+                    'type': 'boolean'
+                }
+            ]
+        }
     }
 
     v.validate(params, schema)
@@ -530,41 +1166,143 @@ def _reverse_validation(params):
 
 def _pois_validation(params):
     schema = {
-        'request': {'type': 'string', 'allowed': ['pois', 'list', 'stats'], 'default': 'pois', 'required': True},
-        # 'geometry': {'type': 'dict', 'schema': {
-        'bbox': {'type': 'list', 'schema': {'type': 'list', 'schema': {'type': 'float', 'maxlength': 2}}},
-        'geojson': {'type': 'dict', 'schema': {
-            'type': {'type': 'string', 'allowed': ['Point', 'Polygon', 'LineString'], 'required': True,
-                     'dependencies': 'coordinates'},
-            'coordinates': {'anyof': [
-                {'type': 'list', 'schema': {'type': 'float', 'maxlength': 2}, 'dependencies': {'type': 'Point'}},
-                {'type': 'list',
-                 'schema': {'type': 'list', 'schema': {'type': 'float', 'maxlength': 2}}, 'dependencies': {'type': ['LineString']}},
-                {'type': 'list',
-                 'schema': {'type': 'list',
-                            'schema': {'type': 'list', 'schema': {'type': 'float', 'maxlength': 2}}},
-                 'dependencies': {'type': ['Polygon']}}]
-            }, }},
-        'buffer': {'type': 'integer', 'default': 500},
-        # }},
-        # 'filters': {'type': 'dict', 'schema': {
-        'filter_category_group_ids': {'type': 'list', 'schema': {'type': 'integer'}},
-        'filter_category_ids': {'type': 'list', 'schema': {'type': 'integer'}},
-        'filters_custom': {'type': 'dict', 'schema': {
-            'wheelchair': {'type': 'list',
-                           'schema': {'type': 'string', 'allowed': ['yes', 'no', 'limited', 'designated']}},
-            'smoking': {'type': 'list', 'schema': {'type': 'string',
-                                                   'allowed': ['dedicated', 'yes', 'no', 'separated', 'isolated',
-                                                               'outside']}},
-            'fee': {'type': 'list', 'schema': {'type': 'string', 'allowed': ['yes', 'no']}},
-            'name': {'type': 'string'},}},
-        # }},
-        'limit': {'type': 'integer', 'max': 1000},
-        'sortby': {'type': 'string', 'allowed': ['category', 'distance']},
-        'dry_run': {'anyof': [
-                        {'type': 'string', 'allowed': ['true', 'false']},
-                        {'type': 'boolean'}
-                        ]}
+        'request': {
+            'type': 'string',
+            'allowed': ['pois', 'list', 'stats'],
+            'default': 'pois',
+            'required': True
+        },
+        'bbox': {
+            'type': 'list',
+            'schema': {
+                'type': 'list',
+                'schema': {
+                    'type': 'float',
+                    'maxlength': 2
+                }
+            }
+        },
+        'geojson': {
+            'type': 'dict',
+            'schema': {
+                'type': {
+                    'type': 'string',
+                    'allowed': ['Point', 'Polygon', 'LineString'],
+                    'required': True,
+                    'dependencies': 'coordinates'
+                },
+                'coordinates': {
+                    'anyof': [{
+                            'type': 'list',
+                            'schema': {
+                                'type': 'float',
+                                'maxlength': 2
+                            },
+                            'dependencies': {
+                                'type': 'Point'
+                            }
+                        },
+                        {
+                            'type': 'list',
+                            'schema': {
+                                'type': 'list',
+                                'schema': {
+                                    'type': 'float',
+                                    'maxlength': 2
+                                }
+                            },
+                            'dependencies': {
+                                'type': ['LineString']
+                            }
+                        },
+                        {
+                            'type': 'list',
+                            'schema': {
+                                'type': 'list',
+                                'schema': {
+                                    'type': 'list',
+                                    'schema': {
+                                        'type': 'float',
+                                        'maxlength': 2
+                                    }
+                                }
+                            },
+                            'dependencies': {
+                                'type': ['Polygon']
+                            }
+                        }
+                    ]
+                },
+            }
+        },
+        'buffer': {
+            'type': 'integer',
+            'default': 500
+        },
+        'filter_category_group_ids': {
+            'type': 'list',
+            'schema': {
+                'type': 'integer'
+            }
+        },
+        'filter_category_ids': {
+            'type': 'list',
+            'schema': {
+                'type': 'integer'
+            }
+        },
+        'filters_custom': {
+            'type': 'dict',
+            'schema': {
+                'wheelchair': {
+                    'type': 'list',
+                    'schema': {
+                        'type': 'string',
+                        'allowed': ['yes', 'no', 'limited', 'designated']
+                    }
+                },
+                'smoking': {
+                    'type': 'list',
+                    'schema': {
+                        'type': 'string',
+                        'allowed': ['dedicated', 'yes', 'no', 'separated', 'isolated',
+                            'outside'
+                        ]
+                    }
+                },
+                'fee': {
+                    'type': 'list',
+                    'schema': {
+                        'type': 'string',
+                        'allowed': ['yes', 'no']
+                    }
+                },
+                'name': {
+                    'type': 'string'
+                },
+            }
+        },
+        'limit': {
+            'type': 'integer',
+            'max': 1000
+        },
+        'sortby': {
+            'type': 'string',
+            'allowed': ['category', 'distance']
+        },
+        'validate': {
+           'type': 'boolean'
+        },
+        'dry_run': {
+            'anyof': [{
+                    'type': 'string',
+                    'allowed': ['true', 'false']
+                },
+                {
+                    'type': 'boolean'
+                }
+            ]
+        }
     }
 
     v.validate(params, schema)
@@ -573,45 +1311,107 @@ def _pois_validation(params):
 
 def _elevation_validation(params):
     schema = {
-            'format_in': {'type': 'string', 'allowed': ['geojson', 'point', 'polyline', 'encodedpolyline'], 'required': True},
-            'format_out': {'type': 'string', 'allowed': ['geojson', 'point', 'polyline', 'encodedpolyline'], 'default': 'geojson'},
-            'dataset': {'type': 'string', 'allowed': ['srtm'], 'default': 'srtm'},
-            'geometry': {'anyof': [
-                    {'type': 'dict', 'schema':
-                        {'type': {'type': 'string', 'allowed': ['Point', 'LineString'], 'required': True},
-                        'coordinates': {
-                                'anyof': [
-                                    {'type': 'list', 
-                                     'schema': {'type': 'float', 'minlength': 2, 'maxlength': 2}},                       
-                                    {'type': 'list',
-                                     'schema': {'type': 'list', 'schema': {'type': 'float',
-                                                                           'minlength': 2,
-                                                                           'maxlength': 2}}}
-                                    ],
-                                'required': True
-                                }
+        'format_in': {
+            'type': 'string',
+            'allowed': ['geojson', 'point', 'polyline', 'encodedpolyline'],
+            'required': True
+        },
+        'format_out': {
+            'type': 'string',
+            'allowed': ['geojson', 'point', 'polyline', 'encodedpolyline'],
+            'default': 'geojson'
+        },
+        'dataset': {
+            'type': 'string',
+            'allowed': ['srtm'],
+            'default': 'srtm'
+        },
+        'geometry': {
+            'anyof': [{
+                    'type': 'dict',
+                    'schema': {
+                        'type': {
+                            'type': 'string',
+                            'allowed': ['Point', 'LineString'],
+                            'required': True
                         },
-                    'dependencies': {'^format_in': 'geojson'},
+                        'coordinates': {
+                            'anyof': [{
+                                    'type': 'list',
+                                    'schema': {
+                                        'type': 'float',
+                                        'minlength': 2,
+                                        'maxlength': 2
+                                    }
+                                },
+                                {
+                                    'type': 'list',
+                                    'schema': {
+                                        'type': 'list',
+                                        'schema': {
+                                            'type': 'float',
+                                            'minlength': 2,
+                                            'maxlength': 2
+                                        }
+                                    }
+                                }
+                            ],
+                            'required': True
+                        }
                     },
-                    {'type': 'list',
-                     'schema': {'type': 'float', 'minlength': 2, 'maxlength': 2},
-                     'dependencies': {'^format_in': 'point'}
-                     },
-                    {'type': ['list', 'tuple'],
-                     'schema': {'type': ['list', 'tuple'],
-                              'schema': {'type': 'float', 'minlength': 2, 'maxlength': 2}},
-                     'dependencies': {'^format_in': 'polyline'}
-                     },
-                    {'type': 'string',
-                     'dependencies': {'^format_in': 'encodedpolyline'}
-                     }
-                     ],
-                    'required': True},
-            'dry_run': {'anyof': [
-                            {'type': 'string', 'allowed': ['true', 'false']},
-                            {'type': 'boolean'}
-                            ]}
+                    'dependencies': {
+                        '^format_in': 'geojson'
+                    },
+                },
+                {
+                    'type': 'list',
+                    'schema': {
+                        'type': 'float',
+                        'minlength': 2,
+                        'maxlength': 2
+                    },
+                    'dependencies': {
+                        '^format_in': 'point'
+                    }
+                },
+                {
+                    'type': ['list', 'tuple'],
+                    'schema': {
+                        'type': ['list', 'tuple'],
+                        'schema': {
+                            'type': 'float',
+                            'minlength': 2,
+                            'maxlength': 2
+                        }
+                    },
+                    'dependencies': {
+                        '^format_in': 'polyline'
+                    }
+                },
+                {
+                    'type': 'string',
+                    'dependencies': {
+                        '^format_in': 'encodedpolyline'
+                    }
                 }
+            ],
+            'required': True
+        },
+        'validate': {
+           'type': 'boolean'
+        },
+        'dry_run': {
+            'anyof': [{
+                    'type': 'string',
+                    'allowed': ['true', 'false']
+                },
+                {
+                    'type': 'boolean'
+                }
+            ]
+        }
+    }
+
     v.validate(params, schema)
     
     return v

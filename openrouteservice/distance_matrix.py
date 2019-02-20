@@ -19,7 +19,7 @@
 
 """Performs requests to the ORS Matrix API."""
 
-from openrouteservice import convert, validator
+from openrouteservice import validator
 
 
 def distance_matrix(client, locations,
@@ -29,7 +29,8 @@ def distance_matrix(client, locations,
                     metrics=None,
                     resolve_locations=None,
                     units=None,
-                    optimized=True,
+                    optimized=None,
+                    validate=True,
                     dry_run=None):
     """ Gets travel distance and time for a matrix of origins and destinations.
 
@@ -80,13 +81,18 @@ def distance_matrix(client, locations,
     :rtype: call to Client.request()
     """
 
-    validator.validator(locals(), 'distance_matrix')
+    if validate:
+        validator.validator(locals(), 'distance_matrix')
     
     params = {
             "locations": locations,
-            "sources": sources,
-            "destinations": destinations
             }
+
+    if sources:
+        params['sources'] = sources
+
+    if destinations:
+        params['destinations'] = destinations
 
     if profile:
         params["profile"] = profile

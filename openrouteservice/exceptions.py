@@ -24,8 +24,7 @@ Defines exceptions that are thrown by the ORS client.
 class ValidationError(Exception):
     """Something went wrong during cerberus validation"""
     def __init__(self, errors):
-        for error in errors:
-            msg = '\n'.join(["Argument '{}': {}".format(error, errors[error][0]) for error in errors])
+        msg = '\n'.join(["{}".format(str(errors))])
         Exception.__init__(self, msg)
 
 class ApiError(Exception):

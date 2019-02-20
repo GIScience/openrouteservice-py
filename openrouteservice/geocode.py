@@ -33,6 +33,7 @@ def pelias_search(client, text,
                   layers=None,
                   country=None,
                   size=None,
+                  validate=True,
                   dry_run=None):
     """
     Geocoding is the process of converting addresses into geographic
@@ -91,7 +92,8 @@ def pelias_search(client, text,
     :rtype: call to Client.request()
     """
 
-    validator.validator(locals(), 'pelias_search')
+    if validate:
+        validator.validator(locals(), 'pelias_search')
 
     params = {'text': text}
 
@@ -142,6 +144,7 @@ def pelias_autocomplete(client, text,
                         country=None,
                         sources=None,
                         layers=None,
+                        validate=True,
                         dry_run=None):
     """
     Autocomplete geocoding can be used alongside /search to enable real-time feedback.
@@ -193,7 +196,8 @@ def pelias_autocomplete(client, text,
     :rtype: dict from JSON response
     """
 
-    validator.validator(locals(), 'pelias_autocomplete')
+    if validate:
+        validator.validator(locals(), 'pelias_autocomplete')
 
     params = {'text': text}
 
@@ -234,6 +238,7 @@ def pelias_structured(client,
                       region=None,
                       postalcode=None,
                       country=None,
+                      validate=True,
                       dry_run=None,
                       # size=None
                       ):
@@ -285,7 +290,8 @@ def pelias_structured(client,
     :rtype: dict from JSON response
     """
 
-    validator.validator(locals(), 'pelias_structured')
+    if validate:
+        validator.validator(locals(), 'pelias_structured')
 
     params = dict()
 
@@ -322,6 +328,7 @@ def pelias_reverse(client, point,
                    layers=None,
                    country=None,
                    size=None,
+                   validate=True,
                    dry_run=None):
     """
     Reverse geocoding is the process of converting geographic coordinates into a
@@ -360,7 +367,8 @@ def pelias_reverse(client, point,
     :rtype: dict from JSON response
     """
 
-    validator.validator(locals(), 'pelias_reverse')
+    if validate:
+        validator.validator(locals(), 'pelias_reverse')
 
     params = dict()
 
