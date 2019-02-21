@@ -1,3 +1,7 @@
+### v1.1.8
+
+- make dependencies more sensible (#32)
+
 ### v1.1.7
 
 - fix boundary.country for pelias_search (#30)
