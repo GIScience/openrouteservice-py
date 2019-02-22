@@ -72,6 +72,9 @@ def distance_matrix(client, locations,
         For normal Dijkstra the number of visited nodes is limited to 100000.
         Default True
     :type optimized: boolean
+
+    :param validate: Specifies whether parameters should be validated before sending the request. Default True.
+    :type validate: bool
     
     :param dry_run: Print URL and parameters without sending the request.
     :param dry_run: boolean
@@ -83,10 +86,10 @@ def distance_matrix(client, locations,
 
     if validate:
         validator.validator(locals(), 'distance_matrix')
-    
+
     params = {
-            "locations": locations,
-            }
+        "locations": locations,
+    }
 
     if sources:
         params['sources'] = sources

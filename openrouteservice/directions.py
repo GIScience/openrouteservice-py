@@ -56,14 +56,18 @@ def directions(client,
 
     :param profile: Specifies the mode of transport to use when calculating
         directions. One of ["driving-car", "driving-hgv", "foot-walking",
-        "foot-hiking", "cycling-regular", "cycling-road",requests_kwargs
-        "cycling-safe", "cycling-mountain", "cycling-tour",
+        "foot-hiking", "cycling-regular", "cycling-road","cycling-mountain",
         "cycling-electric",]. Default "driving-car".
     :type mode: string
 
-    :param format: Specifies the response format. One of ['json', 'geojson', 'gpx'].
-        The GPX schema the response is validated against can be found here:
+    :param format: Specifies the response format. One of ['json', 'geojson', 'gpx']. Default "json".
+        Geometry format for "json" is Google's encodedpolyline. The GPX schema the response is validated
+        against can be found here:
         https://raw.githubusercontent.com/GIScience/openrouteservice-schema/master/gpx/v1/ors-gpx.xsd.
+    :type format: str
+
+    :param format_out: DEPRECATED.
+    :type format: str
 
     :param preference: Specifies the routing preference. One of ["fastest, "shortest",
         "recommended"]. Default "fastest".
@@ -155,7 +159,7 @@ def directions(client,
         of the minified options object. Will be converted to json automatically.
     :type options: dict
 
-    :param validate: Specifies whether parameters should be validated. Default True.
+    :param validate: Specifies whether parameters should be validated before sending the request. Default True.
     :type validate: bool
     
     :param dry_run: Print URL and parameters without sending the request.
@@ -189,14 +193,14 @@ def directions(client,
 
     if geometry is not None:
         params["geometry"] = geometry
-        
+
     if geometry_simplify is not None:
         # not checked on backend, check here
         if extra_info:
             params["geometry_simplify"] = False
         else:
             params["geometry_simplify"] = geometry_simplify
-        
+
     if instructions is not None:
         params["instructions"] = instructions
 
@@ -208,16 +212,16 @@ def directions(client,
 
     if attributes:
         params["attributes"] = attributes
-        
+
     if radiuses:
         params["radiuses"] = radiuses
 
     if maneuvers is not None:
         params['maneuvers'] = maneuvers
-        
+
     if bearings:
         params["bearings"] = bearings
-        
+
     if continue_straight is not None:
         params["continue_straight"] = continue_straight
 
@@ -236,7 +240,7 @@ def directions(client,
             print("Set optimized='false' due to incompatible parameter settings.")
         else:
             params["optimized"] = optimized
-    
+
     if options:
         params['options'] = options
 

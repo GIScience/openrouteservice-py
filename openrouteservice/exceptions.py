@@ -39,18 +39,6 @@ class ApiError(Exception):
         else:
             return "%s (%s)" % (self.status, self.message)
 
-class TransportError(Exception):
-    """Something went wrong while trying to execute the request."""
-
-    def __init__(self, base_exception=None):
-        self.base_exception = base_exception
-
-    def __str__(self):
-        if self.base_exception:
-            return str(self.base_exception)
-
-        return "An unknown error occurred."
-
 class HTTPError(Exception):
     """An unexpected HTTP error occurred."""
     def __init__(self, status_code):

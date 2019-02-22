@@ -38,7 +38,7 @@ def validator(args, function):
     
     :raises: ValidationError    
     """
-    # return
+
     # Sanitize locals() variables
     args = {arg: args[arg] for arg in args if arg != 'client' and args[arg] is not None}
         

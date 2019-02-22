@@ -31,7 +31,6 @@ def isochrones(client, locations,
                location_type=None,
                smoothing=None,
                attributes=None,
-               intersections=None,
                validate=True,
                dry_run=None):
     """ Gets travel distance and time for a matrix of origins and destinations.
@@ -41,8 +40,7 @@ def isochrones(client, locations,
 
     :param profile: Specifies the mode of transport to use when calculating
         directions. One of ["driving-car", "driving-hgv", "foot-walking",
-        "foot-hiking", "cycling-regular", "cycling-road",
-        "cycling-safe", "cycling-mountain", "cycling-tour", 
+        "foot-hiking", "cycling-regular", "cycling-road", "cycling-mountain",
         "cycling-electric",]. Default "driving-car".
     :type profile: string
 
@@ -84,9 +82,9 @@ def isochrones(client, locations,
         'total_pop' returns population statistics from https://ghsl.jrc.ec.europa.eu/about.php.
         One or more of ['area', 'reachfactor', 'total_pop']. Default 'area'.
     :type attributes: list of string(s)
-    
-    :param intersections: not implented right now.
-    :type intersections: boolean
+
+    :param validate: Specifies whether parameters should be validated before sending the request. Default True.
+    :type validate: bool
     
     :param dry_run: Print URL and parameters without sending the request.
     :param dry_run: boolean
