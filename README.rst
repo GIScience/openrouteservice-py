@@ -188,7 +188,7 @@ If you're hosting your own ORS instance, you can alter the ``base_url`` paramete
 	# url is the extension for your endpoint, no trailing slashes!
 	# params has to be passed explicitly, refer to API reference for details
 	routes = client.request(url='/directions',
-	                        params={'coordinates': coords,
+	                        params={'coordinates': openrouteservice.convert._build_coords(coords),
 	                                'profile': 'driving-hgv'
 	                               }
 	                        )
