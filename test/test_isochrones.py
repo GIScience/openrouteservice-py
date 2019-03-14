@@ -18,63 +18,22 @@
 """Tests for the distance matrix module."""
 import responses
 import test as _test
-
-import openrouteservice
+from .test_helper import PARAM_POINT, ENDPOINT_DICT
 
 
 class IsochronesTest(_test.TestCase):
 
-    def setUp(self):
-        self.key = 'sample_key'
-        self.client = openrouteservice.Client(self.key)
-        self.coords_valid = [[9.970093, 48.477473],
-                             [9.207916, 49.153868],
-                             [37.573242, 55.801281],
-                             [115.663757, 38.106467],
-                             [8.34234, 48.23424]]
-
     @responses.activate
-    def test_basic_params(self):
-        responses.add(responses.GET,
-                      'https://api.openrouteservice.org/isochrones',
-                      body='{"status":"OK","routes":[]}',
+    def test_isochrones(self):
+        query = ENDPOINT_DICT['isochrones']
+
+        responses.add(responses.POST,
+                      'https://api.openrouteservice.org/v2/isochrones/{}/geojson'.format(query['profile']),
+                      json=query,
                       status=200,
                       content_type='application/json')
 
-        isochrone = self.client.isochrones(self.coords_valid[0],
-                                           intervals=[60])
+        resp = self.client.isochrones(**query)
 
         self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('https://api.openrouteservice.org/isochrones?api_key={}&'
-                            'locations=9.970093%2C48.477473&'
-                            'profile=driving-car&range=60&range_type=time'.format(self.key),
-                            responses.calls[0].request.url)
-
-    @responses.activate
-    def test_all_params(self):
-        responses.add(responses.GET,
-                      'https://api.openrouteservice.org/isochrones',
-                      body='{"status":"OK","routes":[]}',
-                      status=200,
-                      content_type='application/json')
-
-        isochrone = self.client.isochrones(self.coords_valid,
-                                           profile='cycling-regular',
-                                           range_type='distance',
-                                           intervals=[1000, 2000],
-                                           units='m',
-                                           location_type='destination',
-                                           smoothing=0.5,
-                                           attributes=['area', 'reachfactor']
-                                           )
-
-        self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('https://api.openrouteservice.org/isochrones?api_key={}&'
-                            'locations=9.970093%2C48.477473%7C9.207916'
-                            '%2C49.153868%7C37.573242%2C55.801281%7C115.663757'
-                            '%2C38.106467%7C8.34234%2C48.23424&profile=cycling-regular&'
-                            'range_type=distance&range=1000%2C2000&'
-                            'units=m&location_type=destination&'
-                            'smoothing=0.5&'
-                            'attributes=area|reachfactor'.format(self.key),
-                            responses.calls[0].request.url)
+        self.assertEqual(resp, query)

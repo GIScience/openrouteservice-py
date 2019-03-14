@@ -19,32 +19,32 @@
 
 """Performs requests to the ORS directions API."""
 
-import json
-
-from openrouteservice import convert, validator
+from openrouteservice import validator, deprecation
 
 def directions(client,
                coordinates,
                profile='driving-car',
                format_out=None,
+               format='json',
                preference=None,
                units=None,
                language=None,
                geometry=None,
-               geometry_format=None,
                geometry_simplify=None,
                instructions=None,
                instructions_format=None,
                roundabout_exits=None,
                attributes=None,
-               # maneuvers=None,
+               maneuvers=None,
                radiuses=None,
                bearings=None,
                continue_straight=None,
                elevation=None,
                extra_info=None,
-               optimized=True,
+               suppress_warnings=None,
+               optimized=None,
                options=None,
+               validate=True,
                dry_run=None):
     """Get directions between an origin point and a destination point.
 
@@ -56,10 +56,18 @@ def directions(client,
 
     :param profile: Specifies the mode of transport to use when calculating
         directions. One of ["driving-car", "driving-hgv", "foot-walking",
-        "foot-hiking", "cycling-regular", "cycling-road",requests_kwargs
-        "cycling-safe", "cycling-mountain", "cycling-tour",
+        "foot-hiking", "cycling-regular", "cycling-road","cycling-mountain",
         "cycling-electric",]. Default "driving-car".
     :type mode: string
+
+    :param format: Specifies the response format. One of ['json', 'geojson', 'gpx']. Default "json".
+        Geometry format for "json" is Google's encodedpolyline. The GPX schema the response is validated
+        against can be found here:
+        https://raw.githubusercontent.com/GIScience/openrouteservice-schema/master/gpx/v1/ors-gpx.xsd.
+    :type format: str
+
+    :param format_out: DEPRECATED.
+    :type format: str
 
     :param preference: Specifies the routing preference. One of ["fastest, "shortest",
         "recommended"]. Default "fastest".
@@ -78,10 +86,6 @@ def directions(client,
     :param geometry: Specifies whether geometry should be returned. Default True.
     :type geometry: boolean
 
-    :param geometry_format: Specifies which geometry format should be returned.
-        One of ["encodedpolyline", "geojson", "polyline"]. Default: "encodedpolyline".
-    :type geometry_format: string
-
     :param geometry_simplify: Specifies whether to simplify the geometry.
         Default False.
     :type geometry_simplify: boolean
@@ -99,9 +103,12 @@ def directions(client,
         in the response. Default False.
     :type roundabout_exits: boolean
 
-    :param attributes: Returns route attributes on ["avgspeed", "detourfactor", "percentage"].
+    :param attributes: Returns route attributes on ["detourfactor", "percentage"].
         Must be a list of strings. Default None.
     :type attributes: list or tuple of strings
+
+    :param maneuvers: Specifies whether the maneuver object is included into the step object or not. Default: false.
+    :type maneuvers bool
 
     :param radiuses: A list of maximum distances (measured in
         meters) that limit the search of nearby road segments to every given waypoint.
@@ -136,18 +143,24 @@ def directions(client,
     :type elevation: boolean
 
     :param extra_info: Returns additional information on ["steepness", "suitability",
-        "surface", "waycategory", "waytype", "tollways", "traildifficulty"].
+        "surface", "waycategory", "waytype", "tollways", "traildifficulty", "roadaccessrestrictions"].
         Must be a list of strings. Default None.
     :type extra_info: list or tuple of strings
 
-    :param optimized: If set True, uses Contraction Hierarchies.
-        Default True.
-    :type optimized: boolean
+    :param suppress_warnings: Tells the system to not return any warning messages and corresponding extra_info.
+        For false the extra information can still be explicitly requested by adding it with the extra_info parameter.
+    :type suppress_warnings: bool
+
+    :param optimized: If set False, forces to not use Contraction Hierarchies.
+    :type optimized: bool
 
     :param options: Refer to https://go.openrouteservice.org/documentation for
         detailed documentation. Construct your own dict() following the example
         of the minified options object. Will be converted to json automatically.
     :type options: dict
+
+    :param validate: Specifies whether parameters should be validated before sending the request. Default True.
+    :type validate: bool
     
     :param dry_run: Print URL and parameters without sending the request.
     :param dry_run: boolean
@@ -155,23 +168,19 @@ def directions(client,
     :raises ValueError: When parameter has wrong value.
     :raises TypeError: When parameter is of wrong type.
 
-    :returns: sanitized set of pararmeters
+    :returns: sanitized set of parameters
     :rtype: call to Client.request()
     """
-    
-    validator.validator(locals(), 'directions')
 
-    params = {
-        "coordinates": convert._build_coords(coordinates)
-        }
+    if validate:
+        validator.validator(locals(), 'directions')
 
-    if profile:
-        # NOTE(broady): the mode parameter is not validated by the Maps API
-        # server. Check here to prevent silent failures.
-        params["profile"] = profile
+    params = {"coordinates": coordinates}
 
     if format_out:
-        params["format"] = format_out
+        deprecation.warning('format_out', 'format')
+
+    format = format_out or format
 
     if preference:
         params["preference"] = preference
@@ -183,61 +192,56 @@ def directions(client,
         params["language"] = language
 
     if geometry is not None:
-        # not checked on backend, check here
-        params["geometry"] = convert._convert_bool(geometry)
+        params["geometry"] = geometry
 
-    if geometry_format:
-        params["geometry_format"] = geometry_format
-        
     if geometry_simplify is not None:
         # not checked on backend, check here
         if extra_info:
-            params["geometry_simplify"] = 'false'
+            params["geometry_simplify"] = False
         else:
-            params["geometry_simplify"] = convert._convert_bool(geometry_simplify)
-        
+            params["geometry_simplify"] = geometry_simplify
+
     if instructions is not None:
-        # not checked on backend, check here
-        params["instructions"] = convert._convert_bool(instructions)
+        params["instructions"] = instructions
 
     if instructions_format:
         params["instructions_format"] = instructions_format
 
     if roundabout_exits is not None:
-        # not checked on backend, check here
-        params["roundabout_exits"] = convert._convert_bool(roundabout_exits)
+        params["roundabout_exits"] = roundabout_exits
 
     if attributes:
-        # not checked on backend, check here
-        params["attributes"] = convert._pipe_list(attributes)
-        
+        params["attributes"] = attributes
+
     if radiuses:
-        params["radiuses"] = convert._pipe_list(radiuses)
-        
+        params["radiuses"] = radiuses
+
+    if maneuvers is not None:
+        params['maneuvers'] = maneuvers
+
     if bearings:
-        params["bearings"] = convert._pipe_list([convert._comma_list(pair) for pair in bearings])
-        
+        params["bearings"] = bearings
+
     if continue_straight is not None:
-        # not checked on backend, check here
-        params["continue_straight"] = convert._convert_bool(continue_straight)
+        params["continue_straight"] = continue_straight
 
     if elevation is not None:
-        # not checked on backend, check here
-        params["elevation"] = convert._convert_bool(elevation)
+        params["elevation"] = elevation
 
     if extra_info:
-        # not checked on backend, check here
-        params["extra_info"] = convert._pipe_list(extra_info)
+        params["extra_info"] = extra_info
+
+    if suppress_warnings is not None:
+        params['suppress_warnings'] = suppress_warnings
 
     if optimized is not None:
-        # not checked on backend, check here
-        if bearings or continue_straight in (True, 'true'):
+        if (bearings or continue_straight) and optimized in (True, 'true'):
             params["optimized"] = 'false'
             print("Set optimized='false' due to incompatible parameter settings.")
         else:
-            params["optimized"] = convert._convert_bool(optimized)
-    
-    if options:
-        params['options'] = json.dumps(options)
+            params["optimized"] = optimized
 
-    return client.request("/directions", params, dry_run=dry_run)
+    if options:
+        params['options'] = options
+
+    return client.request("/v2/directions/" + profile + '/' + format, {}, post_json=params, dry_run=dry_run)
