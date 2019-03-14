@@ -24,8 +24,7 @@ Defines exceptions that are thrown by the ORS client.
 class ValidationError(Exception):
     """Something went wrong during cerberus validation"""
     def __init__(self, errors):
-        for error in errors:
-            msg = '\n'.join(["Argument '{}': {}".format(error, errors[error][0]) for error in errors])
+        msg = '\n'.join(["{}".format(str(errors))])
         Exception.__init__(self, msg)
 
 class ApiError(Exception):
@@ -39,18 +38,6 @@ class ApiError(Exception):
             return self.status
         else:
             return "%s (%s)" % (self.status, self.message)
-
-class TransportError(Exception):
-    """Something went wrong while trying to execute the request."""
-
-    def __init__(self, base_exception=None):
-        self.base_exception = base_exception
-
-    def __str__(self):
-        if self.base_exception:
-            return str(self.base_exception)
-
-        return "An unknown error occurred."
 
 class HTTPError(Exception):
     """An unexpected HTTP error occurred."""

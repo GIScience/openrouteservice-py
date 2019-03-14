@@ -19,45 +19,36 @@
 import responses
 import test as _test
 
-import openrouteservice
 from test.test_helper import ENDPOINT_DICT
 
+
 class ElevationTest(_test.TestCase):
-    def setUp(self):
-        self.key = 'sample_key'
-        self.client = openrouteservice.Client(self.key)
-        self.coords = coords = [[13.331302, 38.108433],
-                                [13.331273, 38.108493]]
-        
+
+    valid_query = ENDPOINT_DICT['elevation_line']
+
     @responses.activate
-    def test_line(self):
-        query = ENDPOINT_DICT['elevation_line']
+    def test_elevation_line(self):
         responses.add(responses.POST,
                       'https://api.openrouteservice.org/elevation/line',
-                      json=query,
+                      json=self.valid_query,
                       status=200,
                       content_type='application/json')
 
-        resp = self.client.elevation_line(**query)
+        resp = self.client.elevation_line(**self.valid_query)
 
         self.assertEquals(len(responses.calls), 1)
-        self.assertURLEqual('https://api.openrouteservice.org/elevation/line?api_key={}'.format(self.key),
-                            responses.calls[0].request.url)
-        self.assertEquals(responses.calls[0].response.json(), query)
+        self.assertEquals(resp, self.valid_query)
         
     @responses.activate
-    def test_point(self):
+    def test_elevation_point(self):
         query = ENDPOINT_DICT['elevation_point']
         responses.add(responses.POST,
                       'https://api.openrouteservice.org/elevation/point',
-                      json= query,
+                      json=self.valid_query,
                       status=200,
                       content_type='application/json')
         
         resp = self.client.elevation_point(**query)
         
         self.assertEquals(len(responses.calls), 1)
-        self.assertURLEqual('https://api.openrouteservice.org/elevation/point?api_key={}'.format(self.key),
-                            responses.calls[0].request.url)        
-        self.assertEquals(responses.calls[0].response.json(), query)
-    
+        self.assertEquals(resp, self.valid_query)

@@ -19,17 +19,18 @@
 
 """Performs requests to the ORS Matrix API."""
 
-from openrouteservice import convert, validator
+from openrouteservice import validator
 
 
 def distance_matrix(client, locations,
                     profile='driving-car',
-                    sources='all',
-                    destinations='all',
+                    sources=None,
+                    destinations=None,
                     metrics=None,
                     resolve_locations=None,
                     units=None,
-                    optimized=True,
+                    optimized=None,
+                    validate=True,
                     dry_run=None):
     """ Gets travel distance and time for a matrix of origins and destinations.
 
@@ -45,12 +46,12 @@ def distance_matrix(client, locations,
     :type profile: string
 
     :param sources: A list of indices that refer to the list of locations
-        (starting with 0) or 'all'. Default 'all'.
-    :type sources: One or more indices inside a list; or 'all' (string).
+        (starting with 0). If not passed, all indices are considered.
+    :type sources: list or tuple
 
     :param destinations: A list of indices that refer to the list of locations
-        (starting with 0) or 'all'. Default 'all'.
-    :type destinations: One or more indices inside a list; or 'all' (string).
+        (starting with 0). If not passed, all indices are considered.
+    :type destinations: list or tuple
 
     :param metrics: Specifies a list of returned metrics. One or more of ["distance",
         "duration"]. Default ['duration'].
@@ -71,6 +72,9 @@ def distance_matrix(client, locations,
         For normal Dijkstra the number of visited nodes is limited to 100000.
         Default True
     :type optimized: boolean
+
+    :param validate: Specifies whether parameters should be validated before sending the request. Default True.
+    :type validate: bool
     
     :param dry_run: Print URL and parameters without sending the request.
     :param dry_run: boolean
@@ -80,34 +84,30 @@ def distance_matrix(client, locations,
     :rtype: call to Client.request()
     """
 
-    validator.validator(locals(), 'distance_matrix')
-    
+    if validate:
+        validator.validator(locals(), 'distance_matrix')
+
     params = {
-            "locations": locations,
-            "sources": sources,
-            "destinations": destinations
-            }
-    
-    get_params = {}
+        "locations": locations,
+    }
+
+    if sources:
+        params['sources'] = sources
+
+    if destinations:
+        params['destinations'] = destinations
 
     if profile:
         params["profile"] = profile
-        get_params['profile'] = profile
 
     if sources:
-        if sources == 'all': 
-            params["sources"] = sources
-        else:
-            params["sources"] = convert._comma_list(sources)
+        params["sources"] = sources
 
     if destinations:
-        if destinations == 'all': 
-            params["destinations"] = destinations
-        else:
-            params["destinations"] = convert._comma_list(destinations)
+        params["destinations"] = destinations
 
     if metrics:
-        params["metrics"] = convert._pipe_list(metrics)
+        params["metrics"] = metrics
 
     if resolve_locations is not None:
         params["resolve_locations"] = resolve_locations
@@ -116,9 +116,6 @@ def distance_matrix(client, locations,
         params["units"] = units
 
     if optimized is not None:
-        # not checked on backend, check here
-        # convert._checkBool(optimized)
         params["optimized"] = optimized
 
-
-    return client.request("/matrix", get_params, post_json=params, dry_run=dry_run) 
+    return client.request("/v2/matrix/" + profile + '/json', {}, post_json=params, dry_run=dry_run)

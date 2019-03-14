@@ -18,6 +18,7 @@
 
 import unittest
 import codecs
+import openrouteservice
 
 try:  # Python 3
     from urllib.parse import urlparse, parse_qsl
@@ -26,6 +27,10 @@ except ImportError:  # Python 2
 
 
 class TestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.key = 'sample_key'
+        self.client = openrouteservice.Client(self.key)
 
     def assertURLEqual(self, first, second, msg=None):
         """Check that two arguments are equivalent URLs. Ignores the order of
