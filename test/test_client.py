@@ -42,31 +42,25 @@ class ClientTest(_test.TestCase):
     def test_urlencode(self):
         encoded_params = openrouteservice.client._urlencode_params([("address", "=Sydney ~")])
         self.assertEqual("address=%3DSydney+~", encoded_params)
-        
+
     @responses.activate
-    def test_queries_per_minute_sleep_function(self):
-        # This test assumes that the time to run a mocked query is
-        # relatively small, eg a few milliseconds. We define a rate of
-        # 3 queries per second, and run double that, which should take at
-        # least 1 minute but no more than 2.
-        queries_per_minute = 2
-        query_range = range(queries_per_minute * 2)
+    def test_raise_over_query_limit(self):
 
         valid_query = ENDPOINT_DICT['directions']
-        for _ in query_range:
-            responses.add(responses.POST,
-                          'https://api.openrouteservice.org/v2/directions/{}/geojson'.format(valid_query['profile']),
-                          json=valid_query,
-                          status=200,
-                          content_type='application/json')
-            
-        client = openrouteservice.Client(key=self.key,
-                                         queries_per_minute=queries_per_minute)
-        start = time.time()
-        for idx, _ in enumerate(query_range):
+        responses.add(responses.POST,
+                      'https://api.openrouteservice.org/v2/directions/{}/geojson'.format(valid_query['profile']),
+                      json=valid_query,
+                      status=429,
+                      content_type='application/json')
+
+        with self.assertRaises(openrouteservice.exceptions._OverQueryLimit):
+            client = openrouteservice.Client(key=self.key, retry_over_query_limit=False)
             client.directions(**valid_query)
-        end = time.time()
-        self.assertTrue(start + 60 < end < start + 120)
+
+        with self.assertRaises(openrouteservice.exceptions.Timeout):
+            client = openrouteservice.Client(key=self.key, retry_over_query_limit=True, retry_timeout=3)
+            client.directions(**valid_query)
+
 
     @responses.activate
     def test_raise_timeout_retriable_requests(self):

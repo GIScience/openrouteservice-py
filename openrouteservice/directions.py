@@ -103,7 +103,7 @@ def directions(client,
         in the response. Default False.
     :type roundabout_exits: boolean
 
-    :param attributes: Returns route attributes on ["avgspeed", "detourfactor", "percentage"].
+    :param attributes: Returns route attributes on ["detourfactor", "percentage"].
         Must be a list of strings. Default None.
     :type attributes: list or tuple of strings
 
