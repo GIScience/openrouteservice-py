@@ -129,7 +129,7 @@ def _has_method(arg, method):
 
 
 def decode_polyline(polyline, is3d=False):
-    """Decodes a Polyline string into a GeoJSON structure.
+    """Decodes a Polyline string into a GeoJSON geometry.
     
     :param polyline: An encoded polyline, only the geometry.
     :type polyline: string

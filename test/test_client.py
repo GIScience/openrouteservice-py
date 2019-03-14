@@ -24,76 +24,53 @@ import responses
 import time
 
 import openrouteservice
+from .test_helper import *
 import test as _test
 
 class ClientTest(_test.TestCase):
-    
-    def setUp(self):
-        self.key = 'sample_key'
-        self.query = 'Heidelberg'
-        self.coords_valid = ((8.34234,48.23424),(8.34423,48.26424))
 
     def test_no_api_key(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             client = openrouteservice.Client()
-            client.directions(self.coords_valid)
+            client.directions(PARAM_LINE)
 
     def test_invalid_api_key(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(openrouteservice.exceptions.ApiError):
             client = openrouteservice.Client(key="Invalid key.")
-            client.directions(self.coords_valid)
+            client.directions(PARAM_LINE)
 
     def test_urlencode(self):
         encoded_params = openrouteservice.client._urlencode_params([("address", "=Sydney ~")])
         self.assertEqual("address=%3DSydney+~", encoded_params)
-        
+
     @responses.activate
-    def test_queries_per_minute_sleep_function(self):
-        # This test assumes that the time to run a mocked query is
-        # relatively small, eg a few milliseconds. We define a rate of
-        # 3 queries per second, and run double that, which should take at
-        # least 1 minute but no more than 2.
-        queries_per_minute = 2
-        query_range = range(queries_per_minute * 2)
-        
-        for _ in query_range:
-            responses.add(responses.GET,
-                          'https://api.openrouteservice.org/directions',
-                          body='{"status":"OK","results":[]}',
-                          status=200,
-                          content_type='application/json')
-            
-        client = openrouteservice.Client(key=self.key,
-                                   queries_per_minute=queries_per_minute)
-        start = time.time()
-        for idx, _ in enumerate(query_range):
-            client.directions(self.coords_valid)
-        end = time.time()
-        self.assertTrue(start + 60 < end < start + 120)
-        
-    # def test_overquerylimit_error(self):
-    #     # Assume more queries_per_minute than allowed by API policy and
-    #     # don't allow retries if API throws 'rate exceeded' error, which
-    #     # should be caught.
-    #     queries_per_minute = 110
-    #     query_range = range(queries_per_minute * 2)
-    #
-    #     client = openrouteservice.Client(key='5b3ce3597851110001cf624870cf2f2a58d44c718542b3088221b684',
-    #                                queries_per_minute=queries_per_minute,
-    #                                retry_over_query_limit=False)
-    #
-    #     with self.assertRaises(openrouteservice.exceptions._OverQueryLimit):
-    #         for _ in query_range:
-    #             client.directions(self.coords_valid)
+    def test_raise_over_query_limit(self):
+
+        valid_query = ENDPOINT_DICT['directions']
+        responses.add(responses.POST,
+                      'https://api.openrouteservice.org/v2/directions/{}/geojson'.format(valid_query['profile']),
+                      json=valid_query,
+                      status=429,
+                      content_type='application/json')
+
+        with self.assertRaises(openrouteservice.exceptions._OverQueryLimit):
+            client = openrouteservice.Client(key=self.key, retry_over_query_limit=False)
+            client.directions(**valid_query)
+
+        with self.assertRaises(openrouteservice.exceptions.Timeout):
+            client = openrouteservice.Client(key=self.key, retry_over_query_limit=True, retry_timeout=3)
+            client.directions(**valid_query)
+
 
     @responses.activate
     def test_raise_timeout_retriable_requests(self):
         # Mock query gives 503 as HTTP status, code should try a few times to 
         # request the same and then fail on Timout() error.
         retry_timeout = 3
-        responses.add(responses.GET,
-                      'https://api.openrouteservice.org/directions',
-                      body='{"status":"OK","results":[]}',
+        valid_query = ENDPOINT_DICT['directions']
+        responses.add(responses.POST,
+                      'https://api.openrouteservice.org/v2/directions/{}/geojson'.format(valid_query['profile']),
+                      json=valid_query,
                       status=503,
                       content_type='application/json')
             
@@ -102,7 +79,7 @@ class ClientTest(_test.TestCase):
         
         start = time.time()
         with self.assertRaises(openrouteservice.exceptions.Timeout):
-            client.directions(self.coords_valid)
+            client.directions(**valid_query)
         end = time.time()
         self.assertTrue(retry_timeout < end-start < 2 * retry_timeout)
 
@@ -131,10 +108,24 @@ class ClientTest(_test.TestCase):
                       body='{"status":"OK","results":[]}',
                       status=200,
                       content_type='application/json')
-        
-        client = openrouteservice.Client(key=self.key)
-        req = client.request(params={'format_out': 'geojson'},
+
+        req = self.client.request(get_params={'format_out': 'geojson'},
                              url='directions/',
                              dry_run='true')
         
         self.assertEqual(0, len(responses.calls))
+
+    @responses.activate
+    def test_key_in_header(self):
+        # Test that API key is being put in the Authorization header
+        query = ENDPOINT_DICT['directions']
+
+        responses.add(responses.POST,
+                      'https://api.openrouteservice.org/v2/directions/{}/geojson'.format(query['profile']),
+                      json=ENDPOINT_DICT['directions'],
+                      status=200,
+                      content_type='application/json')
+
+        resp = self.client.directions(**query)
+
+        self.assertDictContainsSubset({'Authorization': self.key}, responses.calls[0].request.headers)

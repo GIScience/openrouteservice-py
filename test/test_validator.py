@@ -19,7 +19,7 @@
 
 from openrouteservice import validator, exceptions
 import test as _test
-from test.test_helper import *
+from test.test_helper import ENDPOINT_DICT, PARAM_LIST_ONE, PARAM_GEOJSON_LINE, PARAM_GEOJSON_POLY
 
 class ValidatorTest(_test.TestCase):
     
@@ -30,17 +30,14 @@ class ValidatorTest(_test.TestCase):
         ENDPOINT_DICT['directions']['preference'] = 'best'
         ENDPOINT_DICT['directions']['attributeds'] = ['avgspeed']
         ENDPOINT_DICT['directions']['radiuses'] = 2 * PARAM_LIST_ONE
-        ENDPOINT_DICT['directions']['options'] = {'maximum_speed': '20'}
 
         with self.assertRaises(exceptions.ValidationError) as e:
             validator.validator(ENDPOINT_DICT['directions'], 'directions')
         em = e.exception
-        print(em)
         
         self.assertIn('unallowed value best', str(em))
         self.assertIn('unknown field', str(em))
         self.assertIn('max length is 2', str(em))
-        self.assertIn('must be of integer type', str(em))
         
     def test_isochrones_correct_schema(self):
         validator.validator(ENDPOINT_DICT['isochrones'], 'isochrones')
@@ -49,13 +46,12 @@ class ValidatorTest(_test.TestCase):
         del ENDPOINT_DICT['isochrones']['locations']
         ENDPOINT_DICT['isochrones'].update(
                 { 'attributes': ['areas', 'reachfactor'],
-                  'intervals': ['30']
+                  'range': ['30']
                   })
         
         with self.assertRaises(exceptions.ValidationError) as e:
             validator.validator(ENDPOINT_DICT['isochrones'], 'isochrones')
-        em = e.exception        
-        print(em)
+        em = e.exception
         
         self.assertIn('required field', str(em))
         self.assertIn('unallowed value', str(em))
@@ -75,10 +71,9 @@ class ValidatorTest(_test.TestCase):
         
         with self.assertRaises(exceptions.ValidationError) as e:
             validator.validator(ENDPOINT_DICT['distance_matrix'], 'distance_matrix')
-        em = e.exception        
-        print(em)
-        
-        self.assertIn('no definitions validate', str(em))
+        em = e.exception
+
+        self.assertIn('max value is 1', str(em))
         self.assertIn('unknown field', str(em))
 
     def test_search_correct_schema(self):
@@ -92,8 +87,7 @@ class ValidatorTest(_test.TestCase):
         
         with self.assertRaises(exceptions.ValidationError) as e:
             validator.validator(ENDPOINT_DICT['pelias_search'], 'pelias_search')
-        em = e.exception        
-        print(em)
+        em = e.exception
         
         self.assertIn("unallowed values ['name']", str(em))
         self.assertIn('must be of integer type', str(em))
@@ -108,8 +102,7 @@ class ValidatorTest(_test.TestCase):
         
         with self.assertRaises(exceptions.ValidationError) as e:
             validator.validator(ENDPOINT_DICT['pelias_autocomplete'], 'pelias_autocomplete')
-        em = e.exception        
-        print(em)
+        em = e.exception
         
         self.assertIn("unallowed values ['name']", str(em))
         
@@ -133,8 +126,7 @@ class ValidatorTest(_test.TestCase):
         
         with self.assertRaises(exceptions.ValidationError) as e:
             validator.validator(ENDPOINT_DICT['pelias_structured'], 'pelias_structured')
-        em = e.exception        
-        print(em)
+        em = e.exception
         
         self.assertIn('must be of integer type', str(em))
         self.assertIn('must be of string type', str(em))
@@ -150,8 +142,7 @@ class ValidatorTest(_test.TestCase):
         
         with self.assertRaises(exceptions.ValidationError) as e:
             validator.validator(ENDPOINT_DICT['pelias_reverse'], 'pelias_reverse')
-        em = e.exception        
-        print(em)
+        em = e.exception
         
         self.assertIn('must be of string type', str(em))
         self.assertIn("unallowed values ['gm']", str(em))
@@ -180,9 +171,8 @@ class ValidatorTest(_test.TestCase):
         
         with self.assertRaises(exceptions.ValidationError) as e:
             validator.validator(ENDPOINT_DICT['pois'], 'pois')
-        em = e.exception        
-        print(em)
-        
+        em = e.exception
+
         self.assertIn("field 'coordinates' is required", str(em))
         self.assertIn('max value is 1000', str(em))
         self.assertIn('unallowed value maybe', str(em))

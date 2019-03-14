@@ -21,26 +21,20 @@
 import responses
 import test as _test
 
-import openrouteservice
-from test.test_helper import *
+from test.test_helper import ENDPOINT_DICT
 
-class DistanceMatrixTest(_test.TestCase):
-
-    def setUp(self):
-        self.key = 'sample_key'
-        self.client = openrouteservice.Client(self.key)
+class PlacesTest(_test.TestCase):
         
     @responses.activate
     def test_pois(self):        
         query = ENDPOINT_DICT['pois']
         responses.add(responses.POST,
                       'https://api.openrouteservice.org/pois',
-                      json= query,
+                      json=query,
                       status=200,
                       content_type='application/json')
         
         resp = self.client.places(**query)
         
         self.assertEquals(len(responses.calls), 1)
-        self.assertURLEqual('https://api.openrouteservice.org/pois?api_key={}'.format(self.key),
-                            responses.calls[0].request.url)        
+        self.assertEqual(resp, query)

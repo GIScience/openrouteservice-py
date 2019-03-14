@@ -67,12 +67,14 @@ By using this library, you agree to the ORS `terms and conditions`_.
 
 Requirements
 -----------------------------
-openrouteservice requires:
+openrouteservice-py requires:
 
-- Python >= 2.7, 3.4, 3.5, 3.6
+- Python >= 2.7, 3.4, 3.5, 3.6, 3.7 (pip)
+- Python >= 2.7, 3.6, 3.7 (conda)
 - ``requests`` library
+- ``cerberus`` library
 
-unit testing requires additionally the following Python libraries:
+Unit testing requires additionally the following Python libraries:
 
 - ``nose``
 - ``responses``
@@ -90,7 +92,7 @@ To install the latest and greatest from source::
 
 For ``conda`` users::
 
-  conda install -c nilsnolde openrouteservice 
+  conda install -c nilsnolde openrouteservice
 
 This command group will install the library to your global environment. Also works in virtual environments.
 
@@ -140,7 +142,7 @@ The slightly more verbose alternative, preserving your IDE's smart functions, is
 Decode Polyline
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 By default, the directions API returns `encoded polylines <https://developers.google.com/maps/documentation/utilities/polylinealgorithm>`_.
-To decode to a ``dict``, which is GeoJSON-ready, simply do
+To decode to a ``dict``, which is a GeoJSON geometry object, simply do
 
 .. code:: python
 
@@ -168,7 +170,7 @@ Although errors in query creation should be handled quite decently, you can do a
 
 	coords = ((8.34234,48.23424),(8.34423,48.26424))
 
-	client = openrouteservice.Client(key='') # Specify your personal API key
+	client = openrouteservice.Client()
 	client.directions(coords, dry_run='true')
 
 Local ORS instance
@@ -182,16 +184,20 @@ If you're hosting your own ORS instance, you can alter the ``base_url`` paramete
 	coords = ((8.34234,48.23424),(8.34423,48.26424))
 
 	# key can be omitted for local host
-	client = openrouteservice.Client(key='',
-	                                 base_url='https://foo/bar')
+	client = openrouteservice.Client(base_url='http://localhost/ors')
 
-	# url is the extension for your endpoint, no trailing slashes!
-	# params has to be passed explicitly, refer to API reference for details
-	routes = client.request(url='/directions',
-	                        params={'coordinates': coords,
-	                                'profile': 'driving-hgv'
-	                               }
-	                        )
+	# Only works if you didn't change the ORS endpoints manually
+	routes = client.directions(coords)
+
+  # If you did change the ORS endpoints for some reason
+  # you'll have to pass url and required parameters explicitly:
+  routes = client.request(
+      url='/new_url',
+      post_json={
+          'coordinates': coords,
+          'profile': 'driving-car',
+          'format': 'geojson'
+      })
 
 Support
 --------
