@@ -21,6 +21,20 @@ __version__ = "2.0.0"
 
 # Make sure QGIS plugin can import openrouteservice-py
 
+
+def get_ordinal(number):
+    """Produces an ordinal (1st, 2nd, 3rd, 4th) from a number"""
+
+    if number == 1:
+        return 'st'
+    elif number == 2:
+        return 'nd'
+    elif number == 3:
+        return 'rd'
+    else:
+        return 'th'
+
+
 from openrouteservice.client import Client
 ## Allow sphinx to pick up these symbols for the documentation.
 #__all__ = ["Client"]
