@@ -25,6 +25,12 @@ try:  # Python 3
 except ImportError:  # Python 2
     from urlparse import urlparse, parse_qsl
 
+# For relative imports to work in Python 3.6
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+
 
 class TestCase(unittest.TestCase):
 

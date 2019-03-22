@@ -24,7 +24,7 @@ import responses
 import time
 
 import openrouteservice
-from .test_helper import *
+from test.test_helper import *
 import test as _test
 
 class ClientTest(_test.TestCase):
@@ -73,10 +73,10 @@ class ClientTest(_test.TestCase):
                       json=valid_query,
                       status=503,
                       content_type='application/json')
-            
-        client = openrouteservice.Client(key=self.key, 
+
+        client = openrouteservice.Client(key=self.key,
                                          retry_timeout=retry_timeout)
-        
+
         start = time.time()
         with self.assertRaises(openrouteservice.exceptions.Timeout):
             client.directions(**valid_query)
@@ -94,15 +94,15 @@ class ClientTest(_test.TestCase):
 
         client = openrouteservice.Client(base_url="https://foo.com")
         client.request("/bar", {'bunny':'pretty', 'fox':'prettier'})
-        
+
         self.assertURLEqual("https://foo.com/bar?bunny=pretty&fox=prettier",
                             responses.calls[0].request.url)
         self.assertEqual(1, len(responses.calls))
-    
+
     @responses.activate
     def test_dry_run(self):
         # Test that nothing is requested when dry_run is 'true'
-        
+
         responses.add(responses.GET,
                       'https://api.openrouteservice.org/directions',
                       body='{"status":"OK","results":[]}',
@@ -112,7 +112,7 @@ class ClientTest(_test.TestCase):
         req = self.client.request(get_params={'format_out': 'geojson'},
                              url='directions/',
                              dry_run='true')
-        
+
         self.assertEqual(0, len(responses.calls))
 
     @responses.activate
