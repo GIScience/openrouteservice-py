@@ -54,3 +54,8 @@ class TestCase(unittest.TestCase):
         """Create a unicode string, compatible across all versions of Python."""
         # NOTE(cbro): Python 3-3.2 does not have the u'' syntax.
         return codecs.unicode_escape_decode(string)[0]
+
+    def assertDictContainsSubset(self, a, b, **kwargs):
+        """Replaces deprecated unittest.TestCase.assertDictContainsSubset"""
+        c = dict([(k, b[k]) for k in a.keys() if k in b.keys()])
+        self.assertEqual(a, c)
