@@ -36,5 +36,5 @@ class PlacesTest(_test.TestCase):
         
         resp = self.client.places(**query)
         
-        self.assertEquals(len(responses.calls), 1)
+        self.assertEqual(len(responses.calls), 1)
         self.assertEqual(resp, query)

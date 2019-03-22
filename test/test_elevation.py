@@ -36,8 +36,8 @@ class ElevationTest(_test.TestCase):
 
         resp = self.client.elevation_line(**self.valid_query)
 
-        self.assertEquals(len(responses.calls), 1)
-        self.assertEquals(resp, self.valid_query)
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(resp, self.valid_query)
         
     @responses.activate
     def test_elevation_point(self):
@@ -50,5 +50,5 @@ class ElevationTest(_test.TestCase):
         
         resp = self.client.elevation_point(**query)
         
-        self.assertEquals(len(responses.calls), 1)
-        self.assertEquals(resp, self.valid_query)
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(resp, self.valid_query)
