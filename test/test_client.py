@@ -27,6 +27,7 @@ import openrouteservice
 from test.test_helper import *
 import test as _test
 
+
 class ClientTest(_test.TestCase):
 
     def test_no_api_key(self):
@@ -45,7 +46,6 @@ class ClientTest(_test.TestCase):
 
     @responses.activate
     def test_raise_over_query_limit(self):
-
         valid_query = ENDPOINT_DICT['directions']
         responses.add(responses.POST,
                       'https://api.openrouteservice.org/v2/directions/{}/geojson'.format(valid_query['profile']),
@@ -60,7 +60,6 @@ class ClientTest(_test.TestCase):
         with self.assertRaises(openrouteservice.exceptions.Timeout):
             client = openrouteservice.Client(key=self.key, retry_over_query_limit=True, retry_timeout=3)
             client.directions(**valid_query)
-
 
     @responses.activate
     def test_raise_timeout_retriable_requests(self):
@@ -81,7 +80,7 @@ class ClientTest(_test.TestCase):
         with self.assertRaises(openrouteservice.exceptions.Timeout):
             client.directions(**valid_query)
         end = time.time()
-        self.assertTrue(retry_timeout < end-start < 2 * retry_timeout)
+        self.assertTrue(retry_timeout < end - start < 2 * retry_timeout)
 
     @responses.activate
     def test_host_override_with_parameters(self):
@@ -93,7 +92,7 @@ class ClientTest(_test.TestCase):
                       content_type="application/json")
 
         client = openrouteservice.Client(base_url="https://foo.com")
-        client.request("/bar", {'bunny':'pretty', 'fox':'prettier'})
+        client.request("/bar", {'bunny': 'pretty', 'fox': 'prettier'})
 
         self.assertURLEqual("https://foo.com/bar?bunny=pretty&fox=prettier",
                             responses.calls[0].request.url)
@@ -110,8 +109,8 @@ class ClientTest(_test.TestCase):
                       content_type='application/json')
 
         req = self.client.request(get_params={'format_out': 'geojson'},
-                             url='directions/',
-                             dry_run='true')
+                                  url='directions/',
+                                  dry_run='true')
 
         self.assertEqual(0, len(responses.calls))
 

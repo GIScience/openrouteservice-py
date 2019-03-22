@@ -32,16 +32,16 @@ import warnings
 
 from openrouteservice import exceptions, __version__, get_ordinal
 
-try: # Python 3
+try:  # Python 3
     from urllib.parse import urlencode
-except ImportError: # Python 2
+except ImportError:  # Python 2
     from urllib import urlencode
-
 
 _USER_AGENT = "ORSClientPython.v{}".format(__version__)
 _DEFAULT_BASE_URL = "https://api.openrouteservice.org"
 
 _RETRIABLE_STATUSES = set([503])
+
 
 class Client(object):
     """Performs requests to the ORS API services."""
@@ -91,16 +91,19 @@ class Client(object):
         self._base_url = base_url
 
         if self._base_url == _DEFAULT_BASE_URL and key is None:
-            raise ValueError("No API key was specified. Please visit https://openrouteservice.org/sign-up to create one.")
+            raise ValueError(
+                "No API key was specified. Please visit https://openrouteservice.org/sign-up to create one.")
 
         self._timeout = timeout
         self._retry_over_query_limit = retry_over_query_limit
         self._retry_timeout = timedelta(seconds=retry_timeout)
         self._requests_kwargs = requests_kwargs or {}
         self._requests_kwargs.update({
-            "headers": {"User-Agent": _USER_AGENT,
-                        'Content-type': 'application/json',
-                        "Authorization": self._key},
+            "headers": {
+                "User-Agent": _USER_AGENT,
+                'Content-type': 'application/json',
+                "Authorization": self._key
+            },
             "timeout": self._timeout,
         })
 
@@ -229,7 +232,7 @@ class Client(object):
     def _get_body(response):
         """Returns the body of a response object, raises status code exceptions if necessary."""
         body = response.json()
-#        error = body.get('error')
+        # error = body.get('error')
         status_code = response.status_code
 
         if status_code == 429:
@@ -288,6 +291,7 @@ def _make_api_method(func):
     Please note that this is an unsupported feature for advanced use only.
     It's also currently incompatibile with multiple threads, see GH #160.
     """
+
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         args[0]._extra_params = kwargs.pop("extra_params", None)
@@ -297,6 +301,7 @@ def _make_api_method(func):
         except AttributeError:
             pass
         return result
+
     return wrapper
 
 

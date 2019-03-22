@@ -19,18 +19,19 @@
 
 from openrouteservice import convert, validator
 
+
 def places(client, request,
-                geojson=None,
-                bbox=None,
-                buffer=None,
-                filter_category_ids=None,
-                filter_category_group_ids=None,
-                filters_custom=None,
-                limit=None,
-                sortby=None,
-                validate=True,
-                dry_run=None
-                    ):
+           geojson=None,
+           bbox=None,
+           buffer=None,
+           filter_category_ids=None,
+           filter_category_group_ids=None,
+           filters_custom=None,
+           limit=None,
+           sortby=None,
+           validate=True,
+           dry_run=None
+           ):
     """ Gets POI's filtered by specified parameters.
 
     :param request: Type of request. One of ['pois', 'list', 'stats'].
@@ -81,36 +82,37 @@ def places(client, request,
 
     if validate:
         validator.validator(locals(), 'pois')
-    
-    params = {'request': request,
-              'filters': dict(),
-              'geometry': dict(),
-              }
-    
+
+    params = {
+        'request': request,
+        'filters': dict(),
+        'geometry': dict(),
+    }
+
     if request != 'category_list':
         if geojson:
             params['geometry']['geojson'] = geojson
-            
+
         if bbox:
             params['geometry']['bbox'] = bbox
-            
+
         if buffer:
             params['geometry']['buffer'] = buffer
-                    
+
         if filter_category_ids and convert._is_list(filter_category_ids):
             params['filters']['category_ids'] = filter_category_ids
-                    
+
         if filter_category_group_ids and convert._is_list(filter_category_group_ids):
             params['filters']['category_group_ids'] = filter_category_group_ids
-                    
+
         if filters_custom:
             for f in filters_custom:
                 params['filters'][f] = filters_custom[f]
-                    
+
         if limit:
             params['limit'] = limit
-                    
+
         if sortby:
             params['sortby'] = sortby
-            
+
     return client.request('/pois', {}, post_json=params, dry_run=dry_run)

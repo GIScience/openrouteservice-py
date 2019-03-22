@@ -119,7 +119,7 @@ def isochrones(client, locations,
     interval = interval or segments
     if interval:
         params['interval'] = interval
-        
+
     if units:
         params["units"] = units
 

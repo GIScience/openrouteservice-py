@@ -23,18 +23,19 @@ import test as _test
 
 from test.test_helper import ENDPOINT_DICT
 
+
 class PlacesTest(_test.TestCase):
-        
+
     @responses.activate
-    def test_pois(self):        
+    def test_pois(self):
         query = ENDPOINT_DICT['pois']
         responses.add(responses.POST,
                       'https://api.openrouteservice.org/pois',
                       json=query,
                       status=200,
                       content_type='application/json')
-        
+
         resp = self.client.places(**query)
-        
+
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(resp, query)

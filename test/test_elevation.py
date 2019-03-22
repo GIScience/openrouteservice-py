@@ -23,7 +23,6 @@ from test.test_helper import ENDPOINT_DICT
 
 
 class ElevationTest(_test.TestCase):
-
     valid_query = ENDPOINT_DICT['elevation_line']
 
     @responses.activate
@@ -38,7 +37,7 @@ class ElevationTest(_test.TestCase):
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(resp, self.valid_query)
-        
+
     @responses.activate
     def test_elevation_point(self):
         query = ENDPOINT_DICT['elevation_point']
@@ -47,8 +46,8 @@ class ElevationTest(_test.TestCase):
                       json=self.valid_query,
                       status=200,
                       content_type='application/json')
-        
+
         resp = self.client.elevation_point(**query)
-        
+
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(resp, self.valid_query)

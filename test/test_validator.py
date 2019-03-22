@@ -21,8 +21,9 @@ from openrouteservice import validator, exceptions
 import test as _test
 from test.test_helper import ENDPOINT_DICT, PARAM_LIST_ONE, PARAM_GEOJSON_LINE, PARAM_GEOJSON_POLY
 
+
 class ValidatorTest(_test.TestCase):
-    
+
     def test_directions_correct_schema(self):
         validator.validator(ENDPOINT_DICT['directions'], 'directions')
 
@@ -34,25 +35,25 @@ class ValidatorTest(_test.TestCase):
         with self.assertRaises(exceptions.ValidationError) as e:
             validator.validator(ENDPOINT_DICT['directions'], 'directions')
         em = e.exception
-        
+
         self.assertIn('unallowed value best', str(em))
         self.assertIn('unknown field', str(em))
         self.assertIn('max length is 2', str(em))
-        
+
     def test_isochrones_correct_schema(self):
         validator.validator(ENDPOINT_DICT['isochrones'], 'isochrones')
 
     def test_isochrones_wrong_schema(self):
         del ENDPOINT_DICT['isochrones']['locations']
-        ENDPOINT_DICT['isochrones'].update(
-                { 'attributes': ['areas', 'reachfactor'],
-                  'range': ['30']
-                  })
-        
+        ENDPOINT_DICT['isochrones'].update({
+            'attributes': ['areas', 'reachfactor'],
+            'range': ['30']
+        })
+
         with self.assertRaises(exceptions.ValidationError) as e:
             validator.validator(ENDPOINT_DICT['isochrones'], 'isochrones')
         em = e.exception
-        
+
         self.assertIn('required field', str(em))
         self.assertIn('unallowed value', str(em))
         self.assertIn('must be of integer type', str(em))
@@ -61,14 +62,14 @@ class ValidatorTest(_test.TestCase):
         validator.validator(ENDPOINT_DICT['distance_matrix'], 'distance_matrix')
 
     def test_distance_matrix_wrong_schema(self):
-        ENDPOINT_DICT['distance_matrix'].update(
-                { 'sources': [0, 1, 2],
-                  'metrics': ['duration', 'distance'],
-                  'resolve_locations': 'true',
-                  'units': 'm',
-                  'optimizedd': 'false'}
-                )
-        
+        ENDPOINT_DICT['distance_matrix'].update({
+            'sources': [0, 1, 2],
+            'metrics': ['duration', 'distance'],
+            'resolve_locations': 'true',
+            'units': 'm',
+            'optimizedd': 'false'
+        })
+
         with self.assertRaises(exceptions.ValidationError) as e:
             validator.validator(ENDPOINT_DICT['distance_matrix'], 'distance_matrix')
         em = e.exception
@@ -81,14 +82,14 @@ class ValidatorTest(_test.TestCase):
 
     def test_search_wrong_schema(self):
         ENDPOINT_DICT['pelias_search'].update({
-                  'layers': ['locality', 'name'],
-                  'circle_radius': {50},
-                })
-        
+            'layers': ['locality', 'name'],
+            'circle_radius': {50},
+        })
+
         with self.assertRaises(exceptions.ValidationError) as e:
             validator.validator(ENDPOINT_DICT['pelias_search'], 'pelias_search')
         em = e.exception
-        
+
         self.assertIn("unallowed values ['name']", str(em))
         self.assertIn('must be of integer type', str(em))
 
@@ -97,78 +98,79 @@ class ValidatorTest(_test.TestCase):
 
     def test_autocomplete_wrong_schema(self):
         ENDPOINT_DICT['pelias_autocomplete'].update({
-                  'layers': ['locality', 'name'],
-                })
-        
+            'layers': ['locality', 'name'],
+        })
+
         with self.assertRaises(exceptions.ValidationError) as e:
             validator.validator(ENDPOINT_DICT['pelias_autocomplete'], 'pelias_autocomplete')
         em = e.exception
-        
+
         self.assertIn("unallowed values ['name']", str(em))
-        
+
     def test_structured_correct_schema(self):
         validator.validator(ENDPOINT_DICT['pelias_structured'], 'pelias_structured')
-        
+
     def test_structured_wrong_schema(self):
         ENDPOINT_DICT['pelias_structured'].update({
-                'address': {'Berliner Straße 45'},
-                'postalcode': '69120',                
-                })
-        params = {'address': {'Berliner Straße 45'},
-                  'neighbourhood': 'Neuenheimer Feld',
-                  'borough': 'Heidelberg',
-                  'locality': 'Heidelberg',
-                  'county': 'Rhein-Neckar-Kreis',
-                  'region': 'Baden-Württemberg',
-                  'postalcode': '69120',
-                  'country': 'de',
-                  }
-        
+            'address': {'Berliner Straße 45'},
+            'postalcode': '69120',
+        })
+        params = {
+            'address': {'Berliner Straße 45'},
+            'neighbourhood': 'Neuenheimer Feld',
+            'borough': 'Heidelberg',
+            'locality': 'Heidelberg',
+            'county': 'Rhein-Neckar-Kreis',
+            'region': 'Baden-Württemberg',
+            'postalcode': '69120',
+            'country': 'de',
+        }
+
         with self.assertRaises(exceptions.ValidationError) as e:
             validator.validator(ENDPOINT_DICT['pelias_structured'], 'pelias_structured')
         em = e.exception
-        
+
         self.assertIn('must be of integer type', str(em))
         self.assertIn('must be of string type', str(em))
 
     def test_reverse_correct_schema(self):
         validator.validator(ENDPOINT_DICT['pelias_reverse'], 'pelias_reverse')
-        
+
     def test_reverse_wrong_schema(self):
         ENDPOINT_DICT['pelias_reverse'].update({
-                  'country': 35,
-                  'sources': ['osm', 'wof', 'gm'],                
-                })
-        
+            'country': 35,
+            'sources': ['osm', 'wof', 'gm'],
+        })
+
         with self.assertRaises(exceptions.ValidationError) as e:
             validator.validator(ENDPOINT_DICT['pelias_reverse'], 'pelias_reverse')
         em = e.exception
-        
+
         self.assertIn('must be of string type', str(em))
         self.assertIn("unallowed values ['gm']", str(em))
-        
+
     def test_pois_correct_schema(self):
         validator.validator(ENDPOINT_DICT['pois'], 'pois')
-        
+
         ENDPOINT_DICT['pois']['geojson'] = PARAM_GEOJSON_LINE
         validator.validator(ENDPOINT_DICT['pois'], 'pois')
-        
+
         ENDPOINT_DICT['pois']['geojson'] = PARAM_GEOJSON_POLY
         validator.validator(ENDPOINT_DICT['pois'], 'pois')
-        
+
         ENDPOINT_DICT['pois']['request'] = 'stats'
         validator.validator(ENDPOINT_DICT['pois'], 'pois')
-    
+
         ENDPOINT_DICT['pois'] = {'request': 'list'}
-        validator.validator(ENDPOINT_DICT['pois'], 'pois')        
-        
+        validator.validator(ENDPOINT_DICT['pois'], 'pois')
+
     def test_pois_wrong_schema(self):
         ENDPOINT_DICT['pois'].update({
-                  'geojson': {'type': 'Point'},
-                  'filters_custom': {'wheelchair': ['maybe']},
-                  'limit': 1200,
-                })
-        
+            'geojson': {'type': 'Point'},
+            'filters_custom': {'wheelchair': ['maybe']},
+            'limit': 1200,
+        })
+
         with self.assertRaises(exceptions.ValidationError) as e:
             validator.validator(ENDPOINT_DICT['pois'], 'pois')
         em = e.exception

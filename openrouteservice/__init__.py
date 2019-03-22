@@ -19,6 +19,7 @@
 
 __version__ = "2.0.0"
 
+
 # Make sure QGIS plugin can import openrouteservice-py
 
 
@@ -37,4 +38,4 @@ def get_ordinal(number):
 
 from openrouteservice.client import Client
 ## Allow sphinx to pick up these symbols for the documentation.
-#__all__ = ["Client"]
+# __all__ = ["Client"]

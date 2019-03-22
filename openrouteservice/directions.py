@@ -21,6 +21,7 @@
 
 from openrouteservice import validator, deprecation
 
+
 def directions(client,
                coordinates,
                profile='driving-car',
