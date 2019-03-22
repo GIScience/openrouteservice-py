@@ -39,12 +39,12 @@ class ConvertTest(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             convert._build_coords({'lat':1, 'lon':2})
-            
+
 
         with self.assertRaises(TypeError):
             convert._build_coords('1,2')
-            
-            
+
+
     def test_build_multi_coord_tuple(self):
         expected = "1,2|3,4"
 
@@ -53,27 +53,27 @@ class ConvertTest(unittest.TestCase):
 
         ll = [(1,2),(3,4)]
         self.assertEqual(expected, convert._build_coords(ll))
-        
+
         ll = ([1,2],[3,4])
         self.assertEqual(expected, convert._build_coords(ll))
-        
+
         ll = [[1,2],[3,4]]
         self.assertEqual(expected, convert._build_coords(ll))
-        
+
         with self.assertRaises(TypeError):
             convert._build_coords({{'lat':1, 'lon':2},{'lat':3, 'lon':4}})
-            
+
 
         with self.assertRaises(TypeError):
             convert._build_coords('[1,2],[3,4]')
-            
-    
+
+
     def test_convert_bool(self):
         self.assertEqual('true', convert._convert_bool('True'))
         self.assertEqual('true', convert._convert_bool('true'))
         self.assertEqual('true', convert._convert_bool(True))
-        
-    
+
+
     def test_polyline_decode_3d(self):
         syd_mel_route = (r"mlqlHat`t@OiACMvAs@HCPGJ?JAJBRFTRLJPNHDNDJ"
                          "@D?fACRAZCPAb@AF?HAfBQJEDAn@QFC@QD_@@QFe@Bg"
@@ -97,11 +97,11 @@ class ConvertTest(unittest.TestCase):
         self.assertAlmostEqual(8.69201, points[0][0], places=5)
         self.assertAlmostEqual(49.410151, points[0][1], places=5)
         self.assertAlmostEqual(0.1, points[0][2], places=2)
-        self.assertAlmostEqual(8.69917, points[-1][0], places=5) 
+        self.assertAlmostEqual(8.69917, points[-1][0], places=5)
         self.assertAlmostEqual(49.41868 , points[-1][1], places=5)
         self.assertAlmostEqual(12.5, points[-1][2], places=2)
-        
-    
+
+
     def test_polyline_decode_2d(self):
         syd_mel_route = (r"u`rgFswjpAKD")
 
@@ -109,3 +109,12 @@ class ConvertTest(unittest.TestCase):
         self.assertEqual(len(points[0]), 2)
         self.assertAlmostEqual([13.3313, 38.10843], points[0], places=5)
         self.assertAlmostEqual([13.33127, 38.10849], points[1], places=5)
+
+
+    def test_pipe_list_bad_argument(self):
+        with self.assertRaises(TypeError):
+            convert._pipe_list(5)
+
+    def test_comma_list_bad_argument(self):
+        with self.assertRaises(TypeError):
+            convert._comma_list(5)
