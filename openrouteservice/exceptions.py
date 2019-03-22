@@ -35,7 +35,7 @@ class ApiError(Exception):
 
     def __str__(self):
         if self.message is None:
-            return self.status
+            return str(self.status)
         else:
             return "%s (%s)" % (self.status, self.message)
 
