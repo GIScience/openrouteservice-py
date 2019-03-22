@@ -24,7 +24,8 @@ from test.test_helper import ENDPOINT_DICT, PARAM_LIST_ONE, PARAM_GEOJSON_LINE, 
 
 class ValidatorTest(_test.TestCase):
 
-    def test_directions_correct_schema(self):
+    @staticmethod
+    def test_directions_correct_schema():
         validator.validator(ENDPOINT_DICT['directions'], 'directions')
 
     def test_directions_wrong_schema(self):
@@ -40,7 +41,8 @@ class ValidatorTest(_test.TestCase):
         self.assertIn('unknown field', str(em))
         self.assertIn('max length is 2', str(em))
 
-    def test_isochrones_correct_schema(self):
+    @staticmethod
+    def test_isochrones_correct_schema():
         validator.validator(ENDPOINT_DICT['isochrones'], 'isochrones')
 
     def test_isochrones_wrong_schema(self):
@@ -58,7 +60,8 @@ class ValidatorTest(_test.TestCase):
         self.assertIn('unallowed value', str(em))
         self.assertIn('must be of integer type', str(em))
 
-    def test_distance_matrix_correct_schema(self):
+    @staticmethod
+    def test_distance_matrix_correct_schema():
         validator.validator(ENDPOINT_DICT['distance_matrix'], 'distance_matrix')
 
     def test_distance_matrix_wrong_schema(self):
@@ -77,7 +80,8 @@ class ValidatorTest(_test.TestCase):
         self.assertIn('max value is 1', str(em))
         self.assertIn('unknown field', str(em))
 
-    def test_search_correct_schema(self):
+    @staticmethod
+    def test_search_correct_schema():
         validator.validator(ENDPOINT_DICT['pelias_search'], 'pelias_search')
 
     def test_search_wrong_schema(self):
@@ -93,7 +97,8 @@ class ValidatorTest(_test.TestCase):
         self.assertIn("unallowed values ['name']", str(em))
         self.assertIn('must be of integer type', str(em))
 
-    def test_autocomplete_correct_schema(self):
+    @staticmethod
+    def test_autocomplete_correct_schema():
         validator.validator(ENDPOINT_DICT['pelias_autocomplete'], 'pelias_autocomplete')
 
     def test_autocomplete_wrong_schema(self):
@@ -107,7 +112,8 @@ class ValidatorTest(_test.TestCase):
 
         self.assertIn("unallowed values ['name']", str(em))
 
-    def test_structured_correct_schema(self):
+    @staticmethod
+    def test_structured_correct_schema():
         validator.validator(ENDPOINT_DICT['pelias_structured'], 'pelias_structured')
 
     def test_structured_wrong_schema(self):
@@ -133,7 +139,8 @@ class ValidatorTest(_test.TestCase):
         self.assertIn('must be of integer type', str(em))
         self.assertIn('must be of string type', str(em))
 
-    def test_reverse_correct_schema(self):
+    @staticmethod
+    def test_reverse_correct_schema():
         validator.validator(ENDPOINT_DICT['pelias_reverse'], 'pelias_reverse')
 
     def test_reverse_wrong_schema(self):
@@ -149,7 +156,8 @@ class ValidatorTest(_test.TestCase):
         self.assertIn('must be of string type', str(em))
         self.assertIn("unallowed values ['gm']", str(em))
 
-    def test_pois_correct_schema(self):
+    @staticmethod
+    def test_pois_correct_schema():
         validator.validator(ENDPOINT_DICT['pois'], 'pois')
 
         ENDPOINT_DICT['pois']['geojson'] = PARAM_GEOJSON_LINE
