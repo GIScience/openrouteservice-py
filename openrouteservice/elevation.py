@@ -19,6 +19,7 @@
 
 from openrouteservice import validator
 
+
 def elevation_point(client, format_in, geometry,
                     format_out='geojson',
                     dataset='srtm',
@@ -49,18 +50,21 @@ def elevation_point(client, format_in, geometry,
     if validate:
         validator.validator(locals(), 'elevation_point')
 
-    params = {'format_in': format_in,
-              'geometry': geometry,
-              'format_out': format_out,
-              'dataset': dataset}    
-            
+    params = {
+        'format_in': format_in,
+        'geometry': geometry,
+        'format_out': format_out,
+        'dataset': dataset
+    }
+
     return client.request('/elevation/point', {}, post_json=params, dry_run=dry_run)
 
+
 def elevation_line(client, format_in, geometry,
-                    format_out='geojson',
-                    dataset='srtm',
-                    validate=True,
-                    dry_run=None):
+                   format_out='geojson',
+                   dataset='srtm',
+                   validate=True,
+                   dry_run=None):
     """
     POSTs 2D point to be enriched with elevation.
     
@@ -88,9 +92,11 @@ def elevation_line(client, format_in, geometry,
     if validate:
         validator.validator(locals(), 'elevation_line')
 
-    params = {'format_in': format_in,
-              'geometry': geometry,
-              'format_out': format_out,
-              'dataset': dataset}    
-            
+    params = {
+        'format_in': format_in,
+        'geometry': geometry,
+        'format_out': format_out,
+        'dataset': dataset
+    }
+
     return client.request('/elevation/line', {}, post_json=params, dry_run=dry_run)

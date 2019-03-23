@@ -20,13 +20,14 @@
 """Converts Python types to string representations suitable for ORS API server.
 """
 
+
 def _pipe_list(arg):
     """Convert list of values to pipe-delimited string"""
     if not _is_list(arg):
         raise TypeError(
             "Expected a list or tuple, "
             "but got {}".format(type(arg).__name__))
-    return "|".join(map(str,arg))
+    return "|".join(map(str, arg))
 
 
 def _comma_list(arg):
@@ -35,12 +36,12 @@ def _comma_list(arg):
         raise TypeError(
             "Expected a list or tuple, "
             "but got {}".format(type(arg).__name__))
-    return ",".join(map(str,arg))
+    return ",".join(map(str, arg))
 
 
 def _convert_bool(boolean):
     """Convert to stringified boolean"""
-        
+
     return str(boolean).lower()
 
 
@@ -105,10 +106,10 @@ def _concat_coords(arg):
 
 
 def _is_list(arg):
-    """Checks if arg is list-like."""    
+    """Checks if arg is list-like."""
     if isinstance(arg, dict):
         return False
-    if isinstance(arg, str): # Python 3-only, as str has __iter__
+    if isinstance(arg, str):  # Python 3-only, as str has __iter__
         return False
     return (not _has_method(arg, "strip")
             and _has_method(arg, "__getitem__")
@@ -141,7 +142,7 @@ def decode_polyline(polyline, is3d=False):
     :rtype: dict
     """
     points = []
-    index = lat = lng = z= 0
+    index = lat = lng = z = 0
 
     while index < len(polyline):
         result = 1
@@ -165,7 +166,7 @@ def decode_polyline(polyline, is3d=False):
             if b < 0x1f:
                 break
         lng += ~(result >> 1) if (result & 1) != 0 else (result >> 1)
-        
+
         if is3d:
             result = 1
             shift = 0
@@ -179,13 +180,13 @@ def decode_polyline(polyline, is3d=False):
             if (result & 1) != 0:
                 z += ~(result >> 1)
             else:
-                z += (result >> 1) 
-                
-            points.append([round(lng * 1e-5, 6), round(lat * 1e-5, 6), round(z*1e-2,1)])   
-            
+                z += (result >> 1)
+
+            points.append([round(lng * 1e-5, 6), round(lat * 1e-5, 6), round(z * 1e-2, 1)])
+
         else:
             points.append([round(lng * 1e-5, 6), round(lat * 1e-5, 6)])
-    
+
     geojson = {u'type': u'LineString', u'coordinates': points}
 
     return geojson

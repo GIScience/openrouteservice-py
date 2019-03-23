@@ -30,18 +30,18 @@ import random
 import time
 import warnings
 
-from openrouteservice import exceptions, __version__
+from openrouteservice import exceptions, __version__, get_ordinal
 
-try: # Python 3
+try:  # Python 3
     from urllib.parse import urlencode
-except ImportError: # Python 2
+except ImportError:  # Python 2
     from urllib import urlencode
-
 
 _USER_AGENT = "ORSClientPython.v{}".format(__version__)
 _DEFAULT_BASE_URL = "https://api.openrouteservice.org"
 
 _RETRIABLE_STATUSES = set([503])
+
 
 class Client(object):
     """Performs requests to the ORS API services."""
@@ -50,7 +50,7 @@ class Client(object):
                  key=None,
                  base_url=_DEFAULT_BASE_URL,
                  timeout=60,
-                 retry_timeout=60, 
+                 retry_timeout=60,
                  requests_kwargs=None,
                  retry_over_query_limit=True):
         """
@@ -91,16 +91,19 @@ class Client(object):
         self._base_url = base_url
 
         if self._base_url == _DEFAULT_BASE_URL and key is None:
-            raise ValueError("No API key was specified. Please visit https://openrouteservice.org/sign-up to create one.")
+            raise ValueError(
+                "No API key was specified. Please visit https://openrouteservice.org/sign-up to create one.")
 
         self._timeout = timeout
         self._retry_over_query_limit = retry_over_query_limit
         self._retry_timeout = timedelta(seconds=retry_timeout)
         self._requests_kwargs = requests_kwargs or {}
         self._requests_kwargs.update({
-            "headers": {"User-Agent": _USER_AGENT,
-                        'Content-type': 'application/json',
-                        "Authorization": self._key},
+            "headers": {
+                "User-Agent": _USER_AGENT,
+                'Content-type': 'application/json',
+                "Authorization": self._key
+            },
             "timeout": self._timeout,
         })
 
@@ -171,20 +174,20 @@ class Client(object):
         # requests_kwargs arg overriding.
         requests_kwargs = requests_kwargs or {}
         final_requests_kwargs = dict(self._requests_kwargs, **requests_kwargs)
-        
+
         # Determine GET/POST.
         requests_method = self._session.get
-        
+
         if post_json is not None:
             requests_method = self._session.post
             final_requests_kwargs["json"] = post_json
-        
+
         # Only print URL and parameters for dry_run
         if dry_run:
             print("url:\n{}\nHeaders:\n{}".format(self._base_url + authed_url,
                                                   json.dumps(final_requests_kwargs, indent=2)))
             return
-        
+
         try:
             response = requests_method(self._base_url + authed_url,
                                        **final_requests_kwargs)
@@ -195,10 +198,11 @@ class Client(object):
 
         if response.status_code in _RETRIABLE_STATUSES:
             # Retry request.
-            warnings.warn('Server down.\nRetrying for the {}th time.'.format(retry_counter + 1),
+            warnings.warn('Server down.\nRetrying for the {0}{1} time.'.format(retry_counter + 1,
+                                                                               get_ordinal(retry_counter + 1)),
                           UserWarning,
                           stacklevel=1)
-            
+
             return self.request(url, get_params, first_request_time,
                                 retry_counter + 1, requests_kwargs, post_json)
 
@@ -209,8 +213,9 @@ class Client(object):
         except exceptions._RetriableRequest as e:
             if isinstance(e, exceptions._OverQueryLimit) and not self._retry_over_query_limit:
                 raise
-            
-            warnings.warn('Rate limit exceeded.\nRetrying for the {}th time.'.format(retry_counter + 1),
+
+            warnings.warn('Rate limit exceeded. Retrying for the {0}{1} time.'.format(retry_counter + 1,
+                                                                                      get_ordinal(retry_counter + 1)),
                           UserWarning,
                           stacklevel=1)
             # Retry request.
@@ -223,11 +228,13 @@ class Client(object):
         """Returns request object. Can be used in case of request failure."""
         return self._req
 
-    def _get_body(self, response):        
+    @staticmethod
+    def _get_body(response):
+        """Returns the body of a response object, raises status code exceptions if necessary."""
         body = response.json()
-#        error = body.get('error')
+        # error = body.get('error')
         status_code = response.status_code
-        
+
         if status_code == 429:
             raise exceptions._OverQueryLimit(
                 status_code,
@@ -241,7 +248,8 @@ class Client(object):
 
         return body
 
-    def _generate_auth_url(self, path, params):
+    @staticmethod
+    def _generate_auth_url(path, params):
         """Returns the path and query string portion of the request URL, first
         adding any necessary parameters.
 
@@ -254,10 +262,10 @@ class Client(object):
         :rtype: string
 
         """
-        
+
         if type(params) is dict:
             params = sorted(dict(**params).items())
-        
+
         return path + "?" + _urlencode_params(params)
 
 
@@ -283,6 +291,7 @@ def _make_api_method(func):
     Please note that this is an unsupported feature for advanced use only.
     It's also currently incompatibile with multiple threads, see GH #160.
     """
+
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         args[0]._extra_params = kwargs.pop("extra_params", None)
@@ -292,6 +301,7 @@ def _make_api_method(func):
         except AttributeError:
             pass
         return result
+
     return wrapper
 
 

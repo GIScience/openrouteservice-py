@@ -24,8 +24,9 @@ import responses
 import time
 
 import openrouteservice
-from .test_helper import *
+from test.test_helper import *
 import test as _test
+
 
 class ClientTest(_test.TestCase):
 
@@ -45,7 +46,6 @@ class ClientTest(_test.TestCase):
 
     @responses.activate
     def test_raise_over_query_limit(self):
-
         valid_query = ENDPOINT_DICT['directions']
         responses.add(responses.POST,
                       'https://api.openrouteservice.org/v2/directions/{}/geojson'.format(valid_query['profile']),
@@ -61,7 +61,6 @@ class ClientTest(_test.TestCase):
             client = openrouteservice.Client(key=self.key, retry_over_query_limit=True, retry_timeout=3)
             client.directions(**valid_query)
 
-
     @responses.activate
     def test_raise_timeout_retriable_requests(self):
         # Mock query gives 503 as HTTP status, code should try a few times to 
@@ -73,15 +72,15 @@ class ClientTest(_test.TestCase):
                       json=valid_query,
                       status=503,
                       content_type='application/json')
-            
-        client = openrouteservice.Client(key=self.key, 
+
+        client = openrouteservice.Client(key=self.key,
                                          retry_timeout=retry_timeout)
-        
+
         start = time.time()
         with self.assertRaises(openrouteservice.exceptions.Timeout):
             client.directions(**valid_query)
         end = time.time()
-        self.assertTrue(retry_timeout < end-start < 2 * retry_timeout)
+        self.assertTrue(retry_timeout < end - start < 2 * retry_timeout)
 
     @responses.activate
     def test_host_override_with_parameters(self):
@@ -93,16 +92,16 @@ class ClientTest(_test.TestCase):
                       content_type="application/json")
 
         client = openrouteservice.Client(base_url="https://foo.com")
-        client.request("/bar", {'bunny':'pretty', 'fox':'prettier'})
-        
+        client.request("/bar", {'bunny': 'pretty', 'fox': 'prettier'})
+
         self.assertURLEqual("https://foo.com/bar?bunny=pretty&fox=prettier",
                             responses.calls[0].request.url)
         self.assertEqual(1, len(responses.calls))
-    
+
     @responses.activate
     def test_dry_run(self):
         # Test that nothing is requested when dry_run is 'true'
-        
+
         responses.add(responses.GET,
                       'https://api.openrouteservice.org/directions',
                       body='{"status":"OK","results":[]}',
@@ -110,9 +109,9 @@ class ClientTest(_test.TestCase):
                       content_type='application/json')
 
         req = self.client.request(get_params={'format_out': 'geojson'},
-                             url='directions/',
-                             dry_run='true')
-        
+                                  url='directions/',
+                                  dry_run='true')
+
         self.assertEqual(0, len(responses.calls))
 
     @responses.activate
