@@ -20,13 +20,16 @@
 """Tests for the directions module."""
 
 import responses
+import warnings
 
 import test as _test
-from .test_helper import ENDPOINT_DICT
+from copy import copy
+
+import openrouteservice
+from test.test_helper import ENDPOINT_DICT
 
 
 class DirectionsTest(_test.TestCase):
-
     valid_query = ENDPOINT_DICT['directions']
 
     @responses.activate
@@ -36,8 +39,25 @@ class DirectionsTest(_test.TestCase):
                       json=self.valid_query,
                       status=200,
                       content_type='application/json')
-        
+
         resp = self.client.directions(**self.valid_query)
 
         self.assertEqual(resp, self.valid_query)
         self.assertIn('sample_key', responses.calls[0].request.headers.values())
+
+    def test_format_out_deprecation(self):
+        bad_query = copy(self.valid_query)
+        bad_query['format_out'] = "json"
+        bad_query['dry_run'] = True
+
+        self.client = openrouteservice.Client(self.key)
+
+        with warnings.catch_warnings(record=True) as w:
+            # Cause all warnings to always be triggered.
+            warnings.simplefilter("always")
+            # Trigger a warning.
+            _ = self.client.directions(**bad_query)
+
+            assert len(w) == 1
+            assert issubclass(w[-1].category, DeprecationWarning)
+            assert "deprecated" in str(w[-1].message)

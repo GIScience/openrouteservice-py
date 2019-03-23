@@ -17,7 +17,10 @@
 
 import warnings
 
+
 def warning(old_name, new_name):
+    """Deprecation warning"""
+
     warnings.warn('{} will be deprecated in v2.0. Please use {} instead'.format(old_name, new_name),
                   DeprecationWarning,
                   stacklevel=2)

@@ -25,7 +25,6 @@ from test.test_helper import ENDPOINT_DICT, PARAM_LINE
 
 
 class DistanceMatrixTest(_test.TestCase):
-
     valid_query = ENDPOINT_DICT['distance_matrix']
 
     @responses.activate

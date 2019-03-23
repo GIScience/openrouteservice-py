@@ -18,7 +18,7 @@
 """Tests for the distance matrix module."""
 import responses
 import test as _test
-from .test_helper import PARAM_POINT, ENDPOINT_DICT
+from test.test_helper import PARAM_POINT, ENDPOINT_DICT
 
 
 class IsochronesTest(_test.TestCase):

@@ -22,11 +22,10 @@
 import responses
 
 import test as _test
-from .test_helper import ENDPOINT_DICT
+from test.test_helper import ENDPOINT_DICT
 
 
 class GeocodingPeliasTest(_test.TestCase):
-
     search = ENDPOINT_DICT['pelias_search']
     autocomplete = ENDPOINT_DICT['pelias_autocomplete']
     structured = ENDPOINT_DICT['pelias_structured']
@@ -43,7 +42,8 @@ class GeocodingPeliasTest(_test.TestCase):
         results = self.client.pelias_search(**self.search)
 
         self.assertEqual(1, len(responses.calls))
-        self.assertURLEqual('https://api.openrouteservice.org/geocode/search?boundary.circle.lat=48.23424&boundary.circle.lon=8.34234&boundary.circle.radius=50&boundary.country=de&boundary.rect.max_lat=501&boundary.rect.max_lon=501&boundary.rect.min_lat=500&boundary.rect.min_lon=500&focus.point.lat=48.23424&focus.point.lon=8.34234&layers=locality%2Ccounty%2Cregion&size=50&sources=osm%2Cwof%2Cgn&text=Heidelberg',
+        self.assertURLEqual(
+            'https://api.openrouteservice.org/geocode/search?boundary.circle.lat=48.23424&boundary.circle.lon=8.34234&boundary.circle.radius=50&boundary.country=de&boundary.rect.max_lat=501&boundary.rect.max_lon=501&boundary.rect.min_lat=500&boundary.rect.min_lon=500&focus.point.lat=48.23424&focus.point.lon=8.34234&layers=locality%2Ccounty%2Cregion&size=50&sources=osm%2Cwof%2Cgn&text=Heidelberg',
             responses.calls[0].request.url)
 
     @responses.activate
