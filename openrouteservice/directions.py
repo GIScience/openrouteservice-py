@@ -59,7 +59,7 @@ def directions(client,
         directions. One of ["driving-car", "driving-hgv", "foot-walking",
         "foot-hiking", "cycling-regular", "cycling-road","cycling-mountain",
         "cycling-electric",]. Default "driving-car".
-    :type mode: string
+    :type profile: string
 
     :param format: Specifies the response format. One of ['json', 'geojson', 'gpx']. Default "json".
         Geometry format for "json" is Google's encodedpolyline. The GPX schema the response is validated

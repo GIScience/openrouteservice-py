@@ -1,3 +1,10 @@
+# Unreleased
+
+## 2.1.0
+
+- fix minor problems, apply PEP lint, add some tests
+- Add optimization endpoint
+
 # 2.0.0
 
 - implement all backend changes from moving to openrouteservice v5

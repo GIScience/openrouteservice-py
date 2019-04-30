@@ -124,5 +124,59 @@ ENDPOINT_DICT = {
         },
         'limit': PARAM_INT_SMALL,
         'sortby': 'distance',
+    },
+    'optimization': {
+        "jobs": [
+          {
+            "id": 0,
+            "location": PARAM_LINE[0],
+            "location_index": 0,
+            "service": PARAM_INT_BIG,
+            "amount": [PARAM_INT_SMALL],
+            "skills": PARAM_LIST_ONE,
+            "time_windows": [PARAM_LIST_ONE]
+          },
+          {
+            "id": 1,
+            "location": PARAM_LINE[1],
+            "location_index": 1,
+            "service": PARAM_INT_BIG,
+            "amount": [PARAM_INT_SMALL],
+            "skills": PARAM_LIST_ONE,
+            "time_windows": [PARAM_LIST_ONE]
+          }
+        ],
+        "vehicles": [
+          {
+            "id": 0,
+            "profile": "driving-car",
+            "start": PARAM_LINE[0],
+            "start_index": 0,
+            "end_index": 0,
+            "end": PARAM_LINE[0],
+            "capacity": [
+              PARAM_INT_SMALL
+            ],
+            "skills": PARAM_LIST_ONE,
+            "time_window": PARAM_LIST_ONE
+          },
+          {
+            "id": 1,
+            "profile": "driving-car",
+            "start": PARAM_LINE[1],
+            "start_index": 1,
+            "end_index": 1,
+            "end": PARAM_LINE[1],
+            "capacity": [
+              PARAM_INT_SMALL
+            ],
+            "skills": PARAM_LIST_ONE,
+            "time_window": PARAM_LIST_ONE
+          },
+        ],
+        "options": {
+            'g': False
+        },
+        "matrix": PARAM_LIST_TWO
     }
 }

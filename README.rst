@@ -34,6 +34,7 @@ It performs requests against our API's for
 - `Pelias reverse geocoding`_
 - `Pelias structured geocoding`_
 - `Pelias autocomplete`_
+- Optimization_
 
 For further details, please visit:
 
@@ -61,6 +62,7 @@ By using this library, you agree to the ORS `terms and conditions`_.
 .. _`reverse geocoding`: https://openrouteservice.org/documentation/#/reference/geocoding/geocoding/geocoding-service
 .. _`matrix routing calculations`: https://openrouteservice.org/documentation/#/reference/matrix/matrix/matrix-service-(post)
 .. _places: https://github.com/GIScience/openpoiservice
+.. _Optimization: https://github.com/VROOM-Project/vroom/blob/master/docs/API.md
 .. _here: https://github.com/GIScience/openrouteservice-examples/tree/master/python
 .. _`terms and conditions`: https://openrouteservice.org/terms-of-service/
 .. _forum: https://ask.openrouteservice.org/c/sdks
@@ -146,7 +148,7 @@ To decode to a ``dict``, which is a GeoJSON geometry object, simply do
 
 .. code:: python
 
-	import openrouteservice
+    import openrouteservice
 	from openrouteservice import convert
 
 	coords = ((8.34234,48.23424),(8.34423,48.26424))
@@ -189,9 +191,9 @@ If you're hosting your own ORS instance, you can alter the ``base_url`` paramete
 	# Only works if you didn't change the ORS endpoints manually
 	routes = client.directions(coords)
 
-  # If you did change the ORS endpoints for some reason
-  # you'll have to pass url and required parameters explicitly:
-  routes = client.request(
+    # If you did change the ORS endpoints for some reason
+    # you'll have to pass url and required parameters explicitly:
+    routes = client.request(
       url='/new_url',
       post_json={
           'coordinates': coords,

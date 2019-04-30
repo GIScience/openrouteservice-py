@@ -279,6 +279,7 @@ from openrouteservice.geocode import pelias_autocomplete
 from openrouteservice.geocode import pelias_structured
 from openrouteservice.geocode import pelias_reverse
 from openrouteservice.places import places
+from openrouteservice.optimization import optimization
 
 
 def _make_api_method(func):
@@ -315,6 +316,7 @@ Client.pelias_autocomplete = _make_api_method(pelias_autocomplete)
 Client.pelias_structured = _make_api_method(pelias_structured)
 Client.pelias_reverse = _make_api_method(pelias_reverse)
 Client.places = _make_api_method(places)
+Client.optimization = _make_api_method(optimization)
 
 
 def _urlencode_params(params):

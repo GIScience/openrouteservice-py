@@ -1,3 +1,4 @@
+*.geojson
 *.pyc
 *.in
 *egg-info/

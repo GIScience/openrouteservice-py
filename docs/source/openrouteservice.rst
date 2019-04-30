@@ -9,7 +9,7 @@ openrouteservice\.client module
 
 .. automodule:: openrouteservice.client
     :members:
-    :exclude-members: directions, isochrones, distance_matrix, places, pelias_reverse, pelias_search, pelias_structured, pelias_autocomplete, elevation_line, elevation_point
+    :exclude-members: directions, isochrones, distance_matrix, places, pelias_reverse, pelias_search, pelias_structured, pelias_autocomplete, elevation_line, elevation_point, optimization
     :show-inheritance:
 
 openrouteservice\.convert module
@@ -64,6 +64,14 @@ openrouteservice\.places module
 --------------------------------
 
 .. automodule:: openrouteservice.places
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+openrouteservice\.optimization module
+------------------------------------
+
+.. automodule:: openrouteservice.optimization
     :members:
     :undoc-members:
     :show-inheritance:
