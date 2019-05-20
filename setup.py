@@ -22,9 +22,10 @@ def readme():
 
 setup(
     name='openrouteservice',
-    version='2.2.0',
+    version='2.2.1',
     description='Python client for requests to openrouteservice API services',
     long_description=readme(),
+    long_description_content_type='text/x-rst',
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: Apache Software License',
@@ -51,7 +52,6 @@ setup(
                    'requests>=2.0',
                    'responses>=0.10',
                    'coveralls>=1.7.0',
-                   'sphinx>=2.0.0',
                    'coverage>=4.5.0'],
     zip_safe=False
 )

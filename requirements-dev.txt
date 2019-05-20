@@ -3,4 +3,3 @@ nose>=1.0
 responses>=0.10
 coveralls>=1.7.0
 coverage>=4.5.0
-sphinx>=2.0.0

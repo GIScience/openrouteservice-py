@@ -16,9 +16,7 @@ matrix:
     sudo: true
 
 install:
-  - pip install coverage
-  - pip install coveralls
-  - pip install -r requirements.txt
+  - pip install -r requirements-dev.txt
 
 script:
   - nosetests --with-coverage --cover-erase --cover-package=openrouteservice -v
