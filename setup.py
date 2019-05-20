@@ -34,6 +34,8 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: Implementation :: CPython',
+        'Programming Language :: Python :: Implementation :: PyPy'
     ],
     keywords='routing accessibility router OSM ORS openrouteservice openstreetmap isochrone POI elevation DEM',
     url='https://github.com/GIScience/openrouteservice-py',
@@ -42,14 +44,14 @@ setup(
     license='Apache-2.0',
     packages=['openrouteservice'],
     install_requires=[
-        'requests>=2.0',
-        'Cerberus>1.0'],
+        'requests>=2.0'],
     include_package_data=True,
     test_suite='nose.collector',
     tests_require=['nose>1.0',
                    'requests>=2.0',
                    'responses>=0.10',
                    'coveralls>=1.7.0',
+                   'sphinx>=2.0.0',
                    'coverage>=4.5.0'],
     zip_safe=False
 )

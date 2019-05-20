@@ -1,4 +1,1 @@
-Cerberus>=1.0
-nose>=1.0
 requests>=2.0
-responses>=0.10
