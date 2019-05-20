@@ -13,9 +13,14 @@
 .. image:: https://badge.fury.io/py/openrouteservice.svg
     :target: https://badge.fury.io/py/openrouteservice
     :alt: PyPI version
+
 .. image:: https://anaconda.org/nilsnolde/openrouteservice/badges/installer/conda.svg
     :target: https://conda.anaconda.org/nilsnolde/openrouteservice
     :alt: Conda install
+
+.. image:: https://mybinder.org/badge_logo.svg
+    :target: https://mybinder.org/v2/gh/GIScience/openrouteservice-py/master?filepath=examples%2Fbasic_example.ipynb
+    :alt: MyBinder
 
 Quickstart
 ==================================================
@@ -111,6 +116,8 @@ If you want to run the unit tests, see Requirements_. ``cd`` to the library dire
 Usage
 ---------------------------------
 
+For an interactive Jupyter notebook have a look on `mybinder.org <https://mybinder.org/v2/gh/GIScience/openrouteservice-py/master?filepath=examples%2Fbasic_example.ipynb>`_.
+
 Basic example
 ^^^^^^^^^^^^^^^^^^^^
 .. code:: python
@@ -147,20 +154,19 @@ By default, the directions API returns `encoded polylines <https://developers.go
 To decode to a ``dict``, which is a GeoJSON geometry object, simply do
 
 .. code:: python
-
     import openrouteservice
-	from openrouteservice import convert
+    from openrouteservice import convert
 
-	coords = ((8.34234,48.23424),(8.34423,48.26424))
+    coords = ((8.34234,48.23424),(8.34423,48.26424))
 
-	client = openrouteservice.Client(key='') # Specify your personal API key
+    client = openrouteservice.Client(key='') # Specify your personal API key
 
-	# decode_polyline needs the geometry only
-	geometry = client.directions(coords)['routes'][0]['geometry']
+    # decode_polyline needs the geometry only
+    geometry = client.directions(coords)['routes'][0]['geometry']
 
-	decoded = convert.decode_polyline(geometry)
+    decoded = convert.decode_polyline(geometry)
 
-	print decoded
+    print decoded
 
 Dry run
 ^^^^^^^^^^^^^^^^^^^^
@@ -168,12 +174,12 @@ Although errors in query creation should be handled quite decently, you can do a
 
 .. code:: python
 
-	import openrouteservice
+    import openrouteservice
 
-	coords = ((8.34234,48.23424),(8.34423,48.26424))
+    coords = ((8.34234,48.23424),(8.34423,48.26424))
 
-	client = openrouteservice.Client()
-	client.directions(coords, dry_run='true')
+    client = openrouteservice.Client()
+    client.directions(coords, dry_run='true')
 
 Local ORS instance
 ^^^^^^^^^^^^^^^^^^^^
@@ -181,15 +187,15 @@ If you're hosting your own ORS instance, you can alter the ``base_url`` paramete
 
 .. code:: python
 
-	import openrouteservice
+    import openrouteservice
 
-	coords = ((8.34234,48.23424),(8.34423,48.26424))
+    coords = ((8.34234,48.23424),(8.34423,48.26424))
 
-	# key can be omitted for local host
-	client = openrouteservice.Client(base_url='http://localhost/ors')
+    # key can be omitted for local host
+    client = openrouteservice.Client(base_url='http://localhost/ors')
 
-	# Only works if you didn't change the ORS endpoints manually
-	routes = client.directions(coords)
+    # Only works if you didn't change the ORS endpoints manually
+    routes = client.directions(coords)
 
     # If you did change the ORS endpoints for some reason
     # you'll have to pass url and required parameters explicitly:

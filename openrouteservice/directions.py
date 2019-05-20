@@ -164,6 +164,12 @@ def directions(client,
         of the minified options object. Will be converted to json automatically.
     :type options: dict
 
+    :param optimize_waypoints: If True, a `Vroom <https://github.com/VROOM-Project/vroom>`_ instance (ORS optimization
+        endpoint) will optimize the `via` waypoints, i.e. all coordinates between the first and the last. It assumes
+        the first coordinate to be the start location and the last coordinate to be the end location. Only requests with
+        a minimum of 4 coordinates can be optimized. Default False.
+    :type optimize_waypoints: bool
+
     :param validate: Specifies whether parameters should be validated before sending the request. Default True.
     :type validate: bool
     

@@ -1,0 +1,10 @@
+# for https://mybinder.org
+# from https://github.com/binder-examples/python-conda_pip/blob/master/environment.yml
+name: orspy-examples
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - folium
+  - pip:
+    - openrouteservice
