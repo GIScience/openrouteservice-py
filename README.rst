@@ -74,18 +74,11 @@ By using this library, you agree to the ORS `terms and conditions`_.
 
 Requirements
 -----------------------------
-openrouteservice-py requires:
+openrouteservice-py is tested against CPython 2.7, 3.4, 3.5, 3.6, 3.7 and 3.8-dev, and PyPy3.5.
 
-- Python >= 2.7, 3.4, 3.5, 3.6, 3.7 (pip)
-- Python >= 2.7, 3.6, 3.7 (conda)
-- ``requests`` library
-- ``cerberus`` library
+For setting up a testing environment, install ``requirements-dev.txt``::
 
-Unit testing requires additionally the following Python libraries:
-
-- ``nose``
-- ``responses``
-- ``mock``
+    pip install -r requirements-dev.txt
 
 Installation
 ------------------------------
