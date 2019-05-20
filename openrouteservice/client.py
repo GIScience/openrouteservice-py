@@ -216,8 +216,6 @@ class Client(object):
             return self.request(url, get_params, first_request_time,
                                 retry_counter + 1, requests_kwargs,
                                 post_json)
-        except json.JSONDecodeError:
-            print(response.content, response.raw)
 
     @property
     def req(self):

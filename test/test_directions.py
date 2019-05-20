@@ -40,7 +40,7 @@ class DirectionsTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        resp = self.client.directions(**self.valid_query, validate=False)
+        resp = self.client.directions(**self.valid_query)
 
         self.assertEqual(resp, self.valid_query)
         self.assertIn('sample_key', responses.calls[0].request.headers.values())
@@ -54,7 +54,7 @@ class DirectionsTest(_test.TestCase):
             # Cause all warnings to always be triggered.
             warnings.simplefilter("always")
             # Trigger a warning.
-            _ = self.client.directions(**bad_query, validate=False)
+            _ = self.client.directions(**bad_query)
 
             assert len(w) == 1
             assert issubclass(w[-1].category, DeprecationWarning)
@@ -73,4 +73,4 @@ class DirectionsTest(_test.TestCase):
 
         # Too exhausting to really test this
         with self.assertRaises(openrouteservice.exceptions.ApiError):
-            resp = self.client.directions(**query, validate=False)
+            resp = self.client.directions(**query)
