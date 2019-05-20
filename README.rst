@@ -147,6 +147,7 @@ By default, the directions API returns `encoded polylines <https://developers.go
 To decode to a ``dict``, which is a GeoJSON geometry object, simply do
 
 .. code:: python
+
     import openrouteservice
     from openrouteservice import convert
 
