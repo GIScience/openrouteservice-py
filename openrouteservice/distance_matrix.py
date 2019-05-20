@@ -19,8 +19,6 @@
 
 """Performs requests to the ORS Matrix API."""
 
-from openrouteservice import validator
-
 
 def distance_matrix(client, locations,
                     profile='driving-car',
@@ -83,9 +81,6 @@ def distance_matrix(client, locations,
     
     :rtype: call to Client.request()
     """
-
-    if validate:
-        validator.validator(locals(), 'distance_matrix')
 
     params = {
         "locations": locations,

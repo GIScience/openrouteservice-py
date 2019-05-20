@@ -18,7 +18,7 @@
 #
 
 """Performs requests to the ORS geocode API (direct Pelias clone)."""
-from openrouteservice import convert, validator
+from openrouteservice import convert
 
 
 def pelias_search(client, text,
@@ -91,9 +91,6 @@ def pelias_search(client, text,
 
     :rtype: call to Client.request()
     """
-
-    if validate:
-        validator.validator(locals(), 'pelias_search')
 
     params = {'text': text}
 
@@ -196,9 +193,6 @@ def pelias_autocomplete(client, text,
     :rtype: dict from JSON response
     """
 
-    if validate:
-        validator.validator(locals(), 'pelias_autocomplete')
-
     params = {'text': text}
 
     if focus_point:
@@ -290,9 +284,6 @@ def pelias_structured(client,
     :rtype: dict from JSON response
     """
 
-    if validate:
-        validator.validator(locals(), 'pelias_structured')
-
     params = dict()
 
     if address:
@@ -366,9 +357,6 @@ def pelias_reverse(client, point,
 
     :rtype: dict from JSON response
     """
-
-    if validate:
-        validator.validator(locals(), 'pelias_reverse')
 
     params = dict()
 

@@ -17,7 +17,7 @@
 
 """Performs requests to the ORS isochrones API."""
 
-from openrouteservice import validator, deprecation
+from openrouteservice import deprecation
 
 
 def isochrones(client, locations,
@@ -93,9 +93,6 @@ def isochrones(client, locations,
     
     :rtype: call to Client.request()
     """
-
-    if validate:
-        validator.validator(locals(), 'isochrones')
 
     params = {
         "locations": locations

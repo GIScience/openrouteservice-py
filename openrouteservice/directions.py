@@ -19,7 +19,7 @@
 
 """Performs requests to the ORS directions API."""
 
-from openrouteservice import validator, deprecation
+from openrouteservice import deprecation
 from openrouteservice.optimization import optimization, Job, Vehicle
 
 import warnings
@@ -176,9 +176,6 @@ def directions(client,
     :returns: sanitized set of parameters
     :rtype: call to Client.request()
     """
-
-    if validate:
-        validator.validator(locals(), 'directions')
 
     # call optimization endpoint and get new order of waypoints
     if optimize_waypoints is not None:

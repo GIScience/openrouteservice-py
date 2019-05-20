@@ -17,8 +17,6 @@
 
 """Performs requests to the ORS elevation API."""
 
-from openrouteservice import validator
-
 
 def elevation_point(client, format_in, geometry,
                     format_out='geojson',
@@ -47,8 +45,6 @@ def elevation_point(client, format_in, geometry,
     :returns: correctly formatted parameters
     :rtype: Client.request()
     """
-    if validate:
-        validator.validator(locals(), 'elevation_point')
 
     params = {
         'format_in': format_in,
@@ -89,8 +85,6 @@ def elevation_line(client, format_in, geometry,
     :returns: correctly formatted parameters
     :rtype: Client.request()
     """
-    if validate:
-        validator.validator(locals(), 'elevation_line')
 
     params = {
         'format_in': format_in,

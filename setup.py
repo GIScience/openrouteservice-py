@@ -22,7 +22,7 @@ def readme():
 
 setup(
     name='openrouteservice',
-    version='2.1.0',
+    version='2.2.0',
     description='Python client for requests to openrouteservice API services',
     long_description=readme(),
     classifiers=[
@@ -49,6 +49,7 @@ setup(
     tests_require=['nose>1.0',
                    'requests>=2.0',
                    'responses>=0.10',
-                   'coveralls>=1.7.0'],
+                   'coveralls>=1.7.0',
+                   'coverage>=4.5.0'],
     zip_safe=False
 )

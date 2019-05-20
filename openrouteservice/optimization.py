@@ -115,9 +115,6 @@ class Job(object):
         :type time_windows: list of lists of int
         """
 
-        # if validate:
-        #     validator.validator(locals(), 'job')
-
         self.id = id
 
         if location is not None:
@@ -193,9 +190,6 @@ class Vehicle(object):
         :param time_window: A time_window object describing working hours for this vehicle.
         :param time_window: list of int or tuple of int
         """
-
-        # if validate:
-        #     validator.validator(locals(), 'vehicle')
 
         self.id = id
         self.profile = profile

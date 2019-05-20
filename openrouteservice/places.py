@@ -17,7 +17,7 @@
 
 """Performs requests to the ORS Places API."""
 
-from openrouteservice import convert, validator
+from openrouteservice import convert
 
 
 def places(client, request,
@@ -79,9 +79,6 @@ def places(client, request,
     
     :rtype: call to Client.request()
     """
-
-    if validate:
-        validator.validator(locals(), 'pois')
 
     params = {
         'request': request,
