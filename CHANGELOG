@@ -1,5 +1,10 @@
 # Unreleased
 
+## 2.2.0
+
+- Add optimize_waypoints option to directions for simple TSP
+- get rid of validators, too maintenance-heavy
+
 ## 2.1.0
 
 - fix minor problems, apply PEP lint, add some tests

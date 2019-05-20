@@ -49,7 +49,7 @@ def optimization(client,
         the :meth:`openrouteservice.matrix.matrix` endpoint.
     :type matrix: list of lists of int
 
-    :param geometry: If the geometry of the resulting routes should be calculated. Default True.
+    :param geometry: If the geometry of the resulting routes should be calculated. Default False.
     :type geometry: bool
 
     :param dry_run: Print URL and parameters without sending the request.

@@ -24,9 +24,9 @@ from test.test_helper import ENDPOINT_DICT, PARAM_LIST_ONE, PARAM_GEOJSON_LINE, 
 
 class ValidatorTest(_test.TestCase):
 
-    @staticmethod
-    def test_directions_correct_schema():
-        validator.validator(ENDPOINT_DICT['directions'], 'directions')
+    # @staticmethod
+    # def test_directions_correct_schema():
+    #     validator.validator(ENDPOINT_DICT['directions'], 'directions')
 
     def test_directions_wrong_schema(self):
         ENDPOINT_DICT['directions']['preference'] = 'best'

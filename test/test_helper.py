@@ -23,6 +23,8 @@ ENDPOINT_DICT = {
         'language': 'en',
         'geometry': 'true',
         'geometry_simplify': 'false',
+        'maneuvers': True,
+        'suppress_warnings': False,
         'instructions': 'false',
         'instructions_format': 'html',
         'roundabout_exits': 'true',
@@ -32,6 +34,7 @@ ENDPOINT_DICT = {
         'elevation': 'true',
         'extra_info': ['roadaccessrestrictions'],
         'optimized': 'false',
+        'continue_straight': True,
         'options': {'avoid_features': ['highways', 'tollways']}
     },
     'isochrones': {

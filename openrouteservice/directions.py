@@ -20,6 +20,9 @@
 """Performs requests to the ORS directions API."""
 
 from openrouteservice import validator, deprecation
+from openrouteservice.optimization import optimization, Job, Vehicle
+
+import warnings
 
 
 def directions(client,
@@ -44,6 +47,7 @@ def directions(client,
                extra_info=None,
                suppress_warnings=None,
                optimized=None,
+               optimize_waypoints=None,
                options=None,
                validate=True,
                dry_run=None):
@@ -176,6 +180,13 @@ def directions(client,
     if validate:
         validator.validator(locals(), 'directions')
 
+    # call optimization endpoint and get new order of waypoints
+    if optimize_waypoints is not None:
+        if len(coordinates) <= 3:
+            warnings.warn("Less than 4 coordinates, nothing to optimize!")
+        else:
+            coordinates = _optimize_waypoint_order(client, coordinates, profile)
+
     params = {"coordinates": coordinates}
 
     if format_out:
@@ -196,11 +207,7 @@ def directions(client,
         params["geometry"] = geometry
 
     if geometry_simplify is not None:
-        # not checked on backend, check here
-        if extra_info:
-            params["geometry_simplify"] = False
-        else:
-            params["geometry_simplify"] = geometry_simplify
+        params["geometry_simplify"] = geometry_simplify
 
     if instructions is not None:
         params["instructions"] = instructions
@@ -246,3 +253,35 @@ def directions(client,
         params['options'] = options
 
     return client.request("/v2/directions/" + profile + '/' + format, {}, post_json=params, dry_run=dry_run)
+
+
+def _optimize_waypoint_order(client, coordinates, profile):
+
+    start = coordinates[0]
+    end = coordinates[-1]
+    veh = [Vehicle(
+        id=0,
+        profile=profile,
+        start=start,
+        end=end
+    )]
+
+    jobs = []
+    for idx, coord in enumerate(coordinates[1:-1]):
+        jobs.append(Job(
+            id=idx,
+            location=coord
+        ))
+
+    params = {
+        'jobs': jobs,
+        'vehicles': veh
+    }
+
+    optimization_res = optimization(client, **params)
+
+    coordinates = []
+    for step in optimization_res['routes'][0]['steps']:
+        coordinates.append(step['location'])
+
+    return coordinates

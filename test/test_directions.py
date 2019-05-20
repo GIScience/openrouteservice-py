@@ -23,7 +23,7 @@ import responses
 import warnings
 
 import test as _test
-from copy import copy
+from copy import deepcopy
 
 import openrouteservice
 from test.test_helper import ENDPOINT_DICT
@@ -40,24 +40,37 @@ class DirectionsTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        resp = self.client.directions(**self.valid_query)
+        resp = self.client.directions(**self.valid_query, validate=False)
 
         self.assertEqual(resp, self.valid_query)
         self.assertIn('sample_key', responses.calls[0].request.headers.values())
 
     def test_format_out_deprecation(self):
-        bad_query = copy(self.valid_query)
+        bad_query = deepcopy(self.valid_query)
         bad_query['format_out'] = "json"
         bad_query['dry_run'] = True
-
-        self.client = openrouteservice.Client(self.key)
 
         with warnings.catch_warnings(record=True) as w:
             # Cause all warnings to always be triggered.
             warnings.simplefilter("always")
             # Trigger a warning.
-            _ = self.client.directions(**bad_query)
+            _ = self.client.directions(**bad_query, validate=False)
 
             assert len(w) == 1
             assert issubclass(w[-1].category, DeprecationWarning)
             assert "deprecated" in str(w[-1].message)
+
+    def test_optimized_waypoints(self):
+        query = deepcopy(self.valid_query)
+        query['coordinates'] = [[8.688641, 49.420577], [8.680916, 49.415776],[8.688641, 49.420577], [8.680916, 49.415776]]
+        query['optimize_waypoints'] = True
+
+        responses.add(responses.POST,
+                      'https://api.openrouteservice.org/v2/directions/{}/geojson'.format(query['profile']),
+                      json=query,
+                      status=200,
+                      content_type='application/json')
+
+        # Too exhausting to really test this
+        with self.assertRaises(openrouteservice.exceptions.ApiError):
+            resp = self.client.directions(**query, validate=False)

@@ -1,3 +1,6 @@
+.venv/
+.coverage
+**/.ipynb_checkpoints/
 *.geojson
 *.pyc
 *.in

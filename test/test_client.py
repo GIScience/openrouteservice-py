@@ -55,11 +55,11 @@ class ClientTest(_test.TestCase):
 
         with self.assertRaises(openrouteservice.exceptions._OverQueryLimit):
             client = openrouteservice.Client(key=self.key, retry_over_query_limit=False)
-            client.directions(**valid_query)
+            client.directions(**valid_query, validate=False)
 
         with self.assertRaises(openrouteservice.exceptions.Timeout):
             client = openrouteservice.Client(key=self.key, retry_over_query_limit=True, retry_timeout=3)
-            client.directions(**valid_query)
+            client.directions(**valid_query, validate=False)
 
     @responses.activate
     def test_raise_timeout_retriable_requests(self):
@@ -78,7 +78,7 @@ class ClientTest(_test.TestCase):
 
         start = time.time()
         with self.assertRaises(openrouteservice.exceptions.Timeout):
-            client.directions(**valid_query)
+            client.directions(**valid_query, validate=False)
         end = time.time()
         self.assertTrue(retry_timeout < end - start < 2 * retry_timeout)
 
@@ -125,6 +125,6 @@ class ClientTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        resp = self.client.directions(**query)
+        resp = self.client.directions(**query, validate=False)
 
         self.assertDictContainsSubset({'Authorization': self.key}, responses.calls[0].request.headers)

@@ -75,15 +75,9 @@ class Client(object):
             http://docs.python-requests.org/en/latest/api/#main-interface
         :type requests_kwargs: dict
 
-        :param queries_per_minute: Number of queries per second permitted.
-            If the rate limit is reached, the client will sleep for the
-            appropriate amount of time before it runs the current query.
-            Note, it won't help to initiate another client. This saves you the 
-            trouble of raised exceptions.
-        :type queries_per_second: int
-
         :param retry_over_query_limit: If True, the client will retry when query
             limit is reached (HTTP 429). Default False.
+        :type retry_over_query_limit: bool
         """
 
         self._session = requests.Session()
@@ -222,6 +216,8 @@ class Client(object):
             return self.request(url, get_params, first_request_time,
                                 retry_counter + 1, requests_kwargs,
                                 post_json)
+        except json.JSONDecodeError:
+            print(response.content, response.raw)
 
     @property
     def req(self):
