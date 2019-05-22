@@ -122,7 +122,7 @@ Basic example
 	client = openrouteservice.Client(key='') # Specify your personal API key
 	routes = client.directions(coords)
 
-	print routes
+	print(routes)
 
 For convenience, all request performing module methods are wrapped inside the ``client`` class. This has the
 disadvantage, that your IDE can't auto-show all positional and optional arguments for the
@@ -132,14 +132,29 @@ The slightly more verbose alternative, preserving your IDE's smart functions, is
 
 .. code:: python
 
-	import openrouteservice
-	from openrouteservice.directions import directions
+    import openrouteservice
+    from openrouteservice.directions import directions
 
 	coords = ((8.34234,48.23424),(8.34423,48.26424))
 
 	client = openrouteservice.Client(key='') # Specify your personal API key
 	routes = directions(client, coords) # Now it shows you all arguments for .directions
 
+Optimize route
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+If you want to optimize the order of multiple waypoints in a simple `Traveling Salesman Problem <https://en.wikipedia.org/wiki/Travelling_salesman_problem>`_,
+you can pass a ``optimize_waypoints`` parameter:
+
+.. code:: python
+
+	import openrouteservice
+
+	coords = ((8.34234,48.23424),(8.34423,48.26424), (8.34523,48.24424), (8.41423,48.21424))
+
+	client = openrouteservice.Client(key='') # Specify your personal API key
+	routes = client.directions(coords, profile='cycling-regular', optimize_waypoints=True)
+
+	print(routes)
 
 Decode Polyline
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -160,7 +175,7 @@ To decode to a ``dict``, which is a GeoJSON geometry object, simply do
 
     decoded = convert.decode_polyline(geometry)
 
-    print decoded
+    print(decoded)
 
 Dry run
 ^^^^^^^^^^^^^^^^^^^^
