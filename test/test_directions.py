@@ -74,3 +74,67 @@ class DirectionsTest(_test.TestCase):
         # Too exhausting to really test this
         with self.assertRaises(openrouteservice.exceptions.ApiError):
             resp = self.client.directions(**query)
+
+    @responses.activate
+    def test_optimize_warnings(self):
+        query = deepcopy(self.valid_query)
+        query['optimize_waypoints'] = True
+
+        # Test Coordinates
+
+        responses.add(responses.POST,
+                      'https://api.openrouteservice.org/v2/directions/{}/geojson'.format(query['profile']),
+                      json=query,
+                      status=200,
+                      content_type='application/json')
+
+        with warnings.catch_warnings(record=True) as w:
+            # Cause all warnings to always be triggered.
+            warnings.simplefilter("always")
+
+            resp = self.client.directions(**query)
+
+            assert len(w) == 1
+            assert issubclass(w[-1].category, UserWarning)
+            assert "4 coordinates" in str(w[-1].message)
+
+        # Test Options
+        
+        query['coordinates'] = [[8.688641, 49.420577], [8.680916, 49.415776],[8.688641, 49.420577], [8.680916, 49.415776]]
+
+        responses.add(responses.POST,
+                      'https://api.openrouteservice.org/v2/directions/{}/geojson'.format(query['profile']),
+                      json=query,
+                      status=200,
+                      content_type='application/json')
+
+        with warnings.catch_warnings(record=True) as w:
+            # Cause all warnings to always be triggered.
+            warnings.simplefilter("always")
+
+            resp = self.client.directions(**query)
+
+            assert len(w) == 1
+            assert issubclass(w[-1].category, UserWarning)
+            assert "Options" in str(w[-1].message)
+
+        # Test Preference
+
+        query['options'] = None
+        query['preference'] = 'shortest'
+
+        responses.add(responses.POST,
+                      'https://api.openrouteservice.org/v2/directions/{}/geojson'.format(query['profile']),
+                      json=query,
+                      status=200,
+                      content_type='application/json')
+
+        with warnings.catch_warnings(record=True) as w:
+            # Cause all warnings to always be triggered.
+            warnings.simplefilter("always")
+
+            resp = self.client.directions(**query)
+
+            assert len(w) == 1
+            assert issubclass(w[-1].category, UserWarning)
+            assert "Shortest" in str(w[-1].message)

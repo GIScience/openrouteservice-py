@@ -167,7 +167,7 @@ def directions(client,
     :param optimize_waypoints: If True, a `Vroom <https://github.com/VROOM-Project/vroom>`_ instance (ORS optimization
         endpoint) will optimize the `via` waypoints, i.e. all coordinates between the first and the last. It assumes
         the first coordinate to be the start location and the last coordinate to be the end location. Only requests with
-        a minimum of 4 coordinates can be optimized. Default False.
+        a minimum of 4 coordinates, no routing options and fastest weighting. Default False.
     :type optimize_waypoints: bool
 
     :param validate: Specifies whether parameters should be validated before sending the request. Default True.
@@ -184,9 +184,13 @@ def directions(client,
     """
 
     # call optimization endpoint and get new order of waypoints
-    if optimize_waypoints is not None:
+    if optimize_waypoints is not None and not dry_run:
         if len(coordinates) <= 3:
-            warnings.warn("Less than 4 coordinates, nothing to optimize!")
+            warnings.warn("Less than 4 coordinates, nothing to optimize!", UserWarning)
+        elif options:
+            warnings.warn("Options are not compatible with optimization.", UserWarning)
+        elif preference == 'shortest':
+            warnings.warn("Shortest is not compatible with optimization.", UserWarning)
         else:
             coordinates = _optimize_waypoint_order(client, coordinates, profile)
 

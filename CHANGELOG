@@ -2,6 +2,7 @@
 
 ## 2.2.0
 
+- restrict optimize_waypoints parameter to not trigger when options or 'shortest' is used
 - Add optimize_waypoints option to directions for simple TSP
 - get rid of validators, too maintenance-heavy
 
