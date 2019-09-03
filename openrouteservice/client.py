@@ -225,16 +225,14 @@ class Client(object):
     @staticmethod
     def _get_body(response):
         """Returns the body of a response object, raises status code exceptions if necessary."""
-        status_code = response.status_code
         try:
             body = response.json()
         except json.JSONDecodeError:
-            if status_code != 200:
-                raise exceptions.ApiError(
-                    status_code)
-        # error = body.get('error')
-        
+            raise exceptions.HTTPError(response.status_code)
 
+        # error = body.get('error')
+        status_code = response.status_code
+        
         if status_code == 429:
             raise exceptions._OverQueryLimit(
                 status_code,
