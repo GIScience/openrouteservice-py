@@ -27,10 +27,16 @@ ENDPOINT_DICT = {
         'suppress_warnings': False,
         'instructions': 'false',
         'instructions_format': 'html',
+        'alternative_routes': {
+            'share_factor': 0.6,
+            'target_count': 2,
+            'weight_factor': 1.4
+        },
         'roundabout_exits': 'true',
         'attributes': ['avgspeed'],
         'radiuses': PARAM_LIST_ONE,
         'bearings': PARAM_LIST_TWO,
+        'skip_segments': [0, 1],
         'elevation': 'true',
         'extra_info': ['roadaccessrestrictions'],
         'optimized': 'false',
@@ -129,6 +135,88 @@ ENDPOINT_DICT = {
         'sortby': 'distance',
     },
     'optimization': {
+        "shipments": [
+          {
+            "pickup": {
+              "id": 0,
+              "location": [
+                8.688641,
+                49.420577
+              ],
+              "location_index": 0,
+              "service": 500,
+              "time_windows": [
+                [
+                  50,
+                  50
+                ]
+              ]
+            },
+            "delivery": {
+              "id": 0,
+              "location": [
+                8.688641,
+                49.420577
+              ],
+              "location_index": 0,
+              "service": 500,
+              "time_windows": [
+                [
+                  50,
+                  50
+                ]
+              ]
+            },
+            "amount": [
+              50
+            ],
+            "skills": [
+              50,
+              50
+            ],
+            "priority": 50
+          },
+          {
+            "pickup": {
+              "id": 1,
+              "location": [
+                8.680916,
+                49.415776
+              ],
+              "location_index": 1,
+              "service": 500,
+              "time_windows": [
+                [
+                  50,
+                  50
+                ]
+              ]
+            },
+            "delivery": {
+              "id": 1,
+              "location": [
+                8.680916,
+                49.415776
+              ],
+              "location_index": 1,
+              "service": 500,
+              "time_windows": [
+                [
+                  50,
+                  50
+                ]
+              ]
+            },
+            "amount": [
+              50
+            ],
+            "skills": [
+              50,
+              50
+            ],
+            "priority": 50
+          }
+        ],
         "jobs": [
           {
             "id": 0,
@@ -137,6 +225,7 @@ ENDPOINT_DICT = {
             "service": PARAM_INT_BIG,
             "amount": [PARAM_INT_SMALL],
             "skills": PARAM_LIST_ONE,
+            "priority": PARAM_INT_SMALL,
             "time_windows": [PARAM_LIST_ONE]
           },
           {
@@ -146,6 +235,7 @@ ENDPOINT_DICT = {
             "service": PARAM_INT_BIG,
             "amount": [PARAM_INT_SMALL],
             "skills": PARAM_LIST_ONE,
+            "priority": PARAM_INT_SMALL,
             "time_windows": [PARAM_LIST_ONE]
           }
         ],

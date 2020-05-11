@@ -24,13 +24,13 @@ from copy import deepcopy
 import json
 
 from test.test_helper import *
-from openrouteservice.optimization import Job, Vehicle
+from openrouteservice.optimization import Job, Vehicle, ShipmentStep, Shipment
 
 
 class OptimizationTest(_test.TestCase):
 
     def _get_params(self):
-        jobs, vehicles = list(), list()
+        jobs, vehicles, shipments = list(), list(), list()
 
         for idx, coord in enumerate(PARAM_LINE):
             jobs.append(Job(idx, location=coord,
@@ -38,6 +38,7 @@ class OptimizationTest(_test.TestCase):
                              location_index=idx,
                              amount=[PARAM_INT_SMALL],
                              skills=PARAM_LIST_ONE,
+                             priority=PARAM_INT_SMALL,
                              time_windows=[PARAM_LIST_ONE]
                              ))
 
@@ -49,11 +50,32 @@ class OptimizationTest(_test.TestCase):
                                      capacity=[PARAM_INT_SMALL],
                                      skills=PARAM_LIST_ONE,
                                      time_window=PARAM_LIST_ONE))
-        return jobs, vehicles
+
+            shipments.append(Shipment(
+                pickup=ShipmentStep(
+                    idx,
+                    location=coord,
+                    location_index=idx,
+                    service=PARAM_INT_BIG,
+                    time_windows=[PARAM_LIST_ONE]
+                ),
+                delivery=ShipmentStep(
+                    idx,
+                    location=coord,
+                    location_index=idx,
+                    service=PARAM_INT_BIG,
+                    time_windows=[PARAM_LIST_ONE]
+                ),
+                amount=[PARAM_INT_SMALL],
+                skills=PARAM_LIST_ONE,
+                priority=PARAM_INT_SMALL
+            ))
+
+        return jobs, vehicles, shipments
 
     def test_jobs_vehicles_classes(self):
 
-        jobs, vehicles = self._get_params()
+        jobs, vehicles, shipments = self._get_params()
 
         self.assertEqual(ENDPOINT_DICT['optimization']['jobs'], [j.__dict__ for j in jobs])
         self.assertEqual(ENDPOINT_DICT['optimization']['vehicles'], [v.__dict__ for v in vehicles])
@@ -62,7 +84,7 @@ class OptimizationTest(_test.TestCase):
     def test_full_optimization(self):
         query = deepcopy(ENDPOINT_DICT['optimization'])
 
-        jobs, vehicles = self._get_params()
+        jobs, vehicles, shipments = self._get_params()
 
         responses.add(responses.POST,
                       'https://api.openrouteservice.org/optimization',
@@ -70,6 +92,6 @@ class OptimizationTest(_test.TestCase):
                       status=200,
                       content_type='application/json')
 
-        self.client.optimization(jobs, vehicles, geometry=False, matrix=PARAM_LIST_TWO)
+        self.client.optimization(jobs, vehicles, shipments, geometry=False, matrix=PARAM_LIST_TWO)
 
         self.assertEqual(query, json.loads(responses.calls[0].request.body.decode('utf-8')))

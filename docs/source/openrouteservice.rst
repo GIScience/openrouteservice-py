@@ -76,14 +76,6 @@ openrouteservice\.optimization module
     :undoc-members:
     :show-inheritance:
 
-openrouteservice\.validator module
-------------------------------------
-
-.. automodule:: openrouteservice.validator
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 openrouteservice\.exceptions module
 -----------------------------------
 
