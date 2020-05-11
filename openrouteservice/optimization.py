@@ -19,8 +19,9 @@
 
 
 def optimization(client,
-                 jobs,
-                 vehicles,
+                 jobs=None,
+                 vehicles=None,
+                 shipments=None,
                  matrix=None,
                  geometry=None,
                  dry_run=None):
@@ -40,10 +41,13 @@ def optimization(client,
         >>> result = api.optimization(jobs=jobs, vehicles=vehicles)
 
     :param jobs: The Job objects to fulfill.
-    :type jobs: list of :class:`openrouteservice.optimization.Job`
+    :type jobs: list of Job
 
     :param vehicles: The vehicles to fulfill the :class:`openrouteservice.optimization.Job`'s.
-    :type vehicles: list of :class:`openrouteservice.optimization.Vehicle`
+    :type vehicles: list of Vehicle
+
+    :param shipments: The Shipment objects to fulfill.
+    :type shipments: list of Shipment
 
     :param matrix: Specify a custom cost matrix. If not specified, it will be calculated with
         the :meth:`openrouteservice.matrix.matrix` endpoint.
@@ -59,11 +63,30 @@ def optimization(client,
     :rtype: dict
     """
 
-    assert all([isinstance(x, Job) for x in jobs])
     assert all([isinstance(x, Vehicle) for x in vehicles])
 
-    params = {"jobs": [job.__dict__ for job in jobs],
-              "vehicles": [vehicle.__dict__ for vehicle in vehicles]}
+    params = {"vehicles": [vehicle.__dict__ for vehicle in vehicles]}
+
+    if jobs:
+        assert all([isinstance(x, Job) for x in jobs])
+        params['jobs'] = [job.__dict__ for job in jobs]
+    if shipments:
+        assert all([isinstance(x, Shipment) for x in shipments])
+        params['shipments'] = list()
+
+        for shipment in shipments:
+            shipment_dict = dict()
+            if getattr(shipment, 'pickup'):
+                assert isinstance(shipment.pickup, ShipmentStep)
+                shipment_dict['pickup'] = shipment.pickup.__dict__
+            if getattr(shipment, 'delivery'):
+                assert isinstance(shipment.delivery, ShipmentStep)
+                shipment_dict['delivery'] = shipment.delivery.__dict__
+            shipment_dict['amount'] = shipment.amount
+            shipment_dict['skills'] = shipment.skills
+            shipment_dict['priority'] = shipment.priority
+
+            params['shipments'].append(shipment_dict)
 
     if geometry is not None:
         params.update({"options": {"g": geometry}})
@@ -87,6 +110,7 @@ class Job(object):
                  service=None,
                  amount=None,
                  skills=None,
+                 priority=None,
                  time_windows=None
                  ):
         """
@@ -111,6 +135,9 @@ class Job(object):
         :param skills: An array of integers defining mandatory skills for this job.
         :type skills: list of int or tuple of int
 
+        :param priority: An integer in the [0, 10] range describing priority level (defaults to 0).
+        :type priority: int
+
         :param time_windows: An array of time_window objects describing valid slots for job service start.
         :type time_windows: list of lists of int
         """
@@ -132,8 +159,107 @@ class Job(object):
         if skills is not None:
             self.skills = skills
 
+        if priority is not None:
+            self.priority = priority
+
         if time_windows is not None:
             self.time_windows = time_windows
+
+
+class ShipmentStep(object):
+    """
+    Class to create a Shipment object for optimization endpoint.
+
+    Full documentation at https://github.com/VROOM-Project/vroom/blob/master/docs/API.md#shipments.
+    """
+    def __init__(self,
+                 id=None,
+                 location=None,
+                 location_index=None,
+                 service=None,
+                 time_windows=None
+                 ):
+        """
+        Create a shipment step object for the optimization endpoint.
+
+        :param id: Integer used as unique identifier.
+        :type id: int
+
+        :param location: Location of the job, as [lon, lat]. Optional if custom matrix is provided.
+        :type location: tuple of float or list of float
+
+        :param location_index: Index of relevant row and column in custom matrix. Mandatory if custom
+            matrix is provided. Irrelevant when no custom matrix is provided.
+        :type location_index: int
+
+        :param service: Optional job service duration in seconds
+        :type service: int
+
+        :param time_windows: An array of time_window objects describing valid slots for job service start.
+        :type time_windows: list of lists of int
+        """
+
+        self.id = id
+
+        if location is not None:
+            self.location = location
+
+        if location_index is not None:
+            self.location_index = location_index
+
+        if service is not None:
+            self.service = service
+
+        if time_windows is not None:
+            self.time_windows = time_windows
+
+
+class Shipment(object):
+    """
+    Class to create a Shipment object for optimization endpoint.
+
+    Full documentation at https://github.com/VROOM-Project/vroom/blob/master/docs/API.md#shipments.
+    """
+    def __init__(self,
+                 pickup=None,
+                 delivery=None,
+                 amount=None,
+                 skills=None,
+                 priority=None
+                 ):
+        """
+        Create a shipment object for the optimization endpoint.
+
+        :param pickup: a ShipmentStep object describing pickup
+        :type pickup: ShipmentStep
+
+        :param delivery: a ShipmentStep object describing delivery
+        :type delivery: ShipmentStep
+
+        :param amount: An array of integers describing multidimensional quantities.
+        :type amount: list of int or tuple of int
+
+        :param skills: An array of integers defining mandatory skills.
+        :type skills: list of int or tuple of int
+
+        :param priority: An integer in the [0, 10] range describing priority level (defaults to 0).
+        :type priority: int
+        """
+
+        if pickup is not None:
+            self.pickup = pickup
+
+        if delivery is not None:
+            self.delivery = delivery
+
+        if amount is not None:
+            self.amount = amount
+
+        if skills is not None:
+            self.skills = skills
+
+        if priority is not None:
+            self.priority = priority
 
 
 class Vehicle(object):
