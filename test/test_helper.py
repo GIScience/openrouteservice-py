@@ -27,10 +27,16 @@ ENDPOINT_DICT = {
         'suppress_warnings': False,
         'instructions': 'false',
         'instructions_format': 'html',
+        'alternative_routes': {
+            'share_factor': 0.6,
+            'target_count': 2,
+            'weight_factor': 1.4
+        },
         'roundabout_exits': 'true',
         'attributes': ['avgspeed'],
         'radiuses': PARAM_LIST_ONE,
         'bearings': PARAM_LIST_TWO,
+        'skip_segments': [0, 1],
         'elevation': 'true',
         'extra_info': ['roadaccessrestrictions'],
         'optimized': 'false',

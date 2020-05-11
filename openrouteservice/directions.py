@@ -37,11 +37,13 @@ def directions(client,
                geometry_simplify=None,
                instructions=None,
                instructions_format=None,
+               alternative_routes=None,
                roundabout_exits=None,
                attributes=None,
                maneuvers=None,
                radiuses=None,
                bearings=None,
+               skip_segments=None,
                continue_straight=None,
                elevation=None,
                extra_info=None,
@@ -103,6 +105,12 @@ def directions(client,
         One of ["text", "html"]. Default "text".
     :type instructions_format: string
 
+    :param alternative_routes: Specifies whether alternative routes are computed,
+        and parameters for the algorithm determining suitable alternatives. Expects
+        3 keys: share_factor (float), target_count (int), weight_factor (float).
+        More on https://openrouteservice.org/dev/#/api-docs/v2/directions/{profile}/geojson/post.
+    :type alternative_routes: dict[int|float]
+
     :param roundabout_exits: Provides bearings of the entrance and all passed
         roundabout exits. Adds the 'exit_bearings' array to the 'step' object
         in the response. Default False.
@@ -137,6 +145,11 @@ def directions(client,
         waypoint may be reached.
     :type bearings: list or tuple or lists or tuples
 
+    :param skip_segments: Specifies the segments that should be skipped in the route calculation.
+        A segment is the connection between two given coordinates and the counting starts with 1
+        for the connection between the first and second coordinate.
+    :type skip_segments: list[int]
+
     :param continue_straight: Forces the route to keep going straight at waypoints
         restricting u-turns even if u-turns would be faster. This setting
         will work for all profiles except for driving-*. In this case you will
@@ -159,7 +172,7 @@ def directions(client,
     :param optimized: If set False, forces to not use Contraction Hierarchies.
     :type optimized: bool
 
-    :param options: Refer to https://go.openrouteservice.org/documentation for
+    :param options: Refer to https://openrouteservice.org/dev/#/api-docs/v2/directions/{profile}/geojson/post for
         detailed documentation. Construct your own dict() following the example
         of the minified options object. Will be converted to json automatically.
     :type options: dict
@@ -222,6 +235,9 @@ def directions(client,
     if instructions_format:
         params["instructions_format"] = instructions_format
 
+    if alternative_routes:
+        params["alternative_routes"] = alternative_routes
+
     if roundabout_exits is not None:
         params["roundabout_exits"] = roundabout_exits
 
@@ -236,6 +252,9 @@ def directions(client,
 
     if bearings:
         params["bearings"] = bearings
+
+    if skip_segments:
+        params["skip_segments"] = skip_segments
 
     if continue_straight is not None:
         params["continue_straight"] = continue_straight
