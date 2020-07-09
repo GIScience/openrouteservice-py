@@ -115,6 +115,23 @@ class ClientTest(_test.TestCase):
         self.assertEqual(0, len(responses.calls))
 
     @responses.activate
+    def test_no_get_parameter(self):
+
+        responses.add(responses.POST,
+                      'https://api.openrouteservice.org/directions',
+                      body='{"status":"OK","results":[]}',
+                      status=200,
+                      content_type='application/json')
+
+        req = self.client.request(post_json={},
+                                  url='v2/directions/driving-car/json',
+                                  dry_run='true')
+
+        self.assertEqual(0, len(responses.calls))
+
+    # Test if the client works with a post request without a get parameter
+
+    @responses.activate
     def test_key_in_header(self):
         # Test that API key is being put in the Authorization header
         query = ENDPOINT_DICT['directions']
