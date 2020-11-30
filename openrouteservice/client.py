@@ -263,6 +263,8 @@ class Client(object):
 
         if type(params) is dict:
             params = sorted(dict(**params).items())
+        elif params is None:
+            return path
 
         return path + "?" + _urlencode_params(params)
 
