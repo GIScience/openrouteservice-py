@@ -1,0 +1,33 @@
+name: tests
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+        python_version: [
+            3.7,
+            3.8,
+            3.9,
+            pypy3
+        ]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python_version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python_version }}
+    - name: Install dependencies
+      run: |
+        pip install -r requirements-dev.txt
+    - name: nosetests
+      run: |
+        nosetests --with-coverage --cover-erase --cover-package=openrouteservice -v
+    - name: coveralls
+      run: |
+        coveralls
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
