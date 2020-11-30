@@ -1,5 +1,5 @@
-.. image:: https://travis-ci.com/GIScience/openrouteservice-py.svg?branch=master
-    :target: https://travis-ci.com/GIScience/openrouteservice-py
+.. image:: https://github.com/GIScience/openrouteservice-py/workflows/tests/badge.svg
+    :target: https://github.com/GIScience/openrouteservice-py/actions
     :alt: Build status
 
 .. image:: https://coveralls.io/repos/github/GIScience/openrouteservice-py/badge.svg?branch=master
@@ -74,7 +74,7 @@ By using this library, you agree to the ORS `terms and conditions`_.
 
 Requirements
 -----------------------------
-openrouteservice-py is tested against CPython 2.7, 3.4, 3.5, 3.6, 3.7 and 3.8-dev, and PyPy3.5.
+openrouteservice-py is tested against CPython 3.7, 3.8 and 3.9, and PyPy3.
 
 For setting up a testing environment, install ``requirements-dev.txt``::
 
@@ -90,11 +90,6 @@ To install the latest and greatest from source::
 
    	pip install git+git://github.com/GIScience/openrouteservice-py@development
 
-For ``conda`` users::
-
-  conda install -c nilsnolde openrouteservice
-
-This command group will install the library to your global environment. Also works in virtual environments.
 
 
 Testing
