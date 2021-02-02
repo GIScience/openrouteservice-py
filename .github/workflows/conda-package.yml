@@ -1,9 +1,6 @@
 name: Conda Package
 
-on:
-  push:
-    tags:
-      - 'v*.*.*'
+on: [pull_request]
 
 jobs:
   publish:
