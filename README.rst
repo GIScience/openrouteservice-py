@@ -18,9 +18,9 @@
     :target: https://anaconda.org/MichaelsJP/openrouteservice
     :alt: Conda Build
 
-.. image:: https://anaconda.org/michaelsjp/openrouteservice/badges/installer/conda.svg
+.. image:: https://anaconda.org/michaelsjp/openrouteservice/badges/version.svg
     :target: https://anaconda.org/MichaelsJP/openrouteservice
-    :alt: Conda install
+    :alt: Conda Version
 
 .. image:: https://mybinder.org/badge_logo.svg
     :target: https://mybinder.org/v2/gh/GIScience/openrouteservice-py/master?filepath=examples%2Fbasic_example.ipynb
