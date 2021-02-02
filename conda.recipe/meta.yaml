@@ -1,5 +1,5 @@
 {% set name = "openrouteservice" %}
-{% set version = "2.3.2" %}
+{% set version = "2.3.3" %}
 
 package:
   name: "{{ name|lower }}"
