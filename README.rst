@@ -14,8 +14,8 @@
     :target: https://badge.fury.io/py/openrouteservice
     :alt: PyPI version
 
-.. image:: https://anaconda.org/nilsnolde/openrouteservice/badges/installer/conda.svg
-    :target: https://conda.anaconda.org/nilsnolde/openrouteservice
+.. image:: https://anaconda.org/michaelsjp/openrouteservice/badges/installer/conda.svg
+    :target: https://anaconda.org/MichaelsJP/openrouteservice
     :alt: Conda install
 
 .. image:: https://mybinder.org/badge_logo.svg
