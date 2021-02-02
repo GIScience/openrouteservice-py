@@ -8,7 +8,8 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: publish-to-conda
-      uses: maxibor/conda-package-publish-action@master
+      uses: fcakyon/conda-publish-action@master
       with:
-        subDir: 'conda.recipe'
-        AnacondaToken: ${{ secrets.ANACONDA_TOKEN }}
+        subdir: 'conda.recipe'
+        anacondatoken: ${{ secrets.ANACONDA_TOKEN }}
+        platforms: 'win osx linux'
