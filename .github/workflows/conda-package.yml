@@ -1,19 +1,14 @@
 name: Conda Package
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install git
+    - uses: actions/checkout@v1
     - name: publish-to-conda
-      uses: fcakyon/conda-publish-action@v1.3
+      uses: maxibor/conda-package-publish-action@v1.1
       with:
-        subdir: 'conda.recipe'
-        anacondatoken: ${{ secrets.ANACONDA_TOKEN }}
-        platforms: 'win osx linux'
+        subDir: 'conda.recipe'
+        AnacondaToken: ${{ secrets.ANACONDA_TOKEN }}
