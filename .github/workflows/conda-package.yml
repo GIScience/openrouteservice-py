@@ -1,0 +1,15 @@
+name: Conda Package
+
+on: [push, pull_request]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: publish-to-conda
+      uses: fcakyon/conda-publish-action@v1.3
+      with:
+        subdir: '.'
+        anacondatoken: ${{ secrets.ANACONDA_TOKEN }}
+        platforms: 'win osx linux'
