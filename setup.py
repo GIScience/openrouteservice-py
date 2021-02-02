@@ -22,7 +22,7 @@ def readme():
 
 setup(
     name='openrouteservice',
-    version='2.2.2',
+    version='2.3.2',
     description='Python client for requests to openrouteservice API services',
     long_description=readme(),
     long_description_content_type='text/x-rst',
