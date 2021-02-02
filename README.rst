@@ -14,7 +14,7 @@
     :target: https://badge.fury.io/py/openrouteservice
     :alt: PyPI version
 
-.. image:: https://github.com/GIScience/openrouteservice-py/workflows/Conda%20Package/badge.svg
+.. image:: https://github.com/GIScience/openrouteservice-py/workflows/Conda%20Package/badge.svg?branch=master
     :target: https://anaconda.org/MichaelsJP/openrouteservice
     :alt: Conda Build
 
