@@ -11,7 +11,8 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: publish-to-conda
-      uses: maxibor/conda-package-publish-action@master
+      uses: MichaelsJP/conda-package-publish-action@add-all-platforms
       with:
         subDir: 'conda.recipe'
         AnacondaToken: ${{ secrets.ANACONDA_TOKEN }}
+        platforms: 'all'
