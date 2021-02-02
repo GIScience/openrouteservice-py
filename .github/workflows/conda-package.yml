@@ -1,9 +1,6 @@
 name: Conda Package
 
-on:
-  push:
-    tags:
-      - 'v*.*.*'
+on: [pull_request]
 
 jobs:
   publish:
@@ -11,7 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: publish-to-conda
-      uses: MichaelsJP/conda-package-publish-action@add-all-platforms
+      uses: MichaelsJP/conda-package-publish-action@v1.0.0
       with:
         subDir: 'conda.recipe'
         AnacondaToken: ${{ secrets.ANACONDA_TOKEN }}
