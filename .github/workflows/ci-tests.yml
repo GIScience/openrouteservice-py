@@ -28,6 +28,6 @@ jobs:
         nosetests --with-coverage --cover-erase --cover-package=openrouteservice -v
     - name: coveralls
       run: |
-        coveralls
+        coveralls --service=github
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
