@@ -14,9 +14,13 @@
     :target: https://badge.fury.io/py/openrouteservice
     :alt: PyPI version
 
-.. image:: https://anaconda.org/nilsnolde/openrouteservice/badges/installer/conda.svg
-    :target: https://conda.anaconda.org/nilsnolde/openrouteservice
-    :alt: Conda install
+.. image:: https://github.com/GIScience/openrouteservice-py/workflows/Conda%20Package/badge.svg?branch=master
+    :target: https://anaconda.org/MichaelsJP/openrouteservice
+    :alt: Conda Build
+
+.. image:: https://anaconda.org/michaelsjp/openrouteservice/badges/version.svg
+    :target: https://anaconda.org/MichaelsJP/openrouteservice
+    :alt: Conda Version
 
 .. image:: https://mybinder.org/badge_logo.svg
     :target: https://mybinder.org/v2/gh/GIScience/openrouteservice-py/master?filepath=examples%2Fbasic_example.ipynb
