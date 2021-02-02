@@ -4,7 +4,7 @@ on: [pull_request]
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    runs-on: Ubuntu-20.04
     steps:
     - uses: actions/checkout@v1
     - name: publish-to-conda
