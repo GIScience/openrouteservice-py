@@ -8,29 +8,37 @@ on:
       - master
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
+  test:
     strategy:
+      fail-fast: false
       matrix:
-        os: [ubuntu-20.04]
-        python_version: [
-            3.7,
-            3.8,
-            3.9,
-            pypy3
-        ]
+        config:
+          - python-version: 3.6
+            tox: 36
+          - python-version: 3.7
+            tox: 37
+          - python-version: 3.8
+            tox: 38
+          - python-version: 3.9
+            tox: 39
+        poetry-version: [ 1.1.4 ]
+        os: [ ubuntu-20.04, ubuntu-18.04 ]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python_version }}
+    - name: Set up Python ${{ matrix.config.python-version }}
       uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.python_version }}
+        python-version: ${{ matrix.config.python-version }}
+    - name: Python Poetry Action
+      uses: abatilo/actions-poetry@v2.1.0
+      with:
+        poetry-version: 1.1.2
     - name: Install dependencies
       run: |
-        pip install -r requirements-dev.txt
-    - name: nosetests
-      run: |
-        nosetests --with-coverage --cover-erase --cover-package=openrouteservice -v
+        pip install tox
+    - name: Run Tox
+      run: tox -e py${{ matrix.config.tox }}
     - name: coveralls
       run: |
         coveralls --service=github
