@@ -16,8 +16,9 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 #
+import pkg_resources
 
-__version__ = "2.2.2"
+__version__ = pkg_resources.get_distribution('openrouteservice').version
 
 
 def get_ordinal(number):
