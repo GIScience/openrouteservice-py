@@ -1,5 +1,17 @@
+[run]
+branch = True
+concurrency = multiprocessing
+omit =
+    */venv/*
+    */.venv/*
+    */.env/*
+    */.tox/*
+
 [report]
 omit =
-    */python?.?/*
-    */site-packages/nose/*
-    *__init__*
+    */venv/*
+    */.venv/*
+    */.env/*
+    */.tox/*
+exclude_lines =
+    pragma: no cover
