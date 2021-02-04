@@ -41,7 +41,7 @@ jobs:
           - python-version: 3.9
             tox: 39
         poetry-version: [ 1.1.4 ]
-        os: [ macos-11.0, windows-2019, ubuntu-20.04, ubuntu-18.04 ]
+        os: [ macos-latest, windows-2019, ubuntu-20.04, ubuntu-18.04 ]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
