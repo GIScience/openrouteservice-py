@@ -16,3 +16,6 @@ test.py
 
 cover/
 conda/
+/coverage.xml
+/poetry.lock
+/setup.py

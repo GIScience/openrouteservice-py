@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "openrouteservice"
+version = "2.3.3"
+description = "Python client for requests to openrouteservice API services."
+authors = ["Nils Nolde <nils.nolde@gmail.com>", "Julian Psotta <julianpsotta@gmail.com>"]
+readme = 'README.rst'
+license = "Apache2"
+
+[tool.dephell.main]
+from = { format = "poetry", path = "pyproject.toml" }
+to = { format = "setuppy", path = "setup.py" }
+
+[tool.poetry.dependencies]
+python = ">=3.6.0,<4"
+requests = ">=2.0"
+setuptools = ">=53.0.0"
+responses = ">=0.12.1"
+dephell = ">=0.8.3"
+
+[tool.poetry.dev-dependencies]
+responses = ">=0.10"
+coveralls = ">=1.7.0"
+tox = ">=3.21.4"
+pytest = ">=4.6.11"
+pytest-cov = ">=2.11.1"
+
+[tool.poetry.extras]
+test = ["pytest", "pytest-cov", "tox", "responses", "coveralls"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
