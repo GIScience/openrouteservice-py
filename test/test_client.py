@@ -80,7 +80,7 @@ class ClientTest(_test.TestCase):
         with self.assertRaises(openrouteservice.exceptions.Timeout):
             client.directions(**valid_query)
         end = time.time()
-        self.assertTrue(retry_timeout < end - start < 2 * retry_timeout)
+        self.assertTrue(retry_timeout < end - start < 3 * retry_timeout)
 
     @responses.activate
     def test_host_override_with_parameters(self):
