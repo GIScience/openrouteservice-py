@@ -1,6 +1,6 @@
 {% set name = "openrouteservice" %}
 {% set version = "2.3.3" %}
-
+# TODO update to be conform with poetry
 package:
   name: "{{ name|lower }}"
   version: "{{ version }}"

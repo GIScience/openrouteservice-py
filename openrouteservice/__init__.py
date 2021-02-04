@@ -16,24 +16,24 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 #
+
+"""Initialize openrouteservice."""
 import pkg_resources
 
-__version__ = pkg_resources.get_distribution('openrouteservice').version
+__version__ = pkg_resources.get_distribution("openrouteservice").version
 
 
 def get_ordinal(number):
-    """Produces an ordinal (1st, 2nd, 3rd, 4th) from a number"""
+    """Produces an ordinal (1st, 2nd, 3rd, 4th) from a number."""
 
     if number == 1:
-        return 'st'
+        return "st"
     elif number == 2:
-        return 'nd'
+        return "nd"
     elif number == 3:
-        return 'rd'
+        return "rd"
     else:
-        return 'th'
+        return "th"
 
 
-from openrouteservice.client import Client
-## Allow sphinx to pick up these symbols for the documentation.
-# __all__ = ["Client"]
+from openrouteservice.client import Client  # noqa

@@ -14,7 +14,6 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations under
 # the License.
-
 """Tests for the distance matrix module."""
 import responses
 import test as _test
@@ -23,15 +22,17 @@ from test.test_helper import ENDPOINT_DICT
 
 
 class ElevationTest(_test.TestCase):
-    valid_query = ENDPOINT_DICT['elevation_line']
+    valid_query = ENDPOINT_DICT["elevation_line"]
 
     @responses.activate
     def test_elevation_line(self):
-        responses.add(responses.POST,
-                      'https://api.openrouteservice.org/elevation/line',
-                      json=self.valid_query,
-                      status=200,
-                      content_type='application/json')
+        responses.add(
+            responses.POST,
+            "https://api.openrouteservice.org/elevation/line",
+            json=self.valid_query,
+            status=200,
+            content_type="application/json",
+        )
 
         resp = self.client.elevation_line(**self.valid_query)
 
@@ -40,12 +41,14 @@ class ElevationTest(_test.TestCase):
 
     @responses.activate
     def test_elevation_point(self):
-        query = ENDPOINT_DICT['elevation_point']
-        responses.add(responses.POST,
-                      'https://api.openrouteservice.org/elevation/point',
-                      json=self.valid_query,
-                      status=200,
-                      content_type='application/json')
+        query = ENDPOINT_DICT["elevation_point"]
+        responses.add(
+            responses.POST,
+            "https://api.openrouteservice.org/elevation/point",
+            json=self.valid_query,
+            status=200,
+            content_type="application/json",
+        )
 
         resp = self.client.elevation_point(**query)
 

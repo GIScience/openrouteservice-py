@@ -14,7 +14,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 #
-
 """Tests for the distance matrix module."""
 import responses
 import test as _test
@@ -22,16 +21,19 @@ from test.test_helper import PARAM_POINT, ENDPOINT_DICT
 
 
 class IsochronesTest(_test.TestCase):
-
     @responses.activate
     def test_isochrones(self):
-        query = ENDPOINT_DICT['isochrones']
+        query = ENDPOINT_DICT["isochrones"]
 
-        responses.add(responses.POST,
-                      'https://api.openrouteservice.org/v2/isochrones/{}/geojson'.format(query['profile']),
-                      json=query,
-                      status=200,
-                      content_type='application/json')
+        responses.add(
+            responses.POST,
+            "https://api.openrouteservice.org/v2/isochrones/{}/geojson".format(
+                query["profile"]
+            ),
+            json=query,
+            status=200,
+            content_type="application/json",
+        )
 
         resp = self.client.isochrones(**query)
 

@@ -1,10 +1,10 @@
 name: tests
 
-on: 
+on:
   pull_request:
     branches: '**'
   push:
-    branches:    
+    branches:
       - master
 
 jobs:

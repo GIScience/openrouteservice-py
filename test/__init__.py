@@ -33,9 +33,8 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
 
 class TestCase(unittest.TestCase):
-
     def setUp(self):
-        self.key = 'sample_key'
+        self.key = "sample_key"
         self.client = openrouteservice.Client(self.key)
 
     def assertURLEqual(self, first, second, msg=None):

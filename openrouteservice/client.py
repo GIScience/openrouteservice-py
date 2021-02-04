@@ -16,10 +16,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 #
-
-"""
-Core client functionality, common across all API requests.
-"""
+"""Core client functionality, common across all API requests."""
 
 from datetime import datetime
 from datetime import timedelta
@@ -40,20 +37,24 @@ except ImportError:  # Python 2
 _USER_AGENT = "ORSClientPython.v{}".format(__version__)
 _DEFAULT_BASE_URL = "https://api.openrouteservice.org"
 
-_RETRIABLE_STATUSES = set([503])
+_RETRIABLE_STATUSES = set([503])  # noqa
 
 
 class Client(object):
     """Performs requests to the ORS API services."""
 
-    def __init__(self,
-                 key=None,
-                 base_url=_DEFAULT_BASE_URL,
-                 timeout=60,
-                 retry_timeout=60,
-                 requests_kwargs=None,
-                 retry_over_query_limit=True):
+    def __init__(
+        self,
+        key=None,
+        base_url=_DEFAULT_BASE_URL,
+        timeout=60,
+        retry_timeout=60,
+        requests_kwargs=None,
+        retry_over_query_limit=True,
+    ):
         """
+        Initialize the openrouteservice client.
+
         :param key: ORS API key.
         :type key: string
 
@@ -86,33 +87,38 @@ class Client(object):
 
         if self._base_url == _DEFAULT_BASE_URL and key is None:
             raise ValueError(
-                "No API key was specified. Please visit https://openrouteservice.org/sign-up to create one.")
+                "No API key was specified. Please visit https://openrouteservice.org/sign-up to create one."
+            )
 
         self._timeout = timeout
         self._retry_over_query_limit = retry_over_query_limit
         self._retry_timeout = timedelta(seconds=retry_timeout)
         self._requests_kwargs = requests_kwargs or {}
-        self._requests_kwargs.update({
-            "headers": {
-                "User-Agent": _USER_AGENT,
-                'Content-type': 'application/json',
-                "Authorization": self._key
-            },
-            "timeout": self._timeout,
-        })
+        self._requests_kwargs.update(
+            {
+                "headers": {
+                    "User-Agent": _USER_AGENT,
+                    "Content-type": "application/json",
+                    "Authorization": self._key,
+                },
+                "timeout": self._timeout,
+            }
+        )
 
         self._req = None
 
-    def request(self,
-                url,
-                get_params=None,
-                first_request_time=None,
-                retry_counter=0,
-                requests_kwargs=None,
-                post_json=None,
-                dry_run=None):
-        """Performs HTTP GET/POST with credentials, returning the body as
-        JSON.
+    def request(
+        self,
+        url,
+        get_params=None,
+        first_request_time=None,
+        retry_counter=0,
+        requests_kwargs=None,
+        post_json=None,
+        dry_run=None,
+    ):
+        """
+        Performs HTTP GET/POST with credentials, returning the body as JSON.
 
         :param url: URL path for the request. Should begin with a slash.
         :type url: string
@@ -140,7 +146,7 @@ class Client(object):
 
         :raises ApiError: when the API returns an error.
         :raises Timeout: if the request timed out.
-            
+
         :rtype: dict from JSON response.
         """
 
@@ -160,9 +166,10 @@ class Client(object):
             # Jitter this value by 50% and pause.
             time.sleep(delay_seconds * (random.random() + 0.5))
 
-        authed_url = self._generate_auth_url(url,
-                                             get_params,
-                                             )
+        authed_url = self._generate_auth_url(
+            url,
+            get_params,
+        )
 
         # Default to the client-level self.requests_kwargs, with method-level
         # requests_kwargs arg overriding.
@@ -178,13 +185,18 @@ class Client(object):
 
         # Only print URL and parameters for dry_run
         if dry_run:
-            print("url:\n{}\nHeaders:\n{}".format(self._base_url + authed_url,
-                                                  json.dumps(final_requests_kwargs, indent=2)))
+            print(  # noqa
+                "url:\n{}\nHeaders:\n{}".format(
+                    self._base_url + authed_url,
+                    json.dumps(final_requests_kwargs, indent=2),
+                )
+            )
             return
 
         try:
-            response = requests_method(self._base_url + authed_url,
-                                       **final_requests_kwargs)
+            response = requests_method(
+                self._base_url + authed_url, **final_requests_kwargs
+            )
             self._req = response.request
 
         except requests.exceptions.Timeout:
@@ -192,30 +204,50 @@ class Client(object):
 
         if response.status_code in _RETRIABLE_STATUSES:
             # Retry request.
-            warnings.warn('Server down.\nRetrying for the {0}{1} time.'.format(retry_counter + 1,
-                                                                               get_ordinal(retry_counter + 1)),
-                          UserWarning,
-                          stacklevel=1)
+            warnings.warn(
+                "Server down.\nRetrying for the {0}{1} time.".format(
+                    retry_counter + 1, get_ordinal(retry_counter + 1)
+                ),
+                UserWarning,
+                stacklevel=1,
+            )
 
-            return self.request(url, get_params, first_request_time,
-                                retry_counter + 1, requests_kwargs, post_json)
+            return self.request(
+                url,
+                get_params,
+                first_request_time,
+                retry_counter + 1,
+                requests_kwargs,
+                post_json,
+            )
 
         try:
             result = self._get_body(response)
 
             return result
         except exceptions._RetriableRequest as e:
-            if isinstance(e, exceptions._OverQueryLimit) and not self._retry_over_query_limit:
+            if (
+                isinstance(e, exceptions._OverQueryLimit)
+                and not self._retry_over_query_limit  # noqa
+            ):
                 raise
 
-            warnings.warn('Rate limit exceeded. Retrying for the {0}{1} time.'.format(retry_counter + 1,
-                                                                                      get_ordinal(retry_counter + 1)),
-                          UserWarning,
-                          stacklevel=1)
+            warnings.warn(
+                "Rate limit exceeded. Retrying for the {0}{1} time.".format(
+                    retry_counter + 1, get_ordinal(retry_counter + 1)
+                ),
+                UserWarning,
+                stacklevel=1,
+            )
             # Retry request.
-            return self.request(url, get_params, first_request_time,
-                                retry_counter + 1, requests_kwargs,
-                                post_json)
+            return self.request(
+                url,
+                get_params,
+                first_request_time,
+                retry_counter + 1,
+                requests_kwargs,
+                post_json,
+            )
 
     @property
     def req(self):
@@ -232,24 +264,18 @@ class Client(object):
 
         # error = body.get('error')
         status_code = response.status_code
-        
+
         if status_code == 429:
-            raise exceptions._OverQueryLimit(
-                status_code,
-                body
-            )
+            raise exceptions._OverQueryLimit(status_code, body)
         if status_code != 200:
-            raise exceptions.ApiError(
-                status_code,
-                body
-            )
+            raise exceptions.ApiError(status_code, body)
 
         return body
 
     @staticmethod
     def _generate_auth_url(path, params):
-        """Returns the path and query string portion of the request URL, first
-        adding any necessary parameters.
+        """
+        Returns the path and query string portion of the request URL, first adding any necessary parameters.
 
         :param path: The path portion of the URL.
         :type path: string
@@ -269,22 +295,23 @@ class Client(object):
         return path + "?" + _urlencode_params(params)
 
 
-from openrouteservice.directions import directions
-from openrouteservice.distance_matrix import distance_matrix
-from openrouteservice.elevation import elevation_point
-from openrouteservice.elevation import elevation_line
-from openrouteservice.isochrones import isochrones
-from openrouteservice.geocode import pelias_search
-from openrouteservice.geocode import pelias_autocomplete
-from openrouteservice.geocode import pelias_structured
-from openrouteservice.geocode import pelias_reverse
-from openrouteservice.places import places
-from openrouteservice.optimization import optimization
+from openrouteservice.directions import directions  # noqa
+from openrouteservice.distance_matrix import distance_matrix  # noqa
+from openrouteservice.elevation import elevation_point  # noqa
+from openrouteservice.elevation import elevation_line  # noqa
+from openrouteservice.isochrones import isochrones  # noqa
+from openrouteservice.geocode import pelias_search  # noqa
+from openrouteservice.geocode import pelias_autocomplete  # noqa
+from openrouteservice.geocode import pelias_structured  # noqa
+from openrouteservice.geocode import pelias_reverse  # noqa
+from openrouteservice.places import places  # noqa
+from openrouteservice.optimization import optimization  # noqa
 
 
 def _make_api_method(func):
     """
     Provides a single entry point for modifying all API methods.
+
     For now this is limited to allowing the client object to be modified
     with an `extra_params` keyword arg to each method, that is then used
     as the params for each web service request.
@@ -337,21 +364,18 @@ def _urlencode_params(params):
 
 
 try:
-    unicode
     # NOTE(cbro): `unicode` was removed in Python 3. In Python 3, NameError is
     # raised here, and caught below.
 
     def _normalize_for_urlencode(value):
-        """(Python 2) Converts the value to a `str` (raw bytes)."""
-        if isinstance(value, unicode):
-            return value.encode('utf8')
-
         if isinstance(value, str):
             return value
 
         return _normalize_for_urlencode(str(value))
 
+
 except NameError:
+
     def _normalize_for_urlencode(value):
         """(Python 3) No-op."""
         # urlencode in Python 3 handles all the types we are passing it.

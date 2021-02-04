@@ -16,21 +16,23 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 #
-
 """Performs requests to the ORS Matrix API."""
 
 
-def distance_matrix(client, locations,
-                    profile='driving-car',
-                    sources=None,
-                    destinations=None,
-                    metrics=None,
-                    resolve_locations=None,
-                    units=None,
-                    optimized=None,
-                    validate=True,
-                    dry_run=None):
-    """ Gets travel distance and time for a matrix of origins and destinations.
+def distance_matrix(
+    client,
+    locations,
+    profile="driving-car",
+    sources=None,
+    destinations=None,
+    metrics=None,
+    resolve_locations=None,
+    units=None,
+    optimized=None,
+    validate=True,
+    dry_run=None,
+):
+    """Gets travel distance and time for a matrix of origins and destinations.
 
     :param locations: One or more pairs of lng/lat values.
     :type locations: a single location, or a list of locations, where a
@@ -39,7 +41,7 @@ def distance_matrix(client, locations,
     :param profile: Specifies the mode of transport to use when calculating
         directions. One of ["driving-car", "driving-hgv", "foot-walking",
         "foot-hiking", "cycling-regular", "cycling-road",
-        "cycling-safe", "cycling-mountain", "cycling-tour", 
+        "cycling-safe", "cycling-mountain", "cycling-tour",
         "cycling-electric",]. Default "driving-car".
     :type profile: string
 
@@ -56,7 +58,7 @@ def distance_matrix(client, locations,
     :type metrics: list of strings
 
     :param resolve_locations: Specifies whether given locations are resolved or
-        not. If set 'true', every element in destinations and sources will 
+        not. If set 'true', every element in destinations and sources will
         contain the name element that identifies the name of the closest street.
         Default False.
     :type resolve_locations: boolean
@@ -65,20 +67,20 @@ def distance_matrix(client, locations,
         One of ["m", "km", "m"]. Default "m".
     :type units: string
 
-    :param optimized: Specifies whether Dijkstra algorithm ('false') or any 
-        available technique to speed up shortest-path routing ('true') is used. 
+    :param optimized: Specifies whether Dijkstra algorithm ('false') or any
+        available technique to speed up shortest-path routing ('true') is used.
         For normal Dijkstra the number of visited nodes is limited to 100000.
         Default True
     :type optimized: boolean
 
     :param validate: Specifies whether parameters should be validated before sending the request. Default True.
     :type validate: bool
-    
+
     :param dry_run: Print URL and parameters without sending the request.
     :param dry_run: boolean
-    
+
     :raises ValueError: When profile parameter has wrong value.
-    
+
     :rtype: call to Client.request()
     """
 
@@ -87,10 +89,10 @@ def distance_matrix(client, locations,
     }
 
     if sources:
-        params['sources'] = sources
+        params["sources"] = sources
 
     if destinations:
-        params['destinations'] = destinations
+        params["destinations"] = destinations
 
     if profile:
         params["profile"] = profile
@@ -113,4 +115,9 @@ def distance_matrix(client, locations,
     if optimized is not None:
         params["optimized"] = optimized
 
-    return client.request("/v2/matrix/" + profile + '/json', {}, post_json=params, dry_run=dry_run)
+    return client.request(
+        "/v2/matrix/" + profile + "/json",
+        {},
+        post_json=params,
+        dry_run=dry_run,
+    )
