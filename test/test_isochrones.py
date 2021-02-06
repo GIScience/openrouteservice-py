@@ -16,26 +16,32 @@
 #
 """Tests for the distance matrix module."""
 import responses
-import test as _test
-from test.test_helper import PARAM_POINT, ENDPOINT_DICT
+from test.test_helper import ENDPOINT_DICT
+import pytest
 
 
-class IsochronesTest(_test.TestCase):
-    @responses.activate
-    def test_isochrones(self):
-        query = ENDPOINT_DICT["isochrones"]
+@pytest.mark.parametrize(
+    "parameter, value",
+    [
+        ("smoothing", True),
+        ("smoothing", False),
+    ],
+)
+@responses.activate
+def test_isochrones(simpletestcase, parameter, value):
+    query = ENDPOINT_DICT["isochrones"]
 
-        responses.add(
-            responses.POST,
-            "https://api.openrouteservice.org/v2/isochrones/{}/geojson".format(
-                query["profile"]
-            ),
-            json=query,
-            status=200,
-            content_type="application/json",
-        )
+    responses.add(
+        responses.POST,
+        "https://api.openrouteservice.org/v2/isochrones/{}/geojson".format(
+            query["profile"]
+        ),
+        json=query,
+        status=200,
+        content_type="application/json",
+    )
 
-        resp = self.client.isochrones(**query)
+    resp = simpletestcase.client.isochrones(**query)
 
-        self.assertEqual(1, len(responses.calls))
-        self.assertEqual(resp, query)
+    simpletestcase.assertEqual(1, len(responses.calls))
+    simpletestcase.assertEqual(resp, query)

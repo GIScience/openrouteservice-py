@@ -26,12 +26,13 @@ from test.test_helper import *
 import test as _test
 
 
-class ClientTest(_test.TestCase):
-    def test_no_api_key(self):
-        with self.assertRaises(ValueError):
-            client = openrouteservice.Client()
-            client.directions(PARAM_LINE)
+def test_no_api_key(simpletestcase):
+    with simpletestcase.assertRaises(ValueError):
+        client = openrouteservice.Client()
+        client.directions(PARAM_LINE)
 
+
+class ClientTest(_test.TestCase):
     def test_invalid_api_key(self):
         with self.assertRaises(openrouteservice.exceptions.ApiError):
             client = openrouteservice.Client(key="Invalid key.")
@@ -136,7 +137,6 @@ class ClientTest(_test.TestCase):
 
     @responses.activate
     def test_no_get_parameter(self):
-
         responses.add(
             responses.POST,
             "https://api.openrouteservice.org/directions",
