@@ -1,13 +1,10 @@
-{% set name = "openrouteservice" %}
-{% set version = "2.3.3" %}
-# TODO update to be conform with poetry
 package:
-  name: "{{ name|lower }}"
-  version: "{{ version }}"
+  name: "{{ OPENROUTESERVICE_NAME|lower }}"
+  version: "{{ OPENROUTESERVICE_VERSION }}"
 
 source:
   git_url: https://github.com/GIScience/openrouteservice-py.git
-  git_rev: "v{{ version }}"
+  git_rev: "v{{ OPENROUTESERVICE_VERSION }}"
 
 
 requirements:

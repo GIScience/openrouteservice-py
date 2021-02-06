@@ -7,9 +7,24 @@ on:
 
 jobs:
   publish:
+    name: Build and publish Conda distributions 📦
     runs-on: Ubuntu-20.04
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@master
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Install dephell
+      run: |
+        pip install dephell
+    - name: Convert pyproject.toml to setup.py
+      run: |
+        dephell deps convert
+    - name: Export package version and name
+      run: |
+        export OPENROUTESERVICE_NAME=$(python setup.py --name)
+        export OPENROUTESERVICE_VERSION=$(python setup.py --version)
     - name: publish-to-conda
       uses: MichaelsJP/conda-package-publish-action@v1.0.0
       with:
