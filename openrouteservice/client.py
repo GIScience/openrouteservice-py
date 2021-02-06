@@ -364,10 +364,16 @@ def _urlencode_params(params):
 
 
 try:
+    unicode  # noqa
+
     # NOTE(cbro): `unicode` was removed in Python 3. In Python 3, NameError is
     # raised here, and caught below.
 
     def _normalize_for_urlencode(value):
+        """(Python 2) Converts the value to a `str` (raw bytes)."""
+        if isinstance(value, unicode):  # noqa
+            return value.encode("utf8")
+
         if isinstance(value, str):
             return value
 
