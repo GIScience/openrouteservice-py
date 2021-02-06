@@ -48,6 +48,24 @@ class DirectionsTest(_test.TestCase):
         self.assertEqual(resp, self.valid_query)
         self.assertIn("sample_key", responses.calls[0].request.headers.values())
 
+    @responses.activate
+    def test_directions_incompatible_parameters(self):
+        self.valid_query["optimized"] = True
+        responses.add(
+            responses.POST,
+            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+                self.valid_query["profile"]
+            ),
+            json=self.valid_query,
+            status=200,
+            content_type="application/json",
+        )
+
+        resp = self.client.directions(**self.valid_query)
+
+        self.assertEqual(resp, self.valid_query)
+        self.assertIn("sample_key", responses.calls[0].request.headers.values())
+
     def test_format_out_deprecation(self):
         bad_query = deepcopy(self.valid_query)
         bad_query["format_out"] = "json"
