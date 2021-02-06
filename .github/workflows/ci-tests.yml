@@ -32,8 +32,6 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - python-version: 2.7
-            tox: 27
           - python-version: 3.6
             tox: 36
           - python-version: 3.7
