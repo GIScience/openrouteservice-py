@@ -13,7 +13,6 @@ to = { format = "setuppy", path = "setup.py" }
 [tool.poetry.dependencies]
 python = ">=3.6.0,<4"
 requests = ">=2.0"
-setuptools = ">=53.0.0"
 responses = ">=0.12.1"
 dephell = ">=0.8.3"
 
