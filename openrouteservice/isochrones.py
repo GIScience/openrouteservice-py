@@ -98,35 +98,35 @@ def isochrones(
 
     params = {"locations": locations}
 
-    if profile:
+    if profile:  # pragma: no cover
         params["profile"] = profile
 
-    if range_type:
+    if range_type:  # pragma: no cover
         params["range_type"] = range_type
 
-    if intervals:
+    if intervals:  # pragma: no cover
         deprecation.warning("intervals", "range")
 
     range = range or intervals
     params["range"] = range
 
-    if segments:
+    if segments:  # pragma: no cover
         deprecation.warning("segments", "interval")
 
     interval = interval or segments
-    if interval:
+    if interval:  # pragma: no cover
         params["interval"] = interval
 
-    if units:
+    if units:  # pragma: no cover
         params["units"] = units
 
-    if location_type:
+    if location_type:  # pragma: no cover
         params["location_type"] = location_type
 
-    if smoothing:
+    if smoothing:  # pragma: no cover
         params["smoothing"] = smoothing
 
-    if attributes:
+    if attributes:  # pragma: no cover
         params["attributes"] = attributes
 
     return client.request(

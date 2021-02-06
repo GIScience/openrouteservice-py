@@ -369,7 +369,7 @@ try:
     # NOTE(cbro): `unicode` was removed in Python 3. In Python 3, NameError is
     # raised here, and caught below.
 
-    def _normalize_for_urlencode(value):
+    def _normalize_for_urlencode(value):  # pragma: no cover
         """(Python 2) Converts the value to a `str` (raw bytes)."""
         if isinstance(value, unicode):  # noqa
             return value.encode("utf8")
