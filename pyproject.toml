@@ -14,7 +14,7 @@ to = { format = "setuppy", path = "setup.py" }
 python = "~2.7 || >=3.6, <4.0"
 requests = ">=2.0"
 responses = ">=0.10"
-importlib-resources = { version = ">=5.1.0", python = ">=3.6,<4.0" }
+importlib-resources = { version = ">=2.3.3", python = ">=3.6,<4.0" }
 
 
 [tool.poetry.dev-dependencies]
@@ -23,8 +23,8 @@ pytest = ">=4.6.11"
 pytest-cov = ">=2.11.1"
 yapf = ">=0.30.0"
 coveralls = ">=1.11.1"
-pre-commit = { version = "^2.1.1", python = ">=3.6,<4.0" }
-dephell = { version = "^0.8.3", python = ">=3.6,<4.0" }
+pre-commit = ">=1.21.0"
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
