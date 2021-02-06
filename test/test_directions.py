@@ -24,7 +24,7 @@ import warnings
 import test as _test
 from copy import deepcopy
 
-import openrouteservice
+from openrouteservice import exceptions
 from test.test_helper import ENDPOINT_DICT
 
 
@@ -102,7 +102,30 @@ class DirectionsTest(_test.TestCase):
         )
 
         # Too exhausting to really test this
-        with self.assertRaises(openrouteservice.exceptions.ApiError):
+        with self.assertRaises(exceptions.ApiError):
+            resp = self.client.directions(**query)
+
+    def test_optimized_waypoints_shuffle(self):
+        query = deepcopy(self.valid_query)
+        query["coordinates"] = [
+            [8.688641, 49.420577],
+            [8.680916, 49.415776],
+            [8.688641, 49.420577],
+            [8.680916, 49.415776],
+        ]
+        query["optimize_waypoints"] = True
+        query.pop("options")
+
+        responses.add(
+            responses.POST,
+            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+                query["profile"]
+            ),
+            json=query,
+            status=200,
+            content_type="application/json",
+        )
+        with self.assertRaises(exceptions.ApiError):
             resp = self.client.directions(**query)
 
     @responses.activate
