@@ -108,6 +108,14 @@ class ClientTest(_test.TestCase):
         client = openrouteservice.Client(base_url="https://foo.com")
         client.request("/bar", {"bunny": "pretty", "fox": "prettier"})
 
+        request = client.req
+
+        self.assertEqual(
+            "https://foo.com/bar?bunny=pretty&fox=prettier", request.url
+        )
+        self.assertEqual("GET", request.method)
+        self.assertEqual({"bunny": "pretty", "fox": "prettier"}, request.params)
+
         self.assertURLEqual(
             "https://foo.com/bar?bunny=pretty&fox=prettier",
             responses.calls[0].request.url,
