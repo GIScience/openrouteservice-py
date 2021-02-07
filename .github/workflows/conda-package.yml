@@ -40,7 +40,7 @@ jobs:
         AnacondaToken: ${{ secrets.ANACONDA_TOKEN }}
         platforms: 'all'
         override: true
-        dry_run: false
+        dry_run: true
       env:
         OPENROUTESERVICE_NAME: ${{env.OPENROUTESERVICE_NAME}}
         OPENROUTESERVICE_VERSION: ${{env.OPENROUTESERVICE_VERSION}}
