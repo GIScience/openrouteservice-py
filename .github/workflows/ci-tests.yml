@@ -39,10 +39,22 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python for testing range
+    - name: Set up Python 2.7
       uses: actions/setup-python@v2
       with:
-        python-version: 2.7 - 3.8
+        python-version: 2.7
+    - name: Set up Python 3.6
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.6
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
     - name: Set up base Python 3.9
       uses: actions/setup-python@v2
       with:
@@ -51,9 +63,10 @@ jobs:
       uses: abatilo/actions-poetry@v2.1.0
       with:
         poetry-version: ${{ matrix.poetry-version }}
-    - name: Setup poetry test extras
+    - name: Install dependencies
       run: |
-        poetry install --extras test
+        python -m pip install --upgrade pip
+        pip install tox
     - name: Run Tox
       run: tox
     - name: Upload coverage to Codecov
