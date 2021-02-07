@@ -11,19 +11,25 @@ from = { format = "poetry", path = "pyproject.toml" }
 to = { format = "setuppy", path = "setup.py" }
 
 [tool.poetry.dependencies]
-python = ">=3.6, <4.0"
+python = ">=2.7, <2.8 || >=3.6, <4.0"
 requests = ">=2.0"
 responses = ">=0.12"
 coverage = "^5.4"
 
 
 [tool.poetry.dev-dependencies]
-tox = ">=3.21.4"
-pytest = ">=6.2.2"
+pytest = ">=4.6.11"
 pytest-cov = ">=2.11.1"
 yapf = ">=0.30.0"
-pre-commit = ">=2.1.1"
-dephell = "^0.8.3"
+virtualenv = { version = ">=20.4.2", python = ">=3.6, <4.0" }
+tox = { version = ">=3.21.4", python = ">=3.6, <4.0" }
+pre-commit = { version = ">=2.1.1", python = ">=3.6, <4.0" }
+
+[tool.poetry.extras]
+conda = ["dephell@^0.8.3"]
+test = ["tox", "pytest", "pytest-cov"]
+lint = ["pre-commit", "yapf"]
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
