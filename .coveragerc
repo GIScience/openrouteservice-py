@@ -1,20 +1,22 @@
 [run]
 branch = True
 concurrency = multiprocessing
-omit =
-    */venv/*
-    */.venv/*
-    */.env/*
-    */.tox/*
-    */docs/*
+source = codecov
+
 
 [report]
+exclude_lines =
+    pragma: no cover
+ignore_errors = True
 omit =
     */venv/*
     */.venv/*
     */.env/*
     */.tox/*
     */docs/*
+    tests/*
+    setup.py
+
 
 exclude_lines =
     pragma: no cover
