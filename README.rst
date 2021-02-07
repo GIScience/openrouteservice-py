@@ -2,9 +2,9 @@
     :target: https://github.com/GIScience/openrouteservice-py/actions
     :alt: Build status
 
-.. image:: https://coveralls.io/repos/github/GIScience/openrouteservice-py/badge.svg?branch=master
-    :target: https://coveralls.io/github/GIScience/openrouteservice-py?branch=master
-    :alt: Coveralls coverage
+.. image:: https://codecov.io/gh/GIScience/openrouteservice-py/branch/master/graph/badge.svg?token=QqGC8XfCiI
+    :target: https://codecov.io/gh/GIScience/openrouteservice-py
+    :alt: Codecov coverage
 
 .. image:: https://readthedocs.org/projects/openrouteservice-py/badge/?version=latest
    :target: http://openrouteservice-py.readthedocs.io/en/latest/?badge=latest
