@@ -21,10 +21,12 @@ jobs:
           poetry-version: 1.1.4
       - name: Poetry install and test
         run: |
-          poetry install -v
+          poetry install --extras test
           poetry run tox -e py37
       - name: Publish distribution 📦 to Test PyPI
         run: |
+          poetry install --no-dev
+          poetry config pypi-token.pypi ${{ secrets.PYPI_API_TOKEN }}
           poetry build
           poetry publish --dry-run
 #      - name: Publish distribution 📦 to PyPI
