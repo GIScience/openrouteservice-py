@@ -21,9 +21,9 @@ tox = ">=3.21.4"
 pytest = ">=6.2.2"
 pytest-cov = ">=2.11.1"
 yapf = ">=0.30.0"
-coveralls = ">=3.0.0"
 pre-commit = ">=2.1.1"
 dephell = "^0.8.3"
+coverage = "^5.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

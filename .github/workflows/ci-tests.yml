@@ -58,8 +58,12 @@ jobs:
         pip install tox coveralls
     - name: Run Tox
       run: tox -e py${{ matrix.config.tox }}
-    - name: coveralls
-      run: |
-        coveralls --service=github
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        flags: unittests
+        env_vars: OS,PYTHON
+        name: codecov-umbrella
+        fail_ci_if_error: true
+        verbose: true
