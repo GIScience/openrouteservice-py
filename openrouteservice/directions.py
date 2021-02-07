@@ -306,10 +306,8 @@ def _optimize_waypoint_order(client, coordinates, profile):
 
     params = {"jobs": jobs, "vehicles": veh}
 
-    optimization_res = optimization(client, **params)
-
-    coordinates = []
-    for step in optimization_res["routes"][0]["steps"]:
-        coordinates.append(step["location"])
-
-    return coordinates
+    optimization_res = optimization(client, **params)  # pragma: no cover
+    coordinates = []  # pragma: no cover
+    for step in optimization_res["routes"][0]["steps"]:  # pragma: no cover
+        coordinates.append(step["location"])  # pragma: no cover
+    return coordinates  # pragma: no cover
