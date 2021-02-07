@@ -497,7 +497,7 @@ test = []
 [metadata]
 lock-version = "1.1"
 python-versions = ">=2.7, <2.8 || >=3.6, <4.0"
-content-hash = "16ae1bf8f7af79ff86b4c5b68308cfbba25ea154ce5fde207e7262ee2f3079a0"
+content-hash = "8bbeed089ccc669eec9456ebef8806d8f8a943afcd887d9214e2dd3c14af71bb"
 
 [metadata.files]
 appdirs = [

@@ -18,7 +18,7 @@ coverage = "^5.4"
 
 
 [tool.poetry.dev-dependencies]
-pytest = ">=4.6.11"
+pytest = ">=4.1.0"
 pytest-cov = ">=2.11.1"
 yapf = ">=0.30.0"
 virtualenv = { version = ">=20.4.2", python = ">=3.6, <4.0" }
