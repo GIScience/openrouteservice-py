@@ -31,7 +31,7 @@ from openrouteservice import exceptions, __version__, get_ordinal
 
 try:  # Python 3
     from urllib.parse import urlencode
-except ImportError:  # Python 2
+except ImportError:  # pragma: no cover # Python 2
     from urllib import urlencode
 
 _USER_AGENT = "ORSClientPython.v{}".format(__version__)
@@ -199,7 +199,7 @@ class Client(object):
             )
             self._req = response.request
 
-        except requests.exceptions.Timeout:
+        except requests.exceptions.Timeout:  # pragma: no cover
             raise exceptions.Timeout()
 
         if response.status_code in _RETRIABLE_STATUSES:
@@ -259,7 +259,7 @@ class Client(object):
         """Returns the body of a response object, raises status code exceptions if necessary."""
         try:
             body = response.json()
-        except json.JSONDecodeError:
+        except json.JSONDecodeError:  # pragma: no cover
             raise exceptions.HTTPError(response.status_code)
 
         # error = body.get('error')
@@ -326,7 +326,7 @@ def _make_api_method(func):
         result = func(*args, **kwargs)
         try:
             del args[0]._extra_params
-        except AttributeError:
+        except AttributeError:  # pragma: no cover
             pass
         return result
 
