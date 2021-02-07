@@ -14,7 +14,7 @@ requirements:
     - requests>=2.0
     - responses>=0.10
     - conda-verify
-    - coverage>=^5.4
+    - coverage>=5.4
   run:
     - python>=2.7,<2.8,>=3.6,<4.0
     - requests>=2.0
