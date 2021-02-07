@@ -32,7 +32,7 @@ from openrouteservice import exceptions, __version__, get_ordinal
 try:  # Python 3
     from urllib.parse import urlencode
 except ImportError:  # pragma: no cover # Python 2
-    from urllib import urlencode
+    from urllib import urlencode  # noqa
 
 _USER_AGENT = "ORSClientPython.v{}".format(__version__)
 _DEFAULT_BASE_URL = "https://api.openrouteservice.org"
