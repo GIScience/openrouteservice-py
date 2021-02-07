@@ -17,8 +17,10 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.6
-    - name: Install and run DepHell
-      uses: dephell/dephell_action@master
+    - name: Convert pyproject.toml to setup.py
+      run: |
+        curl -L dephell.org/install | python3
+        dephell deps convert
     - name: Export package version and name
       run: |
         export OPENROUTESERVICE_NAME=$(python setup.py --name)
