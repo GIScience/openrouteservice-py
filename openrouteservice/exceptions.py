@@ -38,7 +38,7 @@ class ApiError(Exception):
         if self.message is None:
             return str(self.status)
         else:
-            return f"{self.status} ({self.message})"
+            return "%s (%s)" % (self.status, self.message)  # noqa
 
 
 class HTTPError(Exception):
@@ -48,7 +48,7 @@ class HTTPError(Exception):
         self.status_code = status_code
 
     def __str__(self):  # noqa
-        return f"HTTP Error: {self.status_code}"
+        return "HTTP Error: %d" % self.status_code  # noqa
 
 
 class Timeout(Exception):
