@@ -1,9 +1,11 @@
 name: Conda Package
 
 on:
+  pull_request:
+    branches: '**'
   push:
-    tags:
-      - 'v*.*.*'
+    branches:
+      - master
 
 jobs:
   publish:
