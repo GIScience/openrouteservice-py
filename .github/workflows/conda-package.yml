@@ -1,11 +1,9 @@
 name: Conda Package
 
 on:
-  pull_request:
-    branches: '**'
   push:
-    branches:
-      - master
+    tags:
+      - 'v*.*.*'
 
 jobs:
   publish:
@@ -32,7 +30,7 @@ jobs:
         AnacondaToken: ${{ secrets.ANACONDA_TOKEN }}
         platforms: 'all'
         override: true
-        dry_run: true
+        dry_run: false
       env:
         OPENROUTESERVICE_NAME: ${{env.OPENROUTESERVICE_NAME}}
         OPENROUTESERVICE_VERSION: ${{env.OPENROUTESERVICE_VERSION}}
