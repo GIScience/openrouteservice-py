@@ -9,15 +9,16 @@ source:
 
 requirements:
   build:
-    - python>=3.4
+    - python>=2.7,<2.8,>=3.6,<4.0
     - pip
     - requests>=2.0
-    - nose>=1.0
     - responses>=0.10
-    - coveralls>=1.7.0
-    - coverage>=4.5.0
+    - conda-verify
+    - coverage>=^5.4
   run:
+    - python>=2.7,<2.8,>=3.6,<4.0
     - requests>=2.0
+    - responses>=0.10
 test:
   imports:
     - openrouteservice
@@ -25,13 +26,14 @@ test:
     - openrouteservice
     - test
   requires:
-    - nose>1.0
+    - pytest>1.0
     - requests>=2.0
     - responses>=0.10
-    - coveralls>=1.7.0
     - coverage>=4.5.0
+    - conda-verify
+    - pytest-cov>=2.0.0
   commands:
-    - nosetests -v
+    - pytest -x --cov=openrouteservice --cov-config=.coveragerc
 
 about:
   home: https://github.com/GIScience/openrouteservice-py
