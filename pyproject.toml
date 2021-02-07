@@ -25,9 +25,10 @@ importlib-metadata = ">=2.1.1"
 virtualenv = { version = ">=20.4.2", python = ">=3.6, <4.0" }
 tox = { version = ">=3.21.4", python = ">=3.6, <4.0" }
 pre-commit = { version = ">=2.1.1", python = ">=3.6, <4.0" }
+dephell = { version = ">=0.8.3", python = ">=3.6, <4.0" }
 
 [tool.poetry.extras]
-conda = ["dephell@^0.8.3"]
+conda = ["dephell"]
 test = ["tox", "pytest", "pytest-cov"]
 lint = ["pre-commit", "yapf"]
 

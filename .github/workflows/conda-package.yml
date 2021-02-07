@@ -13,17 +13,13 @@ jobs:
     runs-on: Ubuntu-20.04
     steps:
     - uses: actions/checkout@master
-    - name: Set up Python 3.7
+    - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
-        python-version: 3.7
-    - name: Python Poetry Action
-      uses: abatilo/actions-poetry@v2.1.0
-      with:
-        poetry-version: 1.1.2
-    - name: Install conda deps
+        python-version: 3.9
+    - name: Install dephell
       run: |
-        poetry install --extras conda
+        pip install dephell
     - name: Convert pyproject.toml to setup.py
       run: |
         dephell deps convert
