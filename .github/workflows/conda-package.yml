@@ -26,7 +26,7 @@ jobs:
         echo "OPENROUTESERVICE_NAME=$(python setup.py --name)" >> $GITHUB_ENV
         echo "OPENROUTESERVICE_VERSION=$(python setup.py --version)" >> $GITHUB_ENV
     - name: publish-to-conda
-      uses: MichaelsJP/conda-package-publish-action@issue-3-add-dry-run
+      uses: MichaelsJP/conda-package-publish-action@v1.1.0
       with:
         subDir: 'conda.recipe'
         AnacondaToken: ${{ secrets.ANACONDA_TOKEN }}
