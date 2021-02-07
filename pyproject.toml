@@ -14,6 +14,7 @@ to = { format = "setuppy", path = "setup.py" }
 python = ">=3.6, <4.0"
 requests = ">=2.0"
 responses = ">=0.12"
+coverage = "^5.4"
 
 
 [tool.poetry.dev-dependencies]
