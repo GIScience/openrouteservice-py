@@ -19,10 +19,13 @@ jobs:
         uses: abatilo/actions-poetry@v2.1.0
         with:
           poetry-version: 1.1.4
-      - name: Publish distribution 📦 to Test PyPI
+      - name: Poetry install and test
         run: |
           poetry install -v
-          poetry config pypi-token.pypi ${{ secrets.PYPI_API_TOKEN }}
+          poetry update -v
+          poetry run tox -e py37
+      - name: Publish distribution 📦 to Test PyPI
+        run: |
           poetry build
           poetry publish --dry-run
 #      - name: Publish distribution 📦 to PyPI
