@@ -12,17 +12,13 @@ jobs:
     name: Build and publish Conda distributions 📦
     runs-on: Ubuntu-20.04
     steps:
-    - uses: actions/checkout@master
-    - name: Set up Python 3.8
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.6
       uses: actions/setup-python@v1
       with:
-        python-version: 3.8
-    - name: Install dephell
-      run: |
-        pip install dephell
-    - name: Convert pyproject.toml to setup.py
-      run: |
-        dephell deps convert
+        python-version: 3.6
+    - name: Install and run DepHell
+      uses: dephell/dephell_action@master
     - name: Export package version and name
       run: |
         export OPENROUTESERVICE_NAME=$(python setup.py --name)
