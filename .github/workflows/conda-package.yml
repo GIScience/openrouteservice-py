@@ -23,8 +23,8 @@ jobs:
         dephell deps convert
     - name: Export package version and name
       run: |
-        export OPENROUTESERVICE_NAME=$(python setup.py --name)
-        export OPENROUTESERVICE_VERSION=$(python setup.py --version)
+        echo "::set-env name=OPENROUTESERVICE_NAME::$(python setup.py --name)"
+        echo "::set-env name=OPENROUTESERVICE_VERSION::$(python setup.py --version)"
     - name: publish-to-conda
       uses: MichaelsJP/conda-package-publish-action@v1.0.0
       with:
