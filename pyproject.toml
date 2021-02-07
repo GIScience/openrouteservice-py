@@ -19,8 +19,9 @@ coverage = "^5.4"
 
 [tool.poetry.dev-dependencies]
 pytest = ">=4.1.0"
-pytest-cov = ">=2.11.1"
+pytest-cov = ">=2.0.0"
 yapf = ">=0.30.0"
+importlib-metadata = ">=2.1.1"
 virtualenv = { version = ">=20.4.2", python = ">=3.6, <4.0" }
 tox = { version = ">=3.21.4", python = ">=3.6, <4.0" }
 pre-commit = { version = ">=2.1.1", python = ">=3.6, <4.0" }
