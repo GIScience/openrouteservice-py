@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - name: Set up base Python 3.9
+      - name: Set up base Python 3.7
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: 3.7
       - name: Python Poetry Action
         uses: abatilo/actions-poetry@v2.1.0
         with:
