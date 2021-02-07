@@ -34,27 +34,26 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        config:
+          - python-version: 2.7
+            tox: 27
+          - python-version: 3.6
+            tox: 36
+          - python-version: 3.7
+            tox: 37
+          - python-version: 3.8
+            tox: 38
+          - python-version: 3.9
+            tox: 39
         poetry-version: [ 1.1.4 ]
         os: [ macos-latest, windows-2019, ubuntu-20.04, ubuntu-18.04 ]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 2.7
+    - name: Set up testing Python ${{ matrix.config.python-version }}
       uses: actions/setup-python@v2
       with:
-        python-version: 2.7
-    - name: Set up Python 3.6
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.6
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.7
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
+        python-version: ${{ matrix.config.python-version }}
     - name: Set up base Python 3.9
       uses: actions/setup-python@v2
       with:
@@ -68,7 +67,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install tox
     - name: Run Tox
-      run: tox
+      run: tox -e py${{ matrix.config.tox }}
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
