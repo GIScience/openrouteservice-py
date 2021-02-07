@@ -15,9 +15,13 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.7
-    - name: Install dephell
+    - name: Python Poetry Action
+      uses: abatilo/actions-poetry@v2.1.0
+      with:
+        poetry-version: 1.1.2
+    - name: Install conda deps
       run: |
-        pip install dephell
+        poetry install --extras conda
     - name: Convert pyproject.toml to setup.py
       run: |
         dephell deps convert
