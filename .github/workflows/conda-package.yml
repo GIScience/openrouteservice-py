@@ -23,8 +23,8 @@ jobs:
         dephell deps convert
     - name: Export package version and name
       run: |
-        echo "::set-env name=OPENROUTESERVICE_NAME::$(python setup.py --name)"
-        echo "::set-env name=OPENROUTESERVICE_VERSION::$(python setup.py --version)"
+        echo "OPENROUTESERVICE_NAME=$(python setup.py --name)" >> $GITHUB_ENV
+        echo "OPENROUTESERVICE_VERSION=$(python setup.py --version)" >> $GITHUB_ENV
     - name: publish-to-conda
       uses: MichaelsJP/conda-package-publish-action@v1.0.0
       with:
@@ -32,3 +32,6 @@ jobs:
         AnacondaToken: ${{ secrets.ANACONDA_TOKEN }}
         platforms: 'all'
         override: true
+      env:
+        OPENROUTESERVICE_NAME: ${{env.OPENROUTESERVICE_NAME}}
+        OPENROUTESERVICE_VERSION: ${{env.OPENROUTESERVICE_VERSION}}
