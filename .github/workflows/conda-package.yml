@@ -1,9 +1,11 @@
 name: Conda Package
 
 on:
+  pull_request:
+    branches: '**'
   push:
-    tags:
-      - 'v*.*.*'
+    branches:
+      - master
 
 jobs:
   publish:
@@ -15,10 +17,18 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.6
+    - name: Python Poetry Action
+      uses: abatilo/actions-poetry@v2.1.0
+      with:
+        poetry-version: 1.1.4
+    - name: Poetry install and test
+      run: |
+        poetry install --extras test
+        poetry run tox -e py36
     - name: Convert pyproject.toml to setup.py
       run: |
-        curl -L dephell.org/install | python3
-        dephell deps convert
+        poetry install --extras conda
+        poetry run dephell deps convert
     - name: Export package version and name
       run: |
         echo "OPENROUTESERVICE_NAME=$(python setup.py --name)" >> $GITHUB_ENV
