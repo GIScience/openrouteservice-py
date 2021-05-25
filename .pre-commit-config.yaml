@@ -18,12 +18,16 @@ repos:
         args: [ '--no-sort-keys' ]
       - id: no-commit-to-branch
         args: [ --branch, master ]
+      - id: no-commit-to-branch
+        args: [ --branch, main ]
+
   - repo: https://github.com/ambv/black
     rev: stable
     hooks:
       - id: black
         args: # arguments to configure black
           - --line-length=80
+        language_version: python3.9
   - repo: https://gitlab.com/pycqa/flake8
     rev: "3.8.4"
     hooks:
