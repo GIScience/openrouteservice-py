@@ -16,18 +16,18 @@ jobs:
     - name: Set up Python 3.6
       uses: actions/setup-python@v1
       with:
-        python-version: 3.6
+        python-version: 3.9
     - name: Python Poetry Action
       uses: abatilo/actions-poetry@v2.1.0
       with:
         poetry-version: 1.1.4
     - name: Poetry install and test
       run: |
-        poetry install --extras test
+        pip intall tox pytest pytest-cov
         poetry run tox -e py36
     - name: Convert pyproject.toml to setup.py
       run: |
-        poetry install --extras conda
+        poetry install dephell
         poetry run dephell deps convert
     - name: Export package version and name
       run: |

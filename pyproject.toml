@@ -29,12 +29,6 @@ pre-commit = { version = ">=2.1.1", python = ">=3.6, <4.0" }
 dephell = { version = ">=0.8.3", python = ">=3.6, <4.0" }
 coverage = "^5.4"
 
-[tool.poetry.extras]
-conda = ["dephell"]
-test = ["tox", "pytest", "pytest-cov"]
-lint = ["pre-commit", "yapf"]
-
-
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

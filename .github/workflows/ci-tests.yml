@@ -20,7 +20,7 @@ jobs:
           poetry-version: 1.1.4
       - name: Install lint dependencies
         run: |
-          poetry install --extras lint
+          pip intall tox pytest pytest-cov
       - name: Install and run pre-commit
         uses: pre-commit/action@v2.0.0
         with:
