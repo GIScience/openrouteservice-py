@@ -2,7 +2,7 @@
 name = "openrouteservice"
 version = "2.3.3"
 description = "Python client for requests to openrouteservice API services."
-authors = ["Nils Nolde <nils.nolde@gmail.com>", "Julian Psotta <julianpsotta@gmail.com>"]
+authors = ["Julian Psotta <julian.psotta@heigit.org>"]
 readme = 'README.rst'
 license = "Apache2"
 
@@ -11,10 +11,11 @@ from = { format = "poetry", path = "pyproject.toml" }
 to = { format = "setuppy", path = "setup.py" }
 
 [tool.poetry.dependencies]
-python = ">=2.7, <2.8 || >=3.6, <4.0"
+python = ">=3.6, <4.0"
 requests = ">=2.0"
 responses = ">=0.12"
-coverage = "^5.4"
+poetry2conda = "^0.3.0"
+#pytest-random-order = "^1.0.4"
 
 
 [tool.poetry.dev-dependencies]
@@ -26,6 +27,7 @@ virtualenv = { version = ">=20.4.2", python = ">=3.6, <4.0" }
 tox = { version = ">=3.21.4", python = ">=3.6, <4.0" }
 pre-commit = { version = ">=2.1.1", python = ">=3.6, <4.0" }
 dephell = { version = ">=0.8.3", python = ">=3.6, <4.0" }
+coverage = "^5.4"
 
 [tool.poetry.extras]
 conda = ["dephell"]
