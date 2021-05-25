@@ -15,10 +15,10 @@ jobs:
     runs-on: Ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.9
+    - name: Set up Python 3.6
       uses: actions/setup-python@v1
       with:
-        python-version: 3.9
+        python-version: 3.6
     - name: Python Poetry Action
       uses: abatilo/actions-poetry@v2.1.0
       with:
@@ -26,10 +26,10 @@ jobs:
     - name: Poetry install and test
       run: |
         pip install tox pytest pytest-cov
-        poetry run tox -e py39
+        poetry run tox -e py36
     - name: Convert pyproject.toml to setup.py
       run: |
-        pip install dephell
+        poetry install -vv
         poetry run dephell deps convert
     - name: Export package version and name
       run: |
