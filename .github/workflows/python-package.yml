@@ -21,7 +21,7 @@ jobs:
           poetry-version: 1.1.4
       - name: Poetry install and test
         run: |
-          pip intall tox pytest pytest-cov
+          pip install tox pytest pytest-cov
           poetry run tox -e py37
       - name: Publish distribution 📦 with dry-run
         run: |

@@ -23,7 +23,7 @@ jobs:
         poetry-version: 1.1.4
     - name: Poetry install and test
       run: |
-        pip intall tox pytest pytest-cov
+        pip install tox pytest pytest-cov
         poetry run tox -e py36
     - name: Convert pyproject.toml to setup.py
       run: |
