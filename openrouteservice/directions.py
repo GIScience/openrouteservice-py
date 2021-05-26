@@ -122,7 +122,7 @@ def directions(
     :type attributes: list or tuple of strings
 
     :param maneuvers: Specifies whether the maneuver object is included into the step object or not. Default: false.
-    :type maneuvers bool
+    :type maneuvers: bool
 
     :param radiuses: A list of maximum distances (measured in
         meters) that limit the search of nearby road segments to every given waypoint.
