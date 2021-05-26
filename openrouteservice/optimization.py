@@ -14,18 +14,20 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 #
-
 """Performs requests to the ORS optimization API."""
 
 
-def optimization(client,
-                 jobs=None,
-                 vehicles=None,
-                 shipments=None,
-                 matrix=None,
-                 geometry=None,
-                 dry_run=None):
-    """Optimize a fleet of vehicles on a number of jobs.
+def optimization(
+    client,
+    jobs=None,
+    vehicles=None,
+    shipments=None,
+    matrix=None,
+    geometry=None,
+    dry_run=None,
+):
+    """# noqa
+    Optimize a fleet of vehicles on a number of jobs.
 
     For more information, visit https://github.com/VROOM-Project/vroom/blob/master/docs/API.md.
 
@@ -63,38 +65,40 @@ def optimization(client,
     :rtype: dict
     """
 
-    assert all([isinstance(x, Vehicle) for x in vehicles])
+    assert all([isinstance(x, Vehicle) for x in vehicles])  # noqa
 
     params = {"vehicles": [vehicle.__dict__ for vehicle in vehicles]}
 
     if jobs:
-        assert all([isinstance(x, Job) for x in jobs])
-        params['jobs'] = [job.__dict__ for job in jobs]
+        assert all([isinstance(x, Job) for x in jobs])  # noqa
+        params["jobs"] = [job.__dict__ for job in jobs]
     if shipments:
-        assert all([isinstance(x, Shipment) for x in shipments])
-        params['shipments'] = list()
+        assert all([isinstance(x, Shipment) for x in shipments])  # noqa
+        params["shipments"] = []
 
         for shipment in shipments:
-            shipment_dict = dict()
-            if getattr(shipment, 'pickup'):
+            shipment_dict = {}
+            if hasattr(shipment, "pickup"):
                 assert isinstance(shipment.pickup, ShipmentStep)
-                shipment_dict['pickup'] = shipment.pickup.__dict__
-            if getattr(shipment, 'delivery'):
+                shipment_dict["pickup"] = shipment.pickup.__dict__
+            if hasattr(shipment, "delivery"):
                 assert isinstance(shipment.delivery, ShipmentStep)
-                shipment_dict['delivery'] = shipment.delivery.__dict__
-            shipment_dict['amount'] = shipment.amount
-            shipment_dict['skills'] = shipment.skills
-            shipment_dict['priority'] = shipment.priority
+                shipment_dict["delivery"] = shipment.delivery.__dict__
+            shipment_dict["amount"] = shipment.amount
+            shipment_dict["skills"] = shipment.skills
+            shipment_dict["priority"] = shipment.priority
 
-            params['shipments'].append(shipment_dict)
+            params["shipments"].append(shipment_dict)
 
     if geometry is not None:
         params.update({"options": {"g": geometry}})
 
     if matrix:
-        params['matrix'] = matrix
+        params["matrix"] = matrix
 
-    return client.request("/optimization", {}, post_json=params, dry_run=dry_run)
+    return client.request(
+        "/optimization", {}, post_json=params, dry_run=dry_run
+    )
 
 
 class Job(object):
@@ -103,16 +107,18 @@ class Job(object):
 
     Full documentation at https://github.com/VROOM-Project/vroom/blob/master/docs/API.md#jobs.
     """
-    def __init__(self,
-                 id,
-                 location=None,
-                 location_index=None,
-                 service=None,
-                 amount=None,
-                 skills=None,
-                 priority=None,
-                 time_windows=None
-                 ):
+
+    def __init__(
+        self,
+        id,
+        location=None,
+        location_index=None,
+        service=None,
+        amount=None,
+        skills=None,
+        priority=None,
+        time_windows=None,
+    ):
         """
         Create a job object for the optimization endpoint.
 
@@ -172,13 +178,15 @@ class ShipmentStep(object):
 
     Full documentation at https://github.com/VROOM-Project/vroom/blob/master/docs/API.md#shipments.
     """
-    def __init__(self,
-                 id=None,
-                 location=None,
-                 location_index=None,
-                 service=None,
-                 time_windows=None
-                 ):
+
+    def __init__(
+        self,
+        id=None,
+        location=None,
+        location_index=None,
+        service=None,
+        time_windows=None,
+    ):
         """
         Create a shipment step object for the optimization endpoint.
 
@@ -220,13 +228,15 @@ class Shipment(object):
 
     Full documentation at https://github.com/VROOM-Project/vroom/blob/master/docs/API.md#shipments.
     """
-    def __init__(self,
-                 pickup=None,
-                 delivery=None,
-                 amount=None,
-                 skills=None,
-                 priority=None
-                 ):
+
+    def __init__(
+        self,
+        pickup=None,
+        delivery=None,
+        amount=None,
+        skills=None,
+        priority=None,
+    ):
         """
         Create a shipment object for the optimization endpoint.
 
@@ -269,16 +279,18 @@ class Vehicle(object):
     Full documentation at https://github.com/VROOM-Project/vroom/blob/master/docs/API.md#vehicles.
     """
 
-    def __init__(self,
-                 id,
-                 profile='driving-car',
-                 start=None,
-                 start_index=None,
-                 end=None,
-                 end_index=None,
-                 capacity=None,
-                 skills=None,
-                 time_window=None):
+    def __init__(
+        self,
+        id,
+        profile="driving-car",
+        start=None,
+        start_index=None,
+        end=None,
+        end_index=None,
+        capacity=None,
+        skills=None,
+        time_window=None,
+    ):
         """
         Create a Vehicle object for the optimization endpoint.
 

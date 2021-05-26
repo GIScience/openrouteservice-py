@@ -1,5 +1,23 @@
+[run]
+branch = False
+source = codecov
+omit =
+    */venv/*
+    */.venv/*
+    */.env/*
+    */.tox/*
+    */docs/*
+    tests/*
+    setup.py
+
 [report]
 omit =
-    */python?.?/*
-    */site-packages/nose/*
-    *__init__*
+    */venv/*
+    */.venv/*
+    */.env/*
+    */.tox/*
+    */docs/*
+    tests/*
+    setup.py
+exclude_lines =
+    pragma: no cover

@@ -1,3 +1,4 @@
+.tox/
 .venv/
 .coverage
 **/.ipynb_checkpoints/
@@ -16,3 +17,6 @@ test.py
 
 cover/
 conda/
+*coverage.xml
+/setup.py
+/requirements.txt

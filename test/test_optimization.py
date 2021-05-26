@@ -16,7 +16,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 #
-
 """Tests for the distance matrix module."""
 import responses
 import test as _test
@@ -28,48 +27,58 @@ from openrouteservice.optimization import Job, Vehicle, ShipmentStep, Shipment
 
 
 class OptimizationTest(_test.TestCase):
-
     def _get_params(self):
         jobs, vehicles, shipments = list(), list(), list()
 
         for idx, coord in enumerate(PARAM_LINE):
-            jobs.append(Job(idx, location=coord,
-                             service=PARAM_INT_BIG,
-                             location_index=idx,
-                             amount=[PARAM_INT_SMALL],
-                             skills=PARAM_LIST_ONE,
-                             priority=PARAM_INT_SMALL,
-                             time_windows=[PARAM_LIST_ONE]
-                             ))
-
-            vehicles.append(Vehicle(idx, profile='driving-car',
-                                     start=coord,
-                                     start_index=idx,
-                                     end=coord,
-                                     end_index=idx,
-                                     capacity=[PARAM_INT_SMALL],
-                                     skills=PARAM_LIST_ONE,
-                                     time_window=PARAM_LIST_ONE))
-
-            shipments.append(Shipment(
-                pickup=ShipmentStep(
+            jobs.append(
+                Job(
                     idx,
                     location=coord,
-                    location_index=idx,
                     service=PARAM_INT_BIG,
-                    time_windows=[PARAM_LIST_ONE]
-                ),
-                delivery=ShipmentStep(
+                    location_index=idx,
+                    amount=[PARAM_INT_SMALL],
+                    skills=PARAM_LIST_ONE,
+                    priority=PARAM_INT_SMALL,
+                    time_windows=[PARAM_LIST_ONE],
+                )
+            )
+
+            vehicles.append(
+                Vehicle(
                     idx,
-                    location=coord,
-                    location_index=idx,
-                    service=PARAM_INT_BIG,
-                    time_windows=[PARAM_LIST_ONE]
-                ),
-                amount=[PARAM_INT_SMALL],
-                skills=PARAM_LIST_ONE,
-                priority=PARAM_INT_SMALL
-            ))
+                    profile="driving-car",
+                    start=coord,
+                    start_index=idx,
+                    end=coord,
+                    end_index=idx,
+                    capacity=[PARAM_INT_SMALL],
+                    skills=PARAM_LIST_ONE,
+                    time_window=PARAM_LIST_ONE,
+                )
+            )
+
+            shipments.append(
+                Shipment(
+                    pickup=ShipmentStep(
+                        idx,
+                        location=coord,
+                        location_index=idx,
+                        service=PARAM_INT_BIG,
+                        time_windows=[PARAM_LIST_ONE],
+                    ),
+                    delivery=ShipmentStep(
+                        idx,
+                        location=coord,
+                        location_index=idx,
+                        service=PARAM_INT_BIG,
+                        time_windows=[PARAM_LIST_ONE],
+                    ),
+                    amount=[PARAM_INT_SMALL],
+                    skills=PARAM_LIST_ONE,
+                    priority=PARAM_INT_SMALL,
+                )
+            )
 
         return jobs, vehicles, shipments
 
@@ -77,21 +86,32 @@ class OptimizationTest(_test.TestCase):
 
         jobs, vehicles, shipments = self._get_params()
 
-        self.assertEqual(ENDPOINT_DICT['optimization']['jobs'], [j.__dict__ for j in jobs])
-        self.assertEqual(ENDPOINT_DICT['optimization']['vehicles'], [v.__dict__ for v in vehicles])
+        self.assertEqual(
+            ENDPOINT_DICT["optimization"]["jobs"], [j.__dict__ for j in jobs]
+        )
+        self.assertEqual(
+            ENDPOINT_DICT["optimization"]["vehicles"],
+            [v.__dict__ for v in vehicles],
+        )
 
     @responses.activate
     def test_full_optimization(self):
-        query = deepcopy(ENDPOINT_DICT['optimization'])
+        query = deepcopy(ENDPOINT_DICT["optimization"])
 
         jobs, vehicles, shipments = self._get_params()
 
-        responses.add(responses.POST,
-                      'https://api.openrouteservice.org/optimization',
-                      json={},
-                      status=200,
-                      content_type='application/json')
+        responses.add(
+            responses.POST,
+            "https://api.openrouteservice.org/optimization",
+            json={},
+            status=200,
+            content_type="application/json",
+        )
 
-        self.client.optimization(jobs, vehicles, shipments, geometry=False, matrix=PARAM_LIST_TWO)
+        self.client.optimization(
+            jobs, vehicles, shipments, geometry=False, matrix=PARAM_LIST_TWO
+        )
 
-        self.assertEqual(query, json.loads(responses.calls[0].request.body.decode('utf-8')))
+        self.assertEqual(
+            query, json.loads(responses.calls[0].request.body.decode("utf-8"))
+        )

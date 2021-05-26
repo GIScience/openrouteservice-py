@@ -15,12 +15,18 @@
 # the License.
 #
 
+"""Prints a deprecation warning."""
+
 import warnings
 
 
 def warning(old_name, new_name):
-    """Deprecation warning"""
+    """Deprecation warning."""
 
-    warnings.warn('{} will be deprecated in v2.0. Please use {} instead'.format(old_name, new_name),
-                  DeprecationWarning,
-                  stacklevel=2)
+    warnings.warn(
+        "{} will be deprecated in v2.0. Please use {} instead".format(
+            old_name, new_name
+        ),
+        DeprecationWarning,
+        stacklevel=2,
+    )
