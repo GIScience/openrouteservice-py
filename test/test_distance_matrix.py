@@ -16,7 +16,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 #
-
 """Tests for the distance matrix module."""
 import responses
 import test as _test
@@ -25,18 +24,22 @@ from test.test_helper import ENDPOINT_DICT, PARAM_LINE
 
 
 class DistanceMatrixTest(_test.TestCase):
-    valid_query = ENDPOINT_DICT['distance_matrix']
+    valid_query = ENDPOINT_DICT["distance_matrix"]
 
     @responses.activate
     def test_matrix(self):
         query = self.valid_query.copy()
-        query['locations'] = tuple([tuple(x) for x in PARAM_LINE])
+        query["locations"] = tuple([tuple(x) for x in PARAM_LINE])
 
-        responses.add(responses.POST,
-                      'https://api.openrouteservice.org/v2/matrix/{}/json'.format(query['profile']),
-                      json=query,
-                      status=200,
-                      content_type='application/json')
+        responses.add(
+            responses.POST,
+            "https://api.openrouteservice.org/v2/matrix/{}/json".format(
+                query["profile"]
+            ),
+            json=query,
+            status=200,
+            content_type="application/json",
+        )
 
         resp = self.client.distance_matrix(**query)
         self.assertEqual(resp, self.valid_query)

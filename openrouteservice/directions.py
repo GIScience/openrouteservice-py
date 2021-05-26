@@ -16,7 +16,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 #
-
 """Performs requests to the ORS directions API."""
 
 from openrouteservice import deprecation
@@ -25,34 +24,36 @@ from openrouteservice.optimization import optimization, Job, Vehicle
 import warnings
 
 
-def directions(client,
-               coordinates,
-               profile='driving-car',
-               format_out=None,
-               format='json',
-               preference=None,
-               units=None,
-               language=None,
-               geometry=None,
-               geometry_simplify=None,
-               instructions=None,
-               instructions_format=None,
-               alternative_routes=None,
-               roundabout_exits=None,
-               attributes=None,
-               maneuvers=None,
-               radiuses=None,
-               bearings=None,
-               skip_segments=None,
-               continue_straight=None,
-               elevation=None,
-               extra_info=None,
-               suppress_warnings=None,
-               optimized=None,
-               optimize_waypoints=None,
-               options=None,
-               validate=True,
-               dry_run=None):
+def directions(
+    client,
+    coordinates,
+    profile="driving-car",
+    format_out=None,
+    format="json",
+    preference=None,
+    units=None,
+    language=None,
+    geometry=None,
+    geometry_simplify=None,
+    instructions=None,
+    instructions_format=None,
+    alternative_routes=None,
+    roundabout_exits=None,
+    attributes=None,
+    maneuvers=None,
+    radiuses=None,
+    bearings=None,
+    skip_segments=None,
+    continue_straight=None,
+    elevation=None,
+    extra_info=None,
+    suppress_warnings=None,
+    optimized=None,
+    optimize_waypoints=None,
+    options=None,
+    validate=True,
+    dry_run=None,
+):
     """Get directions between an origin point and a destination point.
 
     For more information, visit https://go.openrouteservice.org/documentation/.
@@ -185,7 +186,7 @@ def directions(client,
 
     :param validate: Specifies whether parameters should be validated before sending the request. Default True.
     :type validate: bool
-    
+
     :param dry_run: Print URL and parameters without sending the request.
     :param dry_run: boolean
 
@@ -199,18 +200,24 @@ def directions(client,
     # call optimization endpoint and get new order of waypoints
     if optimize_waypoints is not None and not dry_run:
         if len(coordinates) <= 3:
-            warnings.warn("Less than 4 coordinates, nothing to optimize!", UserWarning)
+            warnings.warn(
+                "Less than 4 coordinates, nothing to optimize!", UserWarning
+            )
         elif options:
-            warnings.warn("Options are not compatible with optimization.", UserWarning)
-        elif preference == 'shortest':
-            warnings.warn("Shortest is not compatible with optimization.", UserWarning)
+            warnings.warn(
+                "Options are not compatible with optimization.", UserWarning
+            )
+        elif preference == "shortest":
+            warnings.warn(
+                "Shortest is not compatible with optimization.", UserWarning
+            )
         else:
             coordinates = _optimize_waypoint_order(client, coordinates, profile)
 
     params = {"coordinates": coordinates}
 
     if format_out:
-        deprecation.warning('format_out', 'format')
+        deprecation.warning("format_out", "format")
 
     format = format_out or format
 
@@ -248,7 +255,7 @@ def directions(client,
         params["radiuses"] = radiuses
 
     if maneuvers is not None:
-        params['maneuvers'] = maneuvers
+        params["maneuvers"] = maneuvers
 
     if bearings:
         params["bearings"] = bearings
@@ -266,48 +273,41 @@ def directions(client,
         params["extra_info"] = extra_info
 
     if suppress_warnings is not None:
-        params['suppress_warnings'] = suppress_warnings
+        params["suppress_warnings"] = suppress_warnings
 
     if optimized is not None:
-        if (bearings or continue_straight) and optimized in (True, 'true'):
-            params["optimized"] = 'false'
-            print("Set optimized='false' due to incompatible parameter settings.")
+        if (bearings or continue_straight) and optimized in (True, "true"):
+            params["optimized"] = "false"
+            print(  # noqa
+                "Set optimized='false' due to incompatible parameter settings."
+            )
         else:
             params["optimized"] = optimized
 
     if options:
-        params['options'] = options
+        params["options"] = options
 
-    return client.request("/v2/directions/" + profile + '/' + format, {}, post_json=params, dry_run=dry_run)
+    return client.request(
+        "/v2/directions/" + profile + "/" + format,
+        {},
+        post_json=params,
+        dry_run=dry_run,
+    )
 
 
 def _optimize_waypoint_order(client, coordinates, profile):
-
     start = coordinates[0]
     end = coordinates[-1]
-    veh = [Vehicle(
-        id=0,
-        profile=profile,
-        start=start,
-        end=end
-    )]
+    veh = [Vehicle(id=0, profile=profile, start=start, end=end)]
 
     jobs = []
     for idx, coord in enumerate(coordinates[1:-1]):
-        jobs.append(Job(
-            id=idx,
-            location=coord
-        ))
+        jobs.append(Job(id=idx, location=coord))
 
-    params = {
-        'jobs': jobs,
-        'vehicles': veh
-    }
+    params = {"jobs": jobs, "vehicles": veh}
 
-    optimization_res = optimization(client, **params)
-
-    coordinates = []
-    for step in optimization_res['routes'][0]['steps']:
-        coordinates.append(step['location'])
-
-    return coordinates
+    optimization_res = optimization(client, **params)  # pragma: no cover
+    coordinates = []  # pragma: no cover
+    for step in optimization_res["routes"][0]["steps"]:  # pragma: no cover
+        coordinates.append(step["location"])  # pragma: no cover
+    return coordinates  # pragma: no cover

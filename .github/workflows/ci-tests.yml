@@ -1,38 +1,80 @@
 name: tests
 
-on: 
+on:
   pull_request:
     branches: '**'
-  push:
-    branches:    
-      - master
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
+  lint:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Python Poetry Action
+        uses: abatilo/actions-poetry@v2.1.0
+        with:
+          poetry-version: 1.1.4
+      - name: Install lint dependencies
+        run: |
+          pip install tox pytest pytest-cov
+      - name: Install and run pre-commit
+        uses: pre-commit/action@v2.0.0
+        with:
+          extra_args: --all-files
+  test:
+    needs:
+      - lint
     strategy:
+      fail-fast: false
       matrix:
-        os: [ubuntu-20.04]
-        python_version: [
-            3.7,
-            3.8,
-            3.9,
-            pypy3
-        ]
+        config:
+          - python-version: 3.6
+            tox: 36
+          - python-version: 3.7
+            tox: 37
+          - python-version: 3.8
+            tox: 38
+          - python-version: 3.9
+            tox: 39
+          - python-version: pypy-3.6
+            tox: py3
+          - python-version: pypy-3.7
+            tox: py3
+        poetry-version: [ 1.1.4 ]
+        os: [ macos-latest, windows-2019, ubuntu-20.04, ubuntu-18.04 ]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python_version }}
+    - name: Set up testing Python ${{ matrix.config.python-version }}
       uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.python_version }}
+        python-version: ${{ matrix.config.python-version }}
+        architecture: x64
+    - name: Set up base Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+        architecture: x64
+    - name: Python Poetry Action
+      uses: abatilo/actions-poetry@v2.1.0
+      with:
+        poetry-version: ${{ matrix.poetry-version }}
     - name: Install dependencies
       run: |
-        pip install -r requirements-dev.txt
-    - name: nosetests
-      run: |
-        nosetests --with-coverage --cover-erase --cover-package=openrouteservice -v
-    - name: coveralls
-      run: |
-        coveralls --service=github
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        python -m pip install --upgrade pip
+        pip install tox
+    - name: Run Tox
+      run: tox -e py${{ matrix.config.tox }}
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        flags: unittests
+        env_vars: OS,PYTHON
+        name: codecov-umbrella
+        fail_ci_if_error: true
+        verbose: true

@@ -17,6 +17,6 @@ Indices and tables
 
 .. toctree::
    :maxdepth: 4
-   
+
    readme_link
    openrouteservice

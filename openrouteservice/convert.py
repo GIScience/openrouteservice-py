@@ -16,31 +16,29 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 #
-
-"""Converts Python types to string representations suitable for ORS API server.
-"""
+"""Converts Python types to string representations suitable for ORS API server."""
 
 
 def _pipe_list(arg):
-    """Convert list of values to pipe-delimited string"""
+    """Convert list of values to pipe-delimited string."""
     if not _is_list(arg):
         raise TypeError(
-            "Expected a list or tuple, "
-            "but got {}".format(type(arg).__name__))
+            "Expected a list or tuple, " "but got {}".format(type(arg).__name__)
+        )
     return "|".join(map(str, arg))
 
 
 def _comma_list(arg):
-    """Convert list to comma-separated string"""
+    """Convert list to comma-separated string."""
     if not _is_list(arg):
         raise TypeError(
-            "Expected a list or tuple, "
-            "but got {}".format(type(arg).__name__))
+            "Expected a list or tuple, " "but got {}".format(type(arg).__name__)
+        )
     return ",".join(map(str, arg))
 
 
 def _convert_bool(boolean):
-    """Convert to stringified boolean"""
+    """Convert to stringified boolean."""
 
     return str(boolean).lower()
 
@@ -65,12 +63,14 @@ def _format_float(arg):
 
     :rtype: string
     """
-    return ("{}".format(round(float(arg), 6)).rstrip("0").rstrip("."))
+    return "{}".format(round(float(arg), 6)).rstrip("0").rstrip(".")
 
 
 def _build_coords(arg):
-    """Converts one or many lng/lat pair(s) to a comma-separated, pipe 
-    delimited string. Coordinates will be rounded to 5 digits.
+    """
+    Converts one or many lng/lat pair(s) to a comma-separated, pipe delimited string.
+
+    Coordinates will be rounded to 5 digits.
 
     For example:
 
@@ -79,7 +79,7 @@ def _build_coords(arg):
 
     :param arg: The lat/lon pair(s).
     :type arg: list or tuple
-    
+
     :rtype: str
     """
     if _is_list(arg):
@@ -87,15 +87,16 @@ def _build_coords(arg):
     else:
         raise TypeError(
             "Expected a list or tuple of lng/lat tuples or lists, "
-            "but got {}".format(type(arg).__name__))
+            "but got {}".format(type(arg).__name__)
+        )
 
 
 def _concat_coords(arg):
     """Turn the passed coordinate tuple(s) in comma separated coordinate tuple(s).
-    
+
     :param arg: coordinate pair(s)
     :type arg: list or tuple
-    
+
     :rtype: list of strings
     """
     if all(_is_list(tup) for tup in arg):
@@ -111,9 +112,11 @@ def _is_list(arg):
         return False
     if isinstance(arg, str):  # Python 3-only, as str has __iter__
         return False
-    return (not _has_method(arg, "strip")
-            and _has_method(arg, "__getitem__")
-            or _has_method(arg, "__iter__"))
+    return (
+        not _has_method(arg, "strip")
+        and _has_method(arg, "__getitem__")  # noqa
+        or _has_method(arg, "__iter__")  # noqa
+    )
 
 
 def _has_method(arg, method):
@@ -131,13 +134,13 @@ def _has_method(arg, method):
 
 def decode_polyline(polyline, is3d=False):
     """Decodes a Polyline string into a GeoJSON geometry.
-    
+
     :param polyline: An encoded polyline, only the geometry.
     :type polyline: string
-    
+
     :param is3d: Specifies if geometry contains Z component.
     :type is3d: boolean
-    
+
     :returns: GeoJSON Linestring geometry
     :rtype: dict
     """
@@ -152,7 +155,7 @@ def decode_polyline(polyline, is3d=False):
             index += 1
             result += b << shift
             shift += 5
-            if b < 0x1f:
+            if b < 0x1F:
                 break
         lat += (~result >> 1) if (result & 1) != 0 else (result >> 1)
 
@@ -163,7 +166,7 @@ def decode_polyline(polyline, is3d=False):
             index += 1
             result += b << shift
             shift += 5
-            if b < 0x1f:
+            if b < 0x1F:
                 break
         lng += ~(result >> 1) if (result & 1) != 0 else (result >> 1)
 
@@ -175,18 +178,24 @@ def decode_polyline(polyline, is3d=False):
                 index += 1
                 result += b << shift
                 shift += 5
-                if b < 0x1f:
+                if b < 0x1F:
                     break
             if (result & 1) != 0:
                 z += ~(result >> 1)
             else:
-                z += (result >> 1)
+                z += result >> 1
 
-            points.append([round(lng * 1e-5, 6), round(lat * 1e-5, 6), round(z * 1e-2, 1)])
+            points.append(
+                [
+                    round(lng * 1e-5, 6),
+                    round(lat * 1e-5, 6),
+                    round(z * 1e-2, 1),
+                ]
+            )
 
         else:
             points.append([round(lng * 1e-5, 6), round(lat * 1e-5, 6)])
 
-    geojson = {u'type': u'LineString', u'coordinates': points}
+    geojson = {u"type": u"LineString", u"coordinates": points}
 
     return geojson

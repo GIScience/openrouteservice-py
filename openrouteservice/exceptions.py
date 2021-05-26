@@ -16,51 +16,50 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 #
-
-"""
-Defines exceptions that are thrown by the ORS client.
-"""
+"""Defines exceptions that are thrown by the ORS client."""
 
 
 class ValidationError(Exception):
-    """Something went wrong during cerberus validation"""
+    """Something went wrong during cerberus validation."""
 
-    def __init__(self, errors):
-        msg = '\n'.join(["{}".format(str(errors))])
+    def __init__(self, errors):  # noqa
+        msg = "\n".join(["{}".format(str(errors))])
         Exception.__init__(self, msg)
 
 
 class ApiError(Exception):
     """Represents an exception returned by the remote API."""
 
-    def __init__(self, status, message=None):
+    def __init__(self, status, message=None):  # noqa
         self.status = status
         self.message = message
 
-    def __str__(self):
+    def __str__(self):  # noqa
         if self.message is None:
             return str(self.status)
         else:
-            return "%s (%s)" % (self.status, self.message)
+            return "%s (%s)" % (self.status, self.message)  # noqa
 
 
 class HTTPError(Exception):
     """An unexpected HTTP error occurred."""
 
-    def __init__(self, status_code):
+    def __init__(self, status_code):  # noqa
         self.status_code = status_code
 
-    def __str__(self):
-        return "HTTP Error: %d" % self.status_code
+    def __str__(self):  # noqa
+        return "HTTP Error: %d" % self.status_code  # noqa
 
 
 class Timeout(Exception):
     """The request timed out."""
+
     pass
 
 
 class _RetriableRequest(Exception):
     """Signifies that the request can be retried."""
+
     pass
 
 
@@ -70,4 +69,5 @@ class _OverQueryLimit(ApiError, _RetriableRequest):
     Normally we treat this as a retriable condition, but we allow the calling code to specify that these requests should
     not be retried.
     """
+
     pass

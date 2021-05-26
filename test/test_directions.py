@@ -16,7 +16,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 #
-
 """Tests for the directions module."""
 
 import responses
@@ -25,30 +24,52 @@ import warnings
 import test as _test
 from copy import deepcopy
 
-import openrouteservice
+from openrouteservice import exceptions
 from test.test_helper import ENDPOINT_DICT
 
 
 class DirectionsTest(_test.TestCase):
-    valid_query = ENDPOINT_DICT['directions']
+    valid_query = ENDPOINT_DICT["directions"]
 
     @responses.activate
     def test_directions(self):
-        responses.add(responses.POST,
-                      'https://api.openrouteservice.org/v2/directions/{}/geojson'.format(self.valid_query['profile']),
-                      json=self.valid_query,
-                      status=200,
-                      content_type='application/json')
+        responses.add(
+            responses.POST,
+            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+                self.valid_query["profile"]
+            ),
+            json=self.valid_query,
+            status=200,
+            content_type="application/json",
+        )
 
         resp = self.client.directions(**self.valid_query)
 
         self.assertEqual(resp, self.valid_query)
-        self.assertIn('sample_key', responses.calls[0].request.headers.values())
+        self.assertIn("sample_key", responses.calls[0].request.headers.values())
+
+    @responses.activate
+    def test_directions_incompatible_parameters(self):
+        self.valid_query["optimized"] = True
+        responses.add(
+            responses.POST,
+            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+                self.valid_query["profile"]
+            ),
+            json=self.valid_query,
+            status=200,
+            content_type="application/json",
+        )
+
+        resp = self.client.directions(**self.valid_query)
+
+        self.assertEqual(resp, self.valid_query)
+        self.assertIn("sample_key", responses.calls[0].request.headers.values())
 
     def test_format_out_deprecation(self):
         bad_query = deepcopy(self.valid_query)
-        bad_query['format_out'] = "json"
-        bad_query['dry_run'] = True
+        bad_query["format_out"] = "json"
+        bad_query["dry_run"] = True
 
         with warnings.catch_warnings(record=True) as w:
             # Cause all warnings to always be triggered.
@@ -62,31 +83,67 @@ class DirectionsTest(_test.TestCase):
 
     def test_optimized_waypoints(self):
         query = deepcopy(self.valid_query)
-        query['coordinates'] = [[8.688641, 49.420577], [8.680916, 49.415776],[8.688641, 49.420577], [8.680916, 49.415776]]
-        query['optimize_waypoints'] = True
+        query["coordinates"] = [
+            [8.688641, 49.420577],
+            [8.680916, 49.415776],
+            [8.688641, 49.420577],
+            [8.680916, 49.415776],
+        ]
+        query["optimize_waypoints"] = True
 
-        responses.add(responses.POST,
-                      'https://api.openrouteservice.org/v2/directions/{}/geojson'.format(query['profile']),
-                      json=query,
-                      status=200,
-                      content_type='application/json')
+        responses.add(
+            responses.POST,
+            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+                query["profile"]
+            ),
+            json=query,
+            status=200,
+            content_type="application/json",
+        )
 
         # Too exhausting to really test this
-        with self.assertRaises(openrouteservice.exceptions.ApiError):
+        with self.assertRaises(exceptions.ApiError):
+            resp = self.client.directions(**query)
+
+    def test_optimized_waypoints_shuffle(self):
+        query = deepcopy(self.valid_query)
+        query["coordinates"] = [
+            [8.688641, 49.420577],
+            [8.680916, 49.415776],
+            [8.688641, 49.420577],
+            [8.680916, 49.415776],
+        ]
+        query["optimize_waypoints"] = True
+        query.pop("options")
+
+        responses.add(
+            responses.POST,
+            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+                query["profile"]
+            ),
+            json=query,
+            status=200,
+            content_type="application/json",
+        )
+        with self.assertRaises(exceptions.ApiError):
             resp = self.client.directions(**query)
 
     @responses.activate
     def test_optimize_warnings(self):
         query = deepcopy(self.valid_query)
-        query['optimize_waypoints'] = True
+        query["optimize_waypoints"] = True
 
         # Test Coordinates
 
-        responses.add(responses.POST,
-                      'https://api.openrouteservice.org/v2/directions/{}/geojson'.format(query['profile']),
-                      json=query,
-                      status=200,
-                      content_type='application/json')
+        responses.add(
+            responses.POST,
+            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+                query["profile"]
+            ),
+            json=query,
+            status=200,
+            content_type="application/json",
+        )
 
         with warnings.catch_warnings(record=True) as w:
             # Cause all warnings to always be triggered.
@@ -99,14 +156,23 @@ class DirectionsTest(_test.TestCase):
             assert "4 coordinates" in str(w[-1].message)
 
         # Test Options
-        
-        query['coordinates'] = [[8.688641, 49.420577], [8.680916, 49.415776],[8.688641, 49.420577], [8.680916, 49.415776]]
 
-        responses.add(responses.POST,
-                      'https://api.openrouteservice.org/v2/directions/{}/geojson'.format(query['profile']),
-                      json=query,
-                      status=200,
-                      content_type='application/json')
+        query["coordinates"] = [
+            [8.688641, 49.420577],
+            [8.680916, 49.415776],
+            [8.688641, 49.420577],
+            [8.680916, 49.415776],
+        ]
+
+        responses.add(
+            responses.POST,
+            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+                query["profile"]
+            ),
+            json=query,
+            status=200,
+            content_type="application/json",
+        )
 
         with warnings.catch_warnings(record=True) as w:
             # Cause all warnings to always be triggered.
@@ -120,14 +186,18 @@ class DirectionsTest(_test.TestCase):
 
         # Test Preference
 
-        query['options'] = None
-        query['preference'] = 'shortest'
+        query["options"] = None
+        query["preference"] = "shortest"
 
-        responses.add(responses.POST,
-                      'https://api.openrouteservice.org/v2/directions/{}/geojson'.format(query['profile']),
-                      json=query,
-                      status=200,
-                      content_type='application/json')
+        responses.add(
+            responses.POST,
+            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+                query["profile"]
+            ),
+            json=query,
+            status=200,
+            content_type="application/json",
+        )
 
         with warnings.catch_warnings(record=True) as w:
             # Cause all warnings to always be triggered.
