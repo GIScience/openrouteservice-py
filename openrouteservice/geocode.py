@@ -16,28 +16,29 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 #
-
 """Performs requests to the ORS geocode API (direct Pelias clone)."""
 from openrouteservice import convert
 
 
-def pelias_search(client, text,
-                  focus_point=None,
-                  rect_min_x=None,
-                  rect_min_y=None,
-                  rect_max_x=None,
-                  rect_max_y=None,
-                  circle_point=None,
-                  circle_radius=None,
-                  sources=None,
-                  layers=None,
-                  country=None,
-                  size=None,
-                  validate=True,
-                  dry_run=None):
+def pelias_search(
+    client,
+    text,
+    focus_point=None,
+    rect_min_x=None,
+    rect_min_y=None,
+    rect_max_x=None,
+    rect_max_y=None,
+    circle_point=None,
+    circle_radius=None,
+    sources=None,
+    layers=None,
+    country=None,
+    size=None,
+    validate=True,
+    dry_run=None,
+):
     """
-    Geocoding is the process of converting addresses into geographic
-    coordinates.
+    Geocoding is the process of converting addresses into geographic coordinates.
 
     This endpoint queries directly against a Pelias instance.
 
@@ -82,7 +83,7 @@ def pelias_search(client, text,
 
     :param size: The amount of results returned. Default 10.
     :type size: integer
-    
+
     :param dry_run: Print URL and parameters without sending the request.
     :param dry_run: boolean
 
@@ -92,59 +93,67 @@ def pelias_search(client, text,
     :rtype: call to Client.request()
     """
 
-    params = {'text': text}
+    params = {"text": text}
 
     if focus_point:
-        params['focus.point.lon'] = convert._format_float(focus_point[0])
-        params['focus.point.lat'] = convert._format_float(focus_point[1])
+        params["focus.point.lon"] = convert._format_float(focus_point[0])
+        params["focus.point.lat"] = convert._format_float(focus_point[1])
 
     if rect_min_x:
-        params['boundary.rect.min_lon'] = convert._format_float(rect_min_x)  #
+        params["boundary.rect.min_lon"] = convert._format_float(rect_min_x)  #
 
     if rect_min_y:
-        params['boundary.rect.min_lat'] = convert._format_float(rect_min_y)  #
+        params["boundary.rect.min_lat"] = convert._format_float(rect_min_y)  #
 
     if rect_max_x:
-        params['boundary.rect.max_lon'] = convert._format_float(rect_max_x)  #
+        params["boundary.rect.max_lon"] = convert._format_float(rect_max_x)  #
 
     if rect_max_y:
-        params['boundary.rect.max_lat'] = convert._format_float(rect_max_y)  #
+        params["boundary.rect.max_lat"] = convert._format_float(rect_max_y)  #
 
     if circle_point:
-        params['boundary.circle.lon'] = convert._format_float(circle_point[0])  #
-        params['boundary.circle.lat'] = convert._format_float(circle_point[1])  #
+        params["boundary.circle.lon"] = convert._format_float(
+            circle_point[0]
+        )  #
+        params["boundary.circle.lat"] = convert._format_float(
+            circle_point[1]
+        )  #
 
     if circle_radius:
-        params['boundary.circle.radius'] = circle_radius
+        params["boundary.circle.radius"] = circle_radius
 
     if sources:
-        params['sources'] = convert._comma_list(sources)
+        params["sources"] = convert._comma_list(sources)
 
     if layers:
-        params['layers'] = convert._comma_list(layers)
+        params["layers"] = convert._comma_list(layers)
 
     if country:
-        params['boundary.country'] = country
+        params["boundary.country"] = country
 
     if size:
-        params['size'] = size
+        params["size"] = size
 
     return client.request("/geocode/search", params, dry_run=dry_run)
 
 
-def pelias_autocomplete(client, text,
-                        focus_point=None,
-                        rect_min_x=None,
-                        rect_min_y=None,
-                        rect_max_x=None,
-                        rect_max_y=None,
-                        country=None,
-                        sources=None,
-                        layers=None,
-                        validate=True,
-                        dry_run=None):
+def pelias_autocomplete(
+    client,
+    text,
+    focus_point=None,
+    rect_min_x=None,
+    rect_min_y=None,
+    rect_max_x=None,
+    rect_max_y=None,
+    country=None,
+    sources=None,
+    layers=None,
+    validate=True,
+    dry_run=None,
+):
     """
     Autocomplete geocoding can be used alongside /search to enable real-time feedback.
+
     It represents a type-ahead functionality, which helps to find the desired location,
     without to require a fully specified search term.
 
@@ -183,7 +192,7 @@ def pelias_autocomplete(client, text,
         https://github.com/pelias/documentation/blob/master/search.md#filter-by-data-type
         for details.
     :type layers: list of strings
-    
+
     :param dry_run: Print URL and parameters without sending the request.
     :param dry_run: boolean
 
@@ -193,51 +202,53 @@ def pelias_autocomplete(client, text,
     :rtype: dict from JSON response
     """
 
-    params = {'text': text}
+    params = {"text": text}
 
     if focus_point:
-        params['focus.point.lon'] = convert._format_float(focus_point[0])
-        params['focus.point.lat'] = convert._format_float(focus_point[1])
+        params["focus.point.lon"] = convert._format_float(focus_point[0])
+        params["focus.point.lat"] = convert._format_float(focus_point[1])
 
     if rect_min_x:
-        params['boundary.rect.min_lon	'] = convert._format_float(rect_min_x)
+        params["boundary.rect.min_lon	"] = convert._format_float(rect_min_x)
 
     if rect_min_y:
-        params['boundary.rect.min_lat	'] = convert._format_float(rect_min_y)
+        params["boundary.rect.min_lat	"] = convert._format_float(rect_min_y)
 
     if rect_max_x:
-        params['boundary.rect.max_lon	'] = convert._format_float(rect_max_x)
+        params["boundary.rect.max_lon	"] = convert._format_float(rect_max_x)
 
     if rect_max_y:
-        params['boundary.rect.max_lon	'] = convert._format_float(rect_max_y)
+        params["boundary.rect.max_lon	"] = convert._format_float(rect_max_y)
 
     if country:
-        params['boundary.country'] = country
+        params["boundary.country"] = country
 
     if sources:
-        params['sources'] = convert._comma_list(sources)
+        params["sources"] = convert._comma_list(sources)
 
     if layers:
-        params['layers'] = convert._comma_list(layers)
+        params["layers"] = convert._comma_list(layers)
 
     return client.request("/geocode/autocomplete", params, dry_run=dry_run)
 
 
-def pelias_structured(client,
-                      address=None,
-                      neighbourhood=None,
-                      borough=None,
-                      locality=None,
-                      county=None,
-                      region=None,
-                      postalcode=None,
-                      country=None,
-                      validate=True,
-                      dry_run=None,
-                      # size=None
-                      ):
+def pelias_structured(
+    client,
+    address=None,
+    neighbourhood=None,
+    borough=None,
+    locality=None,
+    county=None,
+    region=None,
+    postalcode=None,
+    country=None,
+    validate=True,
+    dry_run=None,
+    # size=None
+):
     """
     With structured geocoding, you can search for the individual parts of a location.
+
     Structured geocoding is an option on the search endpoint,
     which allows you to define a query that maintains the individual fields.
 
@@ -275,7 +286,7 @@ def pelias_structured(client,
 
     :param country: Highest-level divisions supported in a search. Can be a full name or abbreviation.
     :type country: string
-    
+
     :param dry_run: Print URL and parameters without sending the request.
     :param dry_run: boolean
 
@@ -284,46 +295,48 @@ def pelias_structured(client,
     :rtype: dict from JSON response
     """
 
-    params = dict()
+    params = {}
 
     if address:
-        params['address'] = address
+        params["address"] = address
 
     if neighbourhood:
-        params['neighbourhood'] = neighbourhood
+        params["neighbourhood"] = neighbourhood
 
     if borough:
-        params['borough'] = borough
+        params["borough"] = borough
 
     if locality:
-        params['locality'] = locality
+        params["locality"] = locality
 
     if county:
-        params['county'] = county
+        params["county"] = county
 
     if region:
-        params['region'] = region
+        params["region"] = region
 
     if postalcode:
-        params['postalcode'] = postalcode
+        params["postalcode"] = postalcode
 
     if country:
-        params['country'] = country
+        params["country"] = country
 
     return client.request("/geocode/search/structured", params, dry_run=dry_run)
 
 
-def pelias_reverse(client, point,
-                   circle_radius=None,
-                   sources=None,
-                   layers=None,
-                   country=None,
-                   size=None,
-                   validate=True,
-                   dry_run=None):
+def pelias_reverse(
+    client,
+    point,
+    circle_radius=None,
+    sources=None,
+    layers=None,
+    country=None,
+    size=None,
+    validate=True,
+    dry_run=None,
+):
     """
-    Reverse geocoding is the process of converting geographic coordinates into a
-    human-readable address.
+    Reverse geocoding is the process of converting geographic coordinates into a human-readable address.
 
     This endpoint queries directly against a Pelias instance.
 
@@ -349,7 +362,7 @@ def pelias_reverse(client, point,
 
     :param size: The amount of results returned. Default 10.
     :type size: integer
-    
+
     :param dry_run: Print URL and parameters without sending the request.
     :param dry_run: boolean
 
@@ -358,24 +371,24 @@ def pelias_reverse(client, point,
     :rtype: dict from JSON response
     """
 
-    params = dict()
-
-    params['point.lon'] = convert._format_float(point[0])
-    params['point.lat'] = convert._format_float(point[1])
+    params = {
+        "point.lon": convert._format_float(point[0]),
+        "point.lat": convert._format_float(point[1]),
+    }
 
     if circle_radius:
-        params['boundary.circle.radius'] = str(circle_radius)
+        params["boundary.circle.radius"] = str(circle_radius)
 
     if sources:
-        params['sources'] = convert._comma_list(sources)
+        params["sources"] = convert._comma_list(sources)
 
     if layers:
-        params['layers'] = convert._comma_list(layers)
+        params["layers"] = convert._comma_list(layers)
 
     if country:
-        params['boundary.country'] = country
+        params["boundary.country"] = country
 
     if size:
-        params['size'] = size
+        params["size"] = size
 
     return client.request("/geocode/reverse", params, dry_run=dry_run)

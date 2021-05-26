@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "openrouteservice"
+version = "2.3.3"
+description = "Python client for requests to openrouteservice API services."
+authors = ["Julian Psotta <julian.psotta@heigit.org>"]
+readme = 'README.rst'
+license = "Apache2"
+
+[tool.poetry.dependencies]
+python = ">=3.6, <4.0"
+requests = ">=2.0"
+responses = ">=0.12"
+poetry2conda = "^0.3.0"
+#pytest-random-order = "^1.0.4"
+
+
+[tool.poetry.dev-dependencies]
+pytest = ">=4.1.0"
+pytest-cov = ">=2.0.0"
+yapf = ">=0.30.0"
+importlib-metadata = ">=2.1.1"
+virtualenv = { version = ">=20.4.2", python = ">=3.6, <4.0" }
+tox = { version = ">=3.21.4", python = ">=3.6, <4.0" }
+pre-commit = { version = ">=2.1.1", python = ">=3.6, <4.0" }
+coverage = "^5.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

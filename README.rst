@@ -2,9 +2,9 @@
     :target: https://github.com/GIScience/openrouteservice-py/actions
     :alt: Build status
 
-.. image:: https://coveralls.io/repos/github/GIScience/openrouteservice-py/badge.svg?branch=master
-    :target: https://coveralls.io/github/GIScience/openrouteservice-py?branch=master
-    :alt: Coveralls coverage
+.. image:: https://codecov.io/gh/GIScience/openrouteservice-py/branch/master/graph/badge.svg?token=QqGC8XfCiI
+    :target: https://codecov.io/gh/GIScience/openrouteservice-py
+    :alt: Codecov coverage
 
 .. image:: https://readthedocs.org/projects/openrouteservice-py/badge/?version=latest
    :target: http://openrouteservice-py.readthedocs.io/en/latest/?badge=latest
@@ -13,14 +13,6 @@
 .. image:: https://badge.fury.io/py/openrouteservice.svg
     :target: https://badge.fury.io/py/openrouteservice
     :alt: PyPI version
-
-.. image:: https://github.com/GIScience/openrouteservice-py/workflows/Conda%20Package/badge.svg?branch=master
-    :target: https://anaconda.org/MichaelsJP/openrouteservice
-    :alt: Conda Build
-
-.. image:: https://anaconda.org/michaelsjp/openrouteservice/badges/version.svg
-    :target: https://anaconda.org/MichaelsJP/openrouteservice
-    :alt: Conda Version
 
 .. image:: https://mybinder.org/badge_logo.svg
     :target: https://mybinder.org/v2/gh/GIScience/openrouteservice-py/master?filepath=examples%2Fbasic_example.ipynb
@@ -78,11 +70,22 @@ By using this library, you agree to the ORS `terms and conditions`_.
 
 Requirements
 -----------------------------
-openrouteservice-py is tested against CPython 3.7, 3.8 and 3.9, and PyPy3.
+openrouteservice-py is tested against Python 3.6, 3.7, 3.8 and 3.9, and PyPy3.6 and PyPy3.7.
 
-For setting up a testing environment, install ``requirements-dev.txt``::
+For setting up a testing environment, install **poetry** first.
 
-    pip install -r requirements-dev.txt
+For Linux and osx::
+
+	curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+
+For windows::
+
+    (Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python -
+
+Then create a venv and install the dependencies with poetry::
+
+    python -m venv .venv && source .venv/bin/activate
+    poetry install -vv
 
 Installation
 ------------------------------
@@ -100,7 +103,7 @@ Testing
 ---------------------------------
 If you want to run the unit tests, see Requirements_. ``cd`` to the library directory and run::
 
-	nosetests -v
+	pytest -v
 
 ``-v`` flag for verbose output (recommended).
 

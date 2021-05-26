@@ -14,26 +14,28 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 #
-
 """Performs requests to the ORS isochrones API."""
 
 from openrouteservice import deprecation
 
 
-def isochrones(client, locations,
-               profile='driving-car',
-               range_type='time',
-               range=None,
-               intervals=None,
-               segments=None,
-               interval=None,
-               units=None,
-               location_type=None,
-               smoothing=None,
-               attributes=None,
-               validate=True,
-               dry_run=None):
-    """ Gets travel distance and time for a matrix of origins and destinations.
+def isochrones(
+    client,
+    locations,
+    profile="driving-car",
+    range_type="time",
+    range=None,
+    intervals=None,
+    segments=None,
+    interval=None,
+    units=None,
+    location_type=None,
+    smoothing=None,
+    attributes=None,
+    validate=True,
+    dry_run=None,
+):
+    """Gets travel distance and time for a matrix of origins and destinations.
 
     :param locations: One pair of lng/lat values.
     :type locations: list or tuple of lng,lat values
@@ -68,7 +70,7 @@ def isochrones(client, locations,
     :param units: Specifies the unit system to use when displaying results.
         One of ["m", "km", "m"]. Default "m".
     :type units: string
-    
+
     :param location_type: 'start' treats the location(s) as starting point,
         'destination' as goal. Default 'start'.
     :type location_type: string
@@ -85,48 +87,51 @@ def isochrones(client, locations,
 
     :param validate: Specifies whether parameters should be validated before sending the request. Default True.
     :type validate: bool
-    
+
     :param dry_run: Print URL and parameters without sending the request.
     :param dry_run: boolean
-    
+
     :raises ValueError: When parameter has invalid value(s).
-    
+
     :rtype: call to Client.request()
     """
 
-    params = {
-        "locations": locations
-    }
+    params = {"locations": locations}
 
-    if profile:
+    if profile:  # pragma: no cover
         params["profile"] = profile
 
-    if range_type:
+    if range_type:  # pragma: no cover
         params["range_type"] = range_type
 
-    if intervals:
-        deprecation.warning('intervals', 'range')
+    if intervals:  # pragma: no cover
+        deprecation.warning("intervals", "range")
 
     range = range or intervals
-    params['range'] = range
+    params["range"] = range
 
-    if segments:
-        deprecation.warning('segments', 'interval')
+    if segments:  # pragma: no cover
+        deprecation.warning("segments", "interval")
 
     interval = interval or segments
-    if interval:
-        params['interval'] = interval
+    if interval:  # pragma: no cover
+        params["interval"] = interval
 
-    if units:
+    if units:  # pragma: no cover
         params["units"] = units
 
-    if location_type:
+    if location_type:  # pragma: no cover
         params["location_type"] = location_type
 
-    if smoothing:
+    if smoothing:  # pragma: no cover
         params["smoothing"] = smoothing
 
-    if attributes:
+    if attributes:  # pragma: no cover
         params["attributes"] = attributes
 
-    return client.request("/v2/isochrones/" + profile + '/geojson', {}, post_json=params, dry_run=dry_run)
+    return client.request(
+        "/v2/isochrones/" + profile + "/geojson",
+        {},
+        post_json=params,
+        dry_run=dry_run,
+    )
