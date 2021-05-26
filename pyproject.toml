@@ -6,10 +6,6 @@ authors = ["Julian Psotta <julian.psotta@heigit.org>"]
 readme = 'README.rst'
 license = "Apache2"
 
-[tool.dephell.main]
-from = { format = "poetry", path = "pyproject.toml" }
-to = { format = "setuppy", path = "setup.py" }
-
 [tool.poetry.dependencies]
 python = ">=3.6, <4.0"
 requests = ">=2.0"
@@ -26,7 +22,6 @@ importlib-metadata = ">=2.1.1"
 virtualenv = { version = ">=20.4.2", python = ">=3.6, <4.0" }
 tox = { version = ">=3.21.4", python = ">=3.6, <4.0" }
 pre-commit = { version = ">=2.1.1", python = ">=3.6, <4.0" }
-dephell = { version = ">=0.8.3", python = ">=3.6, <4.0" }
 coverage = "^5.4"
 
 [build-system]
