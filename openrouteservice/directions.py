@@ -71,7 +71,7 @@ def directions(
     :param format: Specifies the response format. One of ['json', 'geojson', 'gpx']. Default "json".
         Geometry format for "json" is Google's encodedpolyline. The GPX schema the response is validated
         against can be found here:
-        https://raw.githubusercontent.com/GIScience/openrouteservice-schema/master/gpx/v1/ors-gpx.xsd.
+        https://raw.githubusercontent.com/GIScience/openrouteservice-schema/master/gpx/v2/ors-gpx.xsd.
     :type format: str
 
     :param format_out: DEPRECATED.
