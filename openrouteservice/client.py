@@ -259,7 +259,7 @@ class Client(object):
         """Returns the body of a response object, raises status code exceptions if necessary."""
         try:
             body = response.json()
-        except json.JSONDecodeError:  # pragma: no cover
+        except json.JSONDecodeError:
             raise exceptions.HTTPError(response.status_code)
 
         # error = body.get('error')

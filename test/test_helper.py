@@ -225,3 +225,29 @@ ENDPOINT_DICT = {
         "matrix": PARAM_LIST_TWO,
     },
 }
+
+GPX_RESPONSE = """
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<gpx version="1.0" creator="openrouteservice" xmlns="https://raw.githubusercontent.com/GIScience/openrouteservice-schema/master/gpx/v2/ors-gpx.xsd">
+  <metadata>
+    <name>openrouteservice directions</name>
+    <desc>This is a directions instructions file as GPX, generated from openrouteservice</desc>
+    <author><name>openrouteservice</name>
+      <email id="support" domain="openrouteservice.heigit.org"/>
+      <link href="https://openrouteservice.org/">
+        <text>https://openrouteservice.org/</text>
+        <type>text/html</type>
+      </link>
+    </author>
+    <copyright author="openrouteservice.org | OpenStreetMap contributors">
+      <year>2021</year>
+      <license>LGPL 3.0</license>
+    </copyright>
+    <time>2021-07-25T17:26:59.023Z</time>
+    <bounds maxLat="51.501602" maxLon="0.147508" minLat="51.185303" minLon="-0.076743"/>
+    <extensions>
+      <system-message></system-message>
+    </extensions>
+  </metadata>
+</gpx>
+"""

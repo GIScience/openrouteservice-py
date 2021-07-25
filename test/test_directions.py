@@ -25,7 +25,7 @@ import test as _test
 from copy import deepcopy
 
 from openrouteservice import exceptions
-from test.test_helper import ENDPOINT_DICT
+from test.test_helper import ENDPOINT_DICT, GPX_RESPONSE
 
 
 class DirectionsTest(_test.TestCase):
@@ -46,6 +46,26 @@ class DirectionsTest(_test.TestCase):
         resp = self.client.directions(**self.valid_query)
 
         self.assertEqual(resp, self.valid_query)
+        self.assertIn("sample_key", responses.calls[0].request.headers.values())
+
+    @responses.activate
+    def test_directions_gpx(self):
+        query = deepcopy(self.valid_query)
+        query["format"] = "gpx"
+
+        responses.add(
+            responses.POST,
+            "https://api.openrouteservice.org/v2/directions/{}/gpx".format(
+                self.valid_query["profile"]
+            ),
+            body=GPX_RESPONSE,
+            status=200,
+            content_type="application/gpx+xml;charset=UTF-8",
+        )
+
+        resp = self.client.directions(**query)
+
+        self.assertEqual(resp, GPX_RESPONSE)
         self.assertIn("sample_key", responses.calls[0].request.headers.values())
 
     @responses.activate
