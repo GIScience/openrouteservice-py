@@ -257,10 +257,14 @@ class Client(object):
     @staticmethod
     def _get_body(response):
         """Returns the body of a response object, raises status code exceptions if necessary."""
-        try:
-            body = response.json()
-        except json.JSONDecodeError:
-            raise exceptions.HTTPError(response.status_code)
+        content_type = response.headers["Content-Type"]
+        if content_type.startswith("application/gpx+xml"):
+            body = response.text
+        else:
+            try:
+                body = response.json()
+            except json.JSONDecodeError:
+                raise exceptions.HTTPError(response.status_code)
 
         # error = body.get('error')
         status_code = response.status_code
