@@ -20,6 +20,7 @@
 
 from datetime import datetime
 from datetime import timedelta
+import cgi
 import functools
 import requests
 import json
@@ -258,7 +259,8 @@ class Client(object):
     def _get_body(response):
         """Returns the body of a response object, raises status code exceptions if necessary."""
         content_type = response.headers["Content-Type"]
-        if content_type.startswith("application/gpx+xml"):
+        mime_type, _ = cgi.parse_header(content_type)
+        if mime_type == "application/gpx+xml":
             body = response.text
         else:
             try:
