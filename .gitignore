@@ -1,5 +1,6 @@
 .tox/
-.venv/
+.venv*
+.env*
 .coverage
 **/.ipynb_checkpoints/
 *.geojson
