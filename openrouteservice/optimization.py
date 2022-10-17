@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2018 HeiGIT, University of Heidelberg.
 #
 #
@@ -101,7 +100,7 @@ def optimization(
     )
 
 
-class Job(object):
+class Job:
     """
     Class to create a Job object for optimization endpoint.
 
@@ -172,7 +171,7 @@ class Job(object):
             self.time_windows = time_windows
 
 
-class ShipmentStep(object):
+class ShipmentStep:
     """
     Class to create a Shipment object for optimization endpoint.
 
@@ -222,7 +221,7 @@ class ShipmentStep(object):
             self.time_windows = time_windows
 
 
-class Shipment(object):
+class Shipment:
     """
     Class to create a Shipment object for optimization endpoint.
 
@@ -272,7 +271,7 @@ class Shipment(object):
             self.priority = priority
 
 
-class Vehicle(object):
+class Vehicle:
     """
     Class to create a Vehicle object for optimization endpoint.
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2014 Google Inc. All rights reserved.
 #
 # Modifications Copyright (C) 2018 HeiGIT, University of Heidelberg.
@@ -20,6 +19,7 @@
 
 from datetime import datetime
 from datetime import timedelta
+from urllib.parse import urlencode
 import cgi
 import functools
 import requests
@@ -30,18 +30,13 @@ import warnings
 
 from openrouteservice import exceptions, __version__, get_ordinal
 
-try:  # Python 3
-    from urllib.parse import urlencode
-except ImportError:  # pragma: no cover # Python 2
-    from urllib import urlencode  # noqa
-
 _USER_AGENT = "ORSClientPython.v{}".format(__version__)
 _DEFAULT_BASE_URL = "https://api.openrouteservice.org"
 
 _RETRIABLE_STATUSES = set([503])  # noqa
 
 
-class Client(object):
+class Client:
     """Performs requests to the ORS API services."""
 
     def __init__(
@@ -360,35 +355,8 @@ def _urlencode_params(params):
 
     :rtype: string
     """
-    # urlencode does not handle unicode strings in Python 2.
-    # Firstly, normalize the values so they get encoded correctly.
-    params = [(key, _normalize_for_urlencode(val)) for key, val in params]
-    # Secondly, unquote unreserved chars which are incorrectly quoted
+    params = [(key, val) for key, val in params]
+    # Unquote unreserved chars which are incorrectly quoted
     # by urllib.urlencode, causing invalid auth signatures. See GH #72
     # for more info.
     return requests.utils.unquote_unreserved(urlencode(params))
-
-
-try:
-    unicode  # noqa
-
-    # NOTE(cbro): `unicode` was removed in Python 3. In Python 3, NameError is
-    # raised here, and caught below.
-
-    def _normalize_for_urlencode(value):  # pragma: no cover
-        """(Python 2) Converts the value to a `str` (raw bytes)."""
-        if isinstance(value, unicode):  # noqa
-            return value.encode("utf8")
-
-        if isinstance(value, str):
-            return value
-
-        return _normalize_for_urlencode(str(value))
-
-
-except NameError:
-
-    def _normalize_for_urlencode(value):
-        """(Python 3) No-op."""
-        # urlencode in Python 3 handles all the types we are passing it.
-        return value

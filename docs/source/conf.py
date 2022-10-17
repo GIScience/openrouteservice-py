@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # openrouteservice-py documentation build configuration file, created by
 # sphinx-quickstart on Wed Jan 31 20:43:55 2018.
 #
