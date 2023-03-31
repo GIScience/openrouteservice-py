@@ -30,6 +30,7 @@ def isochrones(
     interval=None,
     units=None,
     location_type=None,
+    options=None,
     smoothing=None,
     attributes=None,
     validate=True,
@@ -74,6 +75,12 @@ def isochrones(
     :param location_type: 'start' treats the location(s) as starting point,
         'destination' as goal. Default 'start'.
     :type location_type: string
+
+    :param options: Additional options for the isochrones request. Refer to
+        https://openrouteservice.org/dev/#/api-docs/v2/isochrones/{profile}/post
+        for detailed documentation. Expects a dict(). Will be converted to JSON
+        automatically.
+    :type options: dict
 
     :param smoothing: Applies a level of generalisation to the isochrone polygons generated.
         Value between 0 and 1, whereas a value closer to 1 will result in a more generalised shape.
@@ -128,6 +135,9 @@ def isochrones(
 
     if attributes:  # pragma: no cover
         params["attributes"] = attributes
+
+    if options:  # pragma: no cover
+        params["options"] = options
 
     return client.request(
         "/v2/isochrones/" + profile + "/geojson",
