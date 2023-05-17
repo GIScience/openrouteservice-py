@@ -47,8 +47,8 @@ master_doc = "index"
 
 # General information about the project.
 project = "openrouteservice-py"
-copyright = "2018, Nils Nolde"
-author = "Nils Nolde"
+copyright = "2023, HeiGIT gGmbH"
+author = "HeiGIT gGmbH"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -140,7 +140,7 @@ latex_documents = [
         master_doc,
         "openrouteservice-py.tex",
         "openrouteservice-py Documentation",
-        "Nils Nolde",
+        "HeiGIT gGmbH",
         "manual",
     ),
 ]
