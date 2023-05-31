@@ -47,6 +47,7 @@ def directions(
     continue_straight=None,
     elevation=None,
     extra_info=None,
+    maximum_speed=None,
     suppress_warnings=None,
     optimized=None,
     optimize_waypoints=None,
@@ -166,6 +167,9 @@ def directions(
         Must be a list of strings. Default None.
     :type extra_info: list or tuple of strings
 
+    :param maximum_speed: The maximum speed to drive (or walk). Default None.
+    :type maximum_speed: int
+
     :param suppress_warnings: Tells the system to not return any warning messages and corresponding extra_info.
         For false the extra information can still be explicitly requested by adding it with the extra_info parameter.
     :type suppress_warnings: bool
@@ -271,6 +275,9 @@ def directions(
 
     if extra_info:
         params["extra_info"] = extra_info
+
+    if maximum_speed is not None:
+        params["maximum_speed"] = maximum_speed
 
     if suppress_warnings is not None:
         params["suppress_warnings"] = suppress_warnings
