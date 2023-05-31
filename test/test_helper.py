@@ -38,6 +38,7 @@ ENDPOINT_DICT = {
         "bearings": PARAM_LIST_TWO,
         "skip_segments": [0, 1],
         "elevation": "true",
+        "maximum_speed": 95,
         "extra_info": ["roadaccessrestrictions"],
         "optimized": "false",
         "continue_straight": True,
