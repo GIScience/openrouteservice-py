@@ -1,5 +1,7 @@
 # Unreleased
 
+- add 'intersections'-parameter to isochrones
+
 ## 2.2.0
 
 - restrict optimize_waypoints parameter to not trigger when options or 'shortest' is used
