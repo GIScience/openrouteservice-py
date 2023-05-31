@@ -27,6 +27,7 @@ def isochrones(
     intervals=None,
     segments=None,
     interval=None,
+    intersections=None,
     units=None,
     location_type=None,
     options=None,
@@ -66,6 +67,9 @@ def isochrones(
         Only has effect if used with a single value 'range' value.
         In meters or seconds.
     :type interval: integer
+
+    :param intersections: Specifies whether to return intersecting polygons.
+    :type intersections: boolean
 
     :param units: Specifies the unit system to use when displaying results.
         One of ["m", "km", "m"]. Default "m".
@@ -125,6 +129,9 @@ def isochrones(
 
     if units:  # pragma: no cover
         params["units"] = units
+
+    if intersections:
+        params["intersections"] = intersections
 
     if location_type:  # pragma: no cover
         params["location_type"] = location_type
