@@ -50,6 +50,7 @@ ENDPOINT_DICT = {
         "location_type": "destination",
         "attributes": ["area", "reachfactor"],
         "interval": [PARAM_INT_SMALL],
+        "options": {"avoid_features": ["highways", "tollways"]},
     },
     "distance_matrix": {
         "locations": PARAM_LINE,
