@@ -17,6 +17,7 @@
 import responses
 import test as _test
 from test.test_helper import ENDPOINT_DICT
+import pytest
 
 
 class IsochronesTest(_test.TestCase):
@@ -38,3 +39,8 @@ class IsochronesTest(_test.TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertEqual(resp, query)
+
+    def test_isochrones_must_fail(self):
+        query = ENDPOINT_DICT["isochrones"]
+        query.update({"foo": {"bar": "baz"}})
+        self.assertRaises(TypeError, self.client.isochrones, **query)

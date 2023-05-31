@@ -360,3 +360,27 @@ def _urlencode_params(params):
     # by urllib.urlencode, causing invalid auth signatures. See GH #72
     # for more info.
     return requests.utils.unquote_unreserved(urlencode(params))
+
+
+try:
+    unicode  # noqa
+
+    # NOTE(cbro): `unicode` was removed in Python 3. In Python 3, NameError is
+    # raised here, and caught below.
+
+    def _normalize_for_urlencode(value):  # pragma: no cover
+        """(Python 2) Converts the value to a `str` (raw bytes)."""
+        if isinstance(value, unicode):  # noqa
+            return value.encode("utf8")
+
+        if isinstance(value, str):
+            return value
+
+        return _normalize_for_urlencode(str(value))
+
+except NameError:
+
+    def _normalize_for_urlencode(value):
+        """(Python 3) No-op."""
+        # urlencode in Python 3 handles all the types we are passing it.
+        return value
