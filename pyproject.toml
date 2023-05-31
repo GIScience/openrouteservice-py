@@ -7,7 +7,7 @@ readme = 'README.rst'
 license = "Apache2"
 
 [tool.poetry.dependencies]
-python = ">=3.6, <4.0"
+python = ">=3.7, <4.0"
 requests = ">=2.0"
 responses = ">=0.12"
 poetry2conda = "^0.3.0"
@@ -19,10 +19,13 @@ pytest = ">=4.1.0"
 pytest-cov = ">=2.0.0"
 yapf = ">=0.30.0"
 importlib-metadata = ">=2.1.1"
-virtualenv = { version = ">=20.4.2", python = ">=3.6, <4.0" }
+virtualenv = { version = ">=20.13.3", python = ">=3.6, <4.0" }
 tox = { version = ">=3.21.4", python = ">=3.6, <4.0" }
-pre-commit = { version = ">=2.1.1", python = ">=3.6, <4.0" }
+pre-commit = { version = ">=2.17.0", python = ">=3.6, <4.0" }
 coverage = "^5.4"
+
+[tool.pytest.ini_options]
+addopts = "--cov=openrouteservice --cov-report xml --cov-report term-missing --cov-fail-under 96"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

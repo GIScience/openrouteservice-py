@@ -82,7 +82,6 @@ class OptimizationTest(_test.TestCase):
         return jobs, vehicles, shipments
 
     def test_jobs_vehicles_classes(self):
-
         jobs, vehicles, shipments = self._get_params()
 
         self.assertEqual(
