@@ -200,15 +200,15 @@ def directions(
     # call optimization endpoint and get new order of waypoints
     if optimize_waypoints is not None and not dry_run:
         if len(coordinates) <= 3:
-            warnings.warn(
+            warnings.warn(  # noqa: B028
                 "Less than 4 coordinates, nothing to optimize!", UserWarning
             )
         elif options:
-            warnings.warn(
+            warnings.warn(  # noqa: B028
                 "Options are not compatible with optimization.", UserWarning
             )
         elif preference == "shortest":
-            warnings.warn(
+            warnings.warn(  # noqa: B028
                 "Shortest is not compatible with optimization.", UserWarning
             )
         else:

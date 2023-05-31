@@ -385,7 +385,6 @@ try:
 
         return _normalize_for_urlencode(str(value))
 
-
 except NameError:
 
     def _normalize_for_urlencode(value):

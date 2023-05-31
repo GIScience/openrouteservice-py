@@ -196,6 +196,6 @@ def decode_polyline(polyline, is3d=False):
         else:
             points.append([round(lng * 1e-5, 6), round(lat * 1e-5, 6)])
 
-    geojson = {u"type": u"LineString", u"coordinates": points}
+    geojson = {"type": "LineString", "coordinates": points}
 
     return geojson
