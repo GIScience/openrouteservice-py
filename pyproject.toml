@@ -21,9 +21,10 @@ importlib-metadata = ">=6.6.0"
 virtualenv = { version = ">=20.23.0", python = ">=3.6, <4.0" }
 pre-commit = { version = ">=2.21.0", python = ">=3.6, <4.0" }
 coverage = "^7.2.7"
+pytest-xdist = "^3.3.1"
 
 [tool.pytest.ini_options]
-addopts = "--cov=openrouteservice --cov-report xml --cov-report term-missing --cov-fail-under 96"
+addopts = "--cov=openrouteservice --cov-report xml --cov-report term-missing --cov-fail-under 96 -n auto"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
