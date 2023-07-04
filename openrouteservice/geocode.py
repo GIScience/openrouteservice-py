@@ -30,6 +30,7 @@ def pelias_search(
     rect_max_y=None,
     circle_point=None,
     circle_radius=None,
+    gid=None,
     sources=None,
     layers=None,
     country=None,
@@ -66,6 +67,9 @@ def pelias_search(
 
     :param circle_radius: Radius of circle constraint in km. Default 50.
     :type circle_radius: integer
+
+    :param gid: Restrict results to administrative boundary using a Pelias global id gid
+    :type gid: string
 
     :param sources: The originating source of the data. One or more of
         ['osm', 'oa', 'wof', 'gn']. Currently only 'osm', 'wof' and 'gn' are
@@ -122,6 +126,9 @@ def pelias_search(
     if circle_radius:
         params["boundary.circle.radius"] = circle_radius
 
+    if gid:
+        params["boundary.gid"] = gid
+        
     if sources:
         params["sources"] = convert._comma_list(sources)
 
