@@ -16,7 +16,7 @@
 #
 """Performs requests to the ORS isochrones API."""
 
-from openrouteservice import deprecation
+from openrouteservice.legacy import deprecation
 
 
 def isochrones(
@@ -106,6 +106,8 @@ def isochrones(
 
     :rtype: call to Client.request()
     """
+
+    deprecation.deprecated("Client.isochrones", "IsochronesServiceApi.get_default_isochrones")
 
     params = {"locations": locations}
 

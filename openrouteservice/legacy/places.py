@@ -15,7 +15,7 @@
 # the License.
 """Performs requests to the ORS Places API."""
 
-from openrouteservice import convert
+from openrouteservice.legacy import convert, deprecation
 
 
 def places(
@@ -79,6 +79,8 @@ def places(
 
     :rtype: call to Client.request()
     """
+
+    deprecation.deprecated("Client.places", "PoisApi.pois_post")
 
     params = {
         "request": request,

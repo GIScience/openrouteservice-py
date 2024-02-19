@@ -30,3 +30,14 @@ def warning(old_name, new_name):
         DeprecationWarning,
         stacklevel=2,
     )
+
+def deprecated(old_name, new_name):
+    """Deprecation warning."""
+
+    warnings.warn(
+        "{} is deprecated. Please use {} instead. For more information on the new SDK please check out https://github.com/GIScience/openrouteservice-py".format(
+            old_name, new_name
+        ),
+        DeprecationWarning,
+        stacklevel=2,
+    )

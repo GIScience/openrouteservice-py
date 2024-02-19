@@ -19,6 +19,9 @@
 """Performs requests to the ORS Matrix API."""
 
 
+from openrouteservice.legacy import deprecation
+
+
 def distance_matrix(
     client,
     locations,
@@ -83,6 +86,8 @@ def distance_matrix(
 
     :rtype: call to Client.request()
     """
+
+    deprecation.deprecated("Client.distance_matrix", "MatrixServiceApi.get_default")
 
     params = {
         "locations": locations,

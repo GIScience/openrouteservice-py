@@ -16,6 +16,9 @@
 """Performs requests to the ORS elevation API."""
 
 
+from openrouteservice.legacy import deprecation
+
+
 def elevation_point(
     client,
     format_in,
@@ -47,6 +50,8 @@ def elevation_point(
     :returns: correctly formatted parameters
     :rtype: Client.request()
     """
+
+    deprecation.deprecated("Client.elevation_point", "ElevationApi.elevation_point_post")
 
     params = {
         "format_in": format_in,
@@ -93,6 +98,8 @@ def elevation_line(
     :returns: correctly formatted parameters
     :rtype: Client.request()
     """
+
+    deprecation.deprecated("Client.elevation_line", "ElevationApi.elevation_line_post")
 
     params = {
         "format_in": format_in,

@@ -17,6 +17,9 @@
 """Performs requests to the ORS optimization API."""
 
 
+from openrouteservice.legacy import deprecation
+
+
 def optimization(
     client,
     jobs=None,
@@ -64,6 +67,8 @@ def optimization(
     :returns: Response of optimization endpoint.
     :rtype: dict
     """
+
+    deprecation.deprecated("Client.optimization", "OptimizationApi.optimization_post")
 
     assert all([isinstance(x, Vehicle) for x in vehicles])  # noqa
 

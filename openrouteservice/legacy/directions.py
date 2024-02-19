@@ -18,8 +18,8 @@
 #
 """Performs requests to the ORS directions API."""
 
-from openrouteservice import deprecation
-from openrouteservice.optimization import optimization, Job, Vehicle
+from openrouteservice.legacy import deprecation
+from openrouteservice.legacy.optimization import optimization, Job, Vehicle
 
 import warnings
 
@@ -200,6 +200,8 @@ def directions(
     :returns: sanitized set of parameters
     :rtype: call to Client.request()
     """
+
+    deprecation.deprecated("Client.directions", "DirectionsServiceApi.get_geo_json_route")
 
     # call optimization endpoint and get new order of waypoints
     if optimize_waypoints is not None and not dry_run:

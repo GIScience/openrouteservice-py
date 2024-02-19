@@ -17,7 +17,7 @@
 # the License.
 #
 """Performs requests to the ORS geocode API (direct Pelias clone)."""
-from openrouteservice import convert
+from openrouteservice.legacy import convert, deprecation
 
 
 def pelias_search(
@@ -92,6 +92,8 @@ def pelias_search(
 
     :rtype: call to Client.request()
     """
+
+    deprecation.deprecated("Client.pelias_search", "GeocodeApi.geocode_search_get")
 
     params = {"text": text}
 
@@ -202,6 +204,8 @@ def pelias_autocomplete(
     :rtype: dict from JSON response
     """
 
+    deprecation.deprecated("Client.pelias_autocomplete", "GeocodeApi.geocode_autocomplete_get")
+
     params = {"text": text}
 
     if focus_point:
@@ -295,6 +299,8 @@ def pelias_structured(
     :rtype: dict from JSON response
     """
 
+    deprecation.deprecated("Client.pelias_structured", "GeocodeApi.geocode_search_structured_get")
+
     params = {}
 
     if address:
@@ -370,6 +376,8 @@ def pelias_reverse(
 
     :rtype: dict from JSON response
     """
+
+    deprecation.deprecated("Client.pelias_reverse", "GeocodeApi.geocode_reverse_get")
 
     params = {
         "point.lon": convert._format_float(point[0]),

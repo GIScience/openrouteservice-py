@@ -29,7 +29,7 @@ import random
 import time
 import warnings
 
-from openrouteservice import exceptions, __version__, get_ordinal
+from openrouteservice.legacy import exceptions, __version__, get_ordinal, deprecation
 
 _USER_AGENT = "ORSClientPython.v{}".format(__version__)
 _DEFAULT_BASE_URL = "https://api.openrouteservice.org"
@@ -77,6 +77,8 @@ class Client:
             limit is reached (HTTP 429). Default False.
         :type retry_over_query_limit: bool
         """
+
+        deprecation.deprecated("Client", "ApiClient")
 
         self._session = requests.Session()
         self._key = key
@@ -297,17 +299,17 @@ class Client:
         return path + "?" + _urlencode_params(params)
 
 
-from openrouteservice.directions import directions  # noqa
-from openrouteservice.distance_matrix import distance_matrix  # noqa
-from openrouteservice.elevation import elevation_point  # noqa
-from openrouteservice.elevation import elevation_line  # noqa
-from openrouteservice.isochrones import isochrones  # noqa
-from openrouteservice.geocode import pelias_search  # noqa
-from openrouteservice.geocode import pelias_autocomplete  # noqa
-from openrouteservice.geocode import pelias_structured  # noqa
-from openrouteservice.geocode import pelias_reverse  # noqa
-from openrouteservice.places import places  # noqa
-from openrouteservice.optimization import optimization  # noqa
+from openrouteservice.legacy.directions import directions  # noqa
+from openrouteservice.legacy.distance_matrix import distance_matrix  # noqa
+from openrouteservice.legacy.elevation import elevation_point  # noqa
+from openrouteservice.legacy.elevation import elevation_line  # noqa
+from openrouteservice.legacy.isochrones import isochrones  # noqa
+from openrouteservice.legacy.geocode import pelias_search  # noqa
+from openrouteservice.legacy.geocode import pelias_autocomplete  # noqa
+from openrouteservice.legacy.geocode import pelias_structured  # noqa
+from openrouteservice.legacy.geocode import pelias_reverse  # noqa
+from openrouteservice.legacy.places import places  # noqa
+from openrouteservice.legacy.optimization import optimization  # noqa
 
 
 def _make_api_method(func):
