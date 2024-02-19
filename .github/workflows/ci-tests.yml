@@ -1,25 +1,11 @@
 name: tests
 
 on:
-  pull_request:
-    branches: '**'
+  push:
+    branches: ['**']
 
 jobs:
-  lint:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: Install Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-      - uses: pre-commit/action@v3.0.0
-        with:
-          extra_args: --all-files --show-diff-on-failure
   pytest:
-    needs:
-      - lint
     strategy:
       fail-fast: false
       matrix:
@@ -40,39 +26,15 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: 'pip'
-      - name: Select the cache folder
-        id: cache-folder
-        run: |
-          if [ ${{ matrix.os }} == 'ubuntu-20.04' ]; then
-            CACHE_FOLDER="/home/runner/.cache/pypoetry"
-          elif [ ${{ matrix.os }} == 'macos-latest' ]; then
-            CACHE_FOLDER="/Users/runner/Library/Caches/pypoetry"
-          elif [ ${{ matrix.os }} == 'windows-latest' ]; then
-            CACHE_FOLDER="C:\Users\runneradmin\AppData\Local\pypoetry\Cache"
-          fi
-          echo "Cache folder is $CACHE_FOLDER"
-          echo "folder=$CACHE_FOLDER" >> "$GITHUB_OUTPUT"
-      - name: Cache Poetry cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.cache-folder.outputs.folder }}
-          key: poetry-cache-${{ matrix.os }}-${{ matrix.python-version }}-${{ matrix.poetry-version }}
-      - name: Run Poetry action
-        uses: abatilo/actions-poetry@v2
-        with:
-          poetry-version: ${{ matrix.poetry-version }}
-      - name: View poetry --version
-        run: poetry --version
       - name: Install dependencies
-        run: poetry install
+        run: pip install -r requirements.txt
+      - name: Install test dependencies
+        run: pip install -r test-requirements.txt
+      - name: Install tox
+        run: pip install tox
+      - name: Setup API Key
+        env:
+          ORS_API_KEY: ${{ secrets.ORS_API_KEY }}
+        run: printf "[ORS]\napiKey = $ORS_API_KEY\n" > tests-config.ini
       - name: Run tests
-        run: poetry run pytest
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: unittests
-          env_vars: OS,PYTHON
-          name: codecov-umbrella
-          fail_ci_if_error: true
-          verbose: true
+        run: python -m tox
