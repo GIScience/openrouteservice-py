@@ -1,31 +1,32 @@
-[tool.poetry]
-name = "openrouteservice"
-version = "2.3.3"
-description = "Python client for requests to openrouteservice API services."
-authors = ["Julian Psotta <julian.psotta@heigit.org>"]
-readme = 'README.rst'
-license = "Apache2"
-
-[tool.poetry.dependencies]
-python = ">=3.7, <4.0"
-requests = ">=2.31.0"
-responses = ">=0.23.1"
-poetry2conda = "^0.3.0"
-
-
-[tool.poetry.dev-dependencies]
-pytest = ">=7.3.1"
-pytest-cov = ">=4.1.0"
-yapf = ">=0.33.0"
-importlib-metadata = ">=6.6.0"
-virtualenv = { version = ">=20.23.0", python = ">=3.6, <4.0" }
-pre-commit = { version = ">=2.21.0", python = ">=3.6, <4.0" }
-coverage = "^7.2.7"
-pytest-xdist = "^3.3.1"
-
-[tool.pytest.ini_options]
-addopts = "--cov=openrouteservice --cov-report xml --cov-report term-missing --cov-fail-under 96 -n auto"
-
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "orspytest"
+version = "7.1.0.post13"
+authors = [
+    {name = "HeiGIT gGmbH", email = "support@smartmobility.heigit.org"},
+]
+description = "Python client for requests to openrouteservice API services"
+readme = "README.md"
+requires-python = ">=3.7"
+keywords = ["routing","accessibility","router","OSM","ORS","openrouteservice","openstreetmap","isochrone","POI","elevation","DEM","swagger"]
+license = {text = "Apache 2.0"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "urllib3 >= 1.15",
+    "six >= 1.10",
+    "certifi",
+    "python-dateutil"
+]
+
+[project.urls]
+"Homepage" = "https://openrouteservice.org/"
+"Forum" = "https://ask.openrouteservice.org/c/sdks"
+"API Documentation" = "https://openrouteservice.org/documentation/"
+"API Terms of service" = "https://openrouteservice.org/terms-of-service/"

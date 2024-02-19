@@ -1,23 +1,14 @@
-.tox/
-.venv*
-.env*
-.coverage
-**/.ipynb_checkpoints/
-*.geojson
-*.pyc
-*.in
-*egg-info/
-dist/
-build/
-/docs/build
-test.py
+# IDE
+.vscode
 
-#IDE
-.spyproject/
-.idea/
+# Vitepress
+/**/node_modules
+.vitepress/cache
 
-cover/
-conda/
-*coverage.xml
-/setup.py
-/requirements.txt
+# Python
+/**/__pycache__
+dist
+*.egg-info
+
+# Secrets
+tests-config.ini
