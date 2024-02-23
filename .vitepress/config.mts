@@ -1,7 +1,8 @@
 import { defineConfig } from 'vitepress'
+import defineVersionedConfig from 'vitepress-versioning-plugin';
 
 // https://vitepress.dev/reference/site-config
-export default defineConfig({
+export default defineVersionedConfig(__dirname, {
   ignoreDeadLinks: true,
   title: "openrouteservice-py",
   description: "🐍 The Python API to consume openrouteservice(s) painlessly! ",
@@ -63,5 +64,11 @@ export default defineConfig({
       { icon: 'github', link: 'https://github.com/GIScience/openrouteservice-py' },
       { icon: 'x', link: 'https://twitter.com/ors_news' }
     ]
-  }
+  },
+  versioning: {
+    latestVersion: "7.1.0.post6",
+    switcher: {
+      includeLatestVersion: true,
+    },
+  },
 })
