@@ -41,7 +41,7 @@ class TestGeocodeApi(unittest.TestCase):
         text = "Toky"
         response = self.api.geocode_autocomplete_get(text)
         self.assertIsNotNone(response)
-        self.assertEqual(len(response.features), 10)
+        self.assertEqual(len(response["features"]), 10)
 
     def test_geocode_reverse_get(self):
         """Test case for geocode_reverse_get
@@ -52,7 +52,7 @@ class TestGeocodeApi(unittest.TestCase):
         lat = 48.858268
         response = self.api.geocode_reverse_get(lon, lat)
         self.assertIsNotNone(response)
-        self.assertEqual(len(response.features), 10)
+        self.assertEqual(len(response["features"]), 10)
 
     def test_geocode_search_get(self):
         """Test case for geocode_search_get
@@ -62,7 +62,7 @@ class TestGeocodeApi(unittest.TestCase):
         text = "Namibian Brewery"
         response = self.api.geocode_search_get(text)
         self.assertIsNotNone(response)
-        self.assertEqual(len(response.features), 10)
+        self.assertEqual(len(response["features"]), 10)
 
     def test_geocode_search_structured_get(self):
         """Test case for geocode_search_structured_get

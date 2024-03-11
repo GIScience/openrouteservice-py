@@ -43,7 +43,7 @@ class TestDirectionsServiceApi(unittest.TestCase):
         )
         profile = 'driving-car'
         response = self.api.get_geo_json_route(body, profile)
-        self.assertEqual(response.bbox, [8.681423, 49.414599, 8.690123, 49.420514])
+        self.assertEqual(response["bbox"], [8.681423, 49.414599, 8.690123, 49.420514])
 
     #def test_get_gpx_route(self):
     #    """Test case for get_gpx_route

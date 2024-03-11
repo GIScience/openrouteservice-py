@@ -44,7 +44,7 @@ class TestIsochronesServiceApi(unittest.TestCase):
         )
         profile = 'driving-car'
         response = self.api.get_default_isochrones(body, profile)
-        self.assertEqual(len(response.features), 4)
+        self.assertEqual(len(response["features"]), 4)
 
 
 if __name__ == '__main__':

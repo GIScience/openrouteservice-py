@@ -51,7 +51,7 @@ class TestPoisApi(unittest.TestCase):
 
         response = self.api.pois_post(body)
         self.assertIsNotNone(response)
-        self.assertEqual(response.type, "FeatureCollection")
+        self.assertEqual(response["type"], "FeatureCollection")
 
         body.filters = ors.PoisFilters(
             smoking=['yes']
@@ -59,7 +59,7 @@ class TestPoisApi(unittest.TestCase):
 
         response2 = self.api.pois_post(body)
         self.assertIsNotNone(response2)
-        self.assertGreaterEqual(len(response.features), len(response2.features))
+        self.assertGreaterEqual(len(response["features"]), len(response2["features"]))
 
 if __name__ == '__main__':
     unittest.main()

@@ -43,7 +43,7 @@ class TestElevationApi(unittest.TestCase):
             geometry="u`rgFswjpAKD"
         )
         response = self.api.elevation_line_post(body)
-        self.assertEqual(response.geometry.coordinates[0], [13.3313, 38.10843, 72.0])
+        self.assertEqual(response["geometry"]["coordinates"][0], [13.3313, 38.10843, 72.0])
 
     def test_elevation_point_get(self):
         """Test case for elevation_point_get
@@ -51,7 +51,7 @@ class TestElevationApi(unittest.TestCase):
         Elevation Point Service  # noqa: E501
         """
         response = self.api.elevation_point_get(geometry=[13.331273, 38.10849])
-        self.assertEqual(response.geometry.coordinates, [13.331273,38.10849,72])
+        self.assertEqual(response["geometry"]["coordinates"], [13.331273,38.10849,72])
 
     def test_elevation_point_post(self):
         """Test case for elevation_point_post
@@ -64,7 +64,7 @@ class TestElevationApi(unittest.TestCase):
         )
 
         response = self.api.elevation_point_post(body)
-        self.assertEqual(response.geometry.coordinates, [13.331273,38.10849,72])
+        self.assertEqual(response["geometry"]["coordinates"], [13.331273,38.10849,72])
 
 
 if __name__ == '__main__':

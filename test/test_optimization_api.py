@@ -43,7 +43,7 @@ class TestOptimizationApi(unittest.TestCase):
             vehicles=[{"id":1,"profile":"driving-car","start":[2.35044,48.71764],"end":[2.35044,48.71764],"capacity":[4],"skills":[1,14],"time_window":[28800,43200]},{"id":2,"profile":"driving-car","start":[2.35044,48.71764],"end":[2.35044,48.71764],"capacity":[4],"skills":[2,14],"time_window":[28800,43200]}]
         )
         response = self.api.optimization_post(body)
-        self.assertEqual(response.code, 0)
+        self.assertEqual(response["code"], 0)
 
 
 if __name__ == '__main__':
