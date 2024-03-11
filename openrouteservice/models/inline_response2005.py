@@ -29,8 +29,8 @@ class InlineResponse2005(object):
     """
     swagger_types = {
         'bbox': 'list[float]',
-        'features': 'list[GeoJSONIsochronesResponseFeatures]',
-        'metadata': 'GeoJSONIsochronesResponseMetadata',
+        'features': 'list[InlineResponse2005Features]',
+        'metadata': 'InlineResponse2005Metadata',
         'type': 'str'
     }
 
@@ -86,7 +86,7 @@ class InlineResponse2005(object):
 
 
         :return: The features of this InlineResponse2005.  # noqa: E501
-        :rtype: list[GeoJSONIsochronesResponseFeatures]
+        :rtype: list[InlineResponse2005Features]
         """
         return self._features
 
@@ -96,7 +96,7 @@ class InlineResponse2005(object):
 
 
         :param features: The features of this InlineResponse2005.  # noqa: E501
-        :type: list[GeoJSONIsochronesResponseFeatures]
+        :type: list[InlineResponse2005Features]
         """
 
         self._features = features
@@ -107,7 +107,7 @@ class InlineResponse2005(object):
 
 
         :return: The metadata of this InlineResponse2005.  # noqa: E501
-        :rtype: GeoJSONIsochronesResponseMetadata
+        :rtype: InlineResponse2005Metadata
         """
         return self._metadata
 
@@ -117,7 +117,7 @@ class InlineResponse2005(object):
 
 
         :param metadata: The metadata of this InlineResponse2005.  # noqa: E501
-        :type: GeoJSONIsochronesResponseMetadata
+        :type: InlineResponse2005Metadata
         """
 
         self._metadata = metadata

@@ -30,7 +30,7 @@ class InlineResponse2003(object):
     swagger_types = {
         'bbox': 'list[float]',
         'features': 'list[object]',
-        'metadata': 'GeoJSONRouteResponseMetadata',
+        'metadata': 'InlineResponse2003Metadata',
         'type': 'str'
     }
 
@@ -107,7 +107,7 @@ class InlineResponse2003(object):
 
 
         :return: The metadata of this InlineResponse2003.  # noqa: E501
-        :rtype: GeoJSONRouteResponseMetadata
+        :rtype: InlineResponse2003Metadata
         """
         return self._metadata
 
@@ -117,7 +117,7 @@ class InlineResponse2003(object):
 
 
         :param metadata: The metadata of this InlineResponse2003.  # noqa: E501
-        :type: GeoJSONRouteResponseMetadata
+        :type: InlineResponse2003Metadata
         """
 
         self._metadata = metadata

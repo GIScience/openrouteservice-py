@@ -28,11 +28,11 @@ class InlineResponse2006(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'destinations': 'list[MatrixResponseDestinations]',
+        'destinations': 'list[InlineResponse2006Destinations]',
         'distances': 'list[list[float]]',
         'durations': 'list[list[float]]',
-        'metadata': 'MatrixResponseMetadata',
-        'sources': 'list[MatrixResponseSources]'
+        'metadata': 'InlineResponse2006Metadata',
+        'sources': 'list[InlineResponse2006Sources]'
     }
 
     attribute_map = {
@@ -69,7 +69,7 @@ class InlineResponse2006(object):
         The individual destinations of the matrix calculations.  # noqa: E501
 
         :return: The destinations of this InlineResponse2006.  # noqa: E501
-        :rtype: list[MatrixResponseDestinations]
+        :rtype: list[InlineResponse2006Destinations]
         """
         return self._destinations
 
@@ -80,7 +80,7 @@ class InlineResponse2006(object):
         The individual destinations of the matrix calculations.  # noqa: E501
 
         :param destinations: The destinations of this InlineResponse2006.  # noqa: E501
-        :type: list[MatrixResponseDestinations]
+        :type: list[InlineResponse2006Destinations]
         """
 
         self._destinations = destinations
@@ -137,7 +137,7 @@ class InlineResponse2006(object):
 
 
         :return: The metadata of this InlineResponse2006.  # noqa: E501
-        :rtype: MatrixResponseMetadata
+        :rtype: InlineResponse2006Metadata
         """
         return self._metadata
 
@@ -147,7 +147,7 @@ class InlineResponse2006(object):
 
 
         :param metadata: The metadata of this InlineResponse2006.  # noqa: E501
-        :type: MatrixResponseMetadata
+        :type: InlineResponse2006Metadata
         """
 
         self._metadata = metadata
@@ -159,7 +159,7 @@ class InlineResponse2006(object):
         The individual sources of the matrix calculations.  # noqa: E501
 
         :return: The sources of this InlineResponse2006.  # noqa: E501
-        :rtype: list[MatrixResponseSources]
+        :rtype: list[InlineResponse2006Sources]
         """
         return self._sources
 
@@ -170,7 +170,7 @@ class InlineResponse2006(object):
         The individual sources of the matrix calculations.  # noqa: E501
 
         :param sources: The sources of this InlineResponse2006.  # noqa: E501
-        :type: list[MatrixResponseSources]
+        :type: list[InlineResponse2006Sources]
         """
 
         self._sources = sources

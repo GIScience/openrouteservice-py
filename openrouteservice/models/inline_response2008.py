@@ -29,8 +29,8 @@ class InlineResponse2008(object):
     """
     swagger_types = {
         'bbox': 'list[float]',
-        'features': 'list[GeoJSONSnappingResponseFeatures]',
-        'metadata': 'GeoJSONSnappingResponseMetadata',
+        'features': 'list[InlineResponse2008Features]',
+        'metadata': 'InlineResponse2007Metadata',
         'type': 'str'
     }
 
@@ -87,7 +87,7 @@ class InlineResponse2008(object):
         Information about the service and request  # noqa: E501
 
         :return: The features of this InlineResponse2008.  # noqa: E501
-        :rtype: list[GeoJSONSnappingResponseFeatures]
+        :rtype: list[InlineResponse2008Features]
         """
         return self._features
 
@@ -98,7 +98,7 @@ class InlineResponse2008(object):
         Information about the service and request  # noqa: E501
 
         :param features: The features of this InlineResponse2008.  # noqa: E501
-        :type: list[GeoJSONSnappingResponseFeatures]
+        :type: list[InlineResponse2008Features]
         """
 
         self._features = features
@@ -109,7 +109,7 @@ class InlineResponse2008(object):
 
 
         :return: The metadata of this InlineResponse2008.  # noqa: E501
-        :rtype: GeoJSONSnappingResponseMetadata
+        :rtype: InlineResponse2007Metadata
         """
         return self._metadata
 
@@ -119,7 +119,7 @@ class InlineResponse2008(object):
 
 
         :param metadata: The metadata of this InlineResponse2008.  # noqa: E501
-        :type: GeoJSONSnappingResponseMetadata
+        :type: InlineResponse2007Metadata
         """
 
         self._metadata = metadata
