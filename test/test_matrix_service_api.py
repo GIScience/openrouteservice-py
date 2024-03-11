@@ -43,7 +43,7 @@ class TestMatrixServiceApi(unittest.TestCase):
         )
         profile = 'driving-car' # str | Specifies the matrix profile.
         
-        response = self.api.get_default(body, profile)
+        response = self.api.get_default1(body, profile)
         self.assertEqual(len(response.destinations), 4)
 
 

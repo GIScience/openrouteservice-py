@@ -24,12 +24,12 @@ Name | Type | Description | Notes
 **radiuses** | **list[float]** | A list of maximum distances (measured in metres) that limit the search of nearby road segments to every given waypoint. The values must be greater than 0, the value of -1 specifies using the maximum possible search radius. The number of radiuses correspond to the number of waypoints. If only a single value is given, it will be applied to all waypoints. | [optional] 
 **roundabout_exits** | **bool** | Provides bearings of the entrance and all passed roundabout exits. Adds the &#x60;exit_bearings&#x60; array to the step object in the response.  | [optional] [default to False]
 **schedule** | **bool** | If true, return a public transport schedule starting at &lt;departure&gt; for the next &lt;schedule_duration&gt; minutes. | [optional] [default to False]
-**schedule_duration** | [**V2directionsprofilegeojsonScheduleDuration**](V2directionsprofilegeojsonScheduleDuration.md) |  | [optional] 
+**schedule_duration** | **str** | The time window when requesting a public transport schedule. The format is passed as ISO 8601 duration: https://en.wikipedia.org/wiki/ISO_8601#Durations | [optional] 
 **schedule_rows** | **int** | The maximum amount of entries that should be returned when requesting a schedule. | [optional] 
 **skip_segments** | **list[int]** | Specifies the segments that should be skipped in the route calculation. A segment is the connection between two given coordinates and the counting starts with 1 for the connection between the first and second coordinate. | [optional] 
 **suppress_warnings** | **bool** | Suppress warning messages in the response | [optional] 
 **units** | **str** | Specifies the distance unit. | [optional] [default to 'm']
-**walking_time** | [**V2directionsprofilegeojsonWalkingTime**](V2directionsprofilegeojsonWalkingTime.md) |  | [optional] 
+**walking_time** | **str** | Maximum duration for walking access and egress of public transport. The value is passed in ISO 8601 duration format: https://en.wikipedia.org/wiki/ISO_8601#Durations | [optional] [default to 'PT15M']
 
 [[Back to Model list]](../README.md#documentation_for_models) [[Back to API list]](../README.md#documentation_for_api_endpoints) [[Back to README]](../README.md)
 

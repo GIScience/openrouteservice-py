@@ -4,10 +4,10 @@ All URIs are relative to *https://api.openrouteservice.org*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_default**](MatrixServiceApi.md#get_default) | **POST** /v2/matrix/{profile} | Matrix Service
+[**get_default1**](MatrixServiceApi.md#get_default1) | **POST** /v2/matrix/{profile} | Matrix Service
 
-# **get_default**
-> InlineResponse2006 get_default(body, profile)
+# **get_default1**
+> InlineResponse2006 get_default1(body, profile)
 
 Matrix Service
 
@@ -34,10 +34,10 @@ profile = 'profile_example' # str | Specifies the matrix profile.
 
 try:
     # Matrix Service
-    api_response = api_instance.get_default(body, profile)
+    api_response = api_instance.get_default1(body, profile)
     pprint(api_response)
 except ApiException as e:
-    print("Exception when calling MatrixServiceApi->get_default: %s\n" % e)
+    print("Exception when calling MatrixServiceApi->get_default1: %s\n" % e)
 ```
 
 ### Parameters

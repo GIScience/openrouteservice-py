@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "orspytest"
-version = "7.1.0.post13"
+version = "7.1.1"
 authors = [
     {name = "HeiGIT gGmbH", email = "support@smartmobility.heigit.org"},
 ]

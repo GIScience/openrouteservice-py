@@ -10,3 +10,4 @@ from openrouteservice.api.isochrones_service_api import IsochronesServiceApi
 from openrouteservice.api.matrix_service_api import MatrixServiceApi
 from openrouteservice.api.optimization_api import OptimizationApi
 from openrouteservice.api.pois_api import PoisApi
+from openrouteservice.api.snapping_service_api import SnappingServiceApi

@@ -3,7 +3,7 @@ The openrouteservice library gives you painless access to the [openrouteservice]
 
 | API Version    | Package version    | Build package      |
 | -------------- | ------------------ | ------------------ |
-| 7.1.0 | 7.1.0.post6 | io.swagger.codegen.v3.generators.python.PythonClientCodegen |
+| 7.1.1 | 7.1.1 | io.swagger.codegen.v3.generators.python.PythonClientCodegen |
 
 For further details, please visit:
 - our [homepage](https://openrouteservice.org)
@@ -49,10 +49,10 @@ Please follow the [installation procedure](#installation--usage) before running 
 
 ### Examples
 These examples show common usages of this library.
-- [Avoid construction sites dynamically](docs/examples/Avoid_ConstructionSites)
-- [Dieselgate Routing](docs/examples/Dieselgate_Routing)
-- [Route optimization of pub crawl](docs/examples/ortools_pubcrawl)
-- [Routing optimization in humanitarian context](docs/examples/Routing_Optimization_Idai)
+- [Avoid construction sites dynamically](examples/Avoid_ConstructionSites.ipynb)
+- [Dieselgate Routing](examples/Dieselgate_Routing.ipynb)
+- [Route optimization of pub crawl](examples/ortools_pubcrawl.ipynb)
+- [Routing optimization in humanitarian context](examples/Routing_Optimization_Idai.ipynb)
 
 ### Basic example
 ```python
@@ -119,9 +119,12 @@ Class | Method | HTTP request | Description
 *GeocodeApi* | [**geocode_search_get**](docs/GeocodeApi.md#geocode_search_get) | **GET** /geocode/search | Forward Geocode Service
 *GeocodeApi* | [**geocode_search_structured_get**](docs/GeocodeApi.md#geocode_search_structured_get) | **GET** /geocode/search/structured | Structured Forward Geocode Service (beta)
 *IsochronesServiceApi* | [**get_default_isochrones**](docs/IsochronesServiceApi.md#get_default_isochrones) | **POST** /v2/isochrones/{profile} | Isochrones Service
-*MatrixServiceApi* | [**get_default**](docs/MatrixServiceApi.md#get_default) | **POST** /v2/matrix/{profile} | Matrix Service
+*MatrixServiceApi* | [**get_default1**](docs/MatrixServiceApi.md#get_default1) | **POST** /v2/matrix/{profile} | Matrix Service
 *OptimizationApi* | [**optimization_post**](docs/OptimizationApi.md#optimization_post) | **POST** /optimization | Optimization Service
 *PoisApi* | [**pois_post**](docs/PoisApi.md#pois_post) | **POST** /pois | Pois Service
+*SnappingServiceApi* | [**get_default**](docs/SnappingServiceApi.md#get_default) | **POST** /v2/snap/{profile} | Snapping Service
+*SnappingServiceApi* | [**get_geo_json_snapping**](docs/SnappingServiceApi.md#get_geo_json_snapping) | **POST** /v2/snap/{profile}/geojson | Snapping Service GeoJSON
+*SnappingServiceApi* | [**get_json_snapping**](docs/SnappingServiceApi.md#get_json_snapping) | **POST** /v2/snap/{profile}/json | Snapping Service JSON
 
 ## Documentation For Models
 
@@ -131,6 +134,9 @@ Class | Method | HTTP request | Description
  - [ElevationLineBody](docs/ElevationLineBody.md)
  - [ElevationPointBody](docs/ElevationPointBody.md)
  - [EngineInfo](docs/EngineInfo.md)
+ - [GeoJSONFeature](docs/GeoJSONFeature.md)
+ - [GeoJSONFeatureGeometry](docs/GeoJSONFeatureGeometry.md)
+ - [GeoJSONFeatureProperties](docs/GeoJSONFeatureProperties.md)
  - [GeoJSONFeaturesObject](docs/GeoJSONFeaturesObject.md)
  - [GeoJSONGeometryObject](docs/GeoJSONGeometryObject.md)
  - [GeoJSONIsochroneBase](docs/GeoJSONIsochroneBase.md)
@@ -139,12 +145,16 @@ Class | Method | HTTP request | Description
  - [GeoJSONIsochronesResponseFeatures](docs/GeoJSONIsochronesResponseFeatures.md)
  - [GeoJSONIsochronesResponseMetadata](docs/GeoJSONIsochronesResponseMetadata.md)
  - [GeoJSONIsochronesResponseMetadataEngine](docs/GeoJSONIsochronesResponseMetadataEngine.md)
+ - [GeoJSONPointGeometry](docs/GeoJSONPointGeometry.md)
  - [GeoJSONPropertiesObject](docs/GeoJSONPropertiesObject.md)
  - [GeoJSONPropertiesObjectCategoryIds](docs/GeoJSONPropertiesObjectCategoryIds.md)
  - [GeoJSONPropertiesObjectCategoryIdsCategoryId](docs/GeoJSONPropertiesObjectCategoryIdsCategoryId.md)
  - [GeoJSONPropertiesObjectOsmTags](docs/GeoJSONPropertiesObjectOsmTags.md)
  - [GeoJSONRouteResponse](docs/GeoJSONRouteResponse.md)
  - [GeoJSONRouteResponseMetadata](docs/GeoJSONRouteResponseMetadata.md)
+ - [GeoJSONSnappingResponse](docs/GeoJSONSnappingResponse.md)
+ - [GeoJSONSnappingResponseFeatures](docs/GeoJSONSnappingResponseFeatures.md)
+ - [GeoJSONSnappingResponseMetadata](docs/GeoJSONSnappingResponseMetadata.md)
  - [GeocodeResponse](docs/GeocodeResponse.md)
  - [Gpx](docs/Gpx.md)
  - [GraphExportService](docs/GraphExportService.md)
@@ -156,10 +166,13 @@ Class | Method | HTTP request | Description
  - [InlineResponse2002Steps](docs/InlineResponse2002Steps.md)
  - [InlineResponse2002Summary](docs/InlineResponse2002Summary.md)
  - [InlineResponse2002Unassigned](docs/InlineResponse2002Unassigned.md)
+ - [InlineResponse2002Violations](docs/InlineResponse2002Violations.md)
  - [InlineResponse2003](docs/InlineResponse2003.md)
  - [InlineResponse2004](docs/InlineResponse2004.md)
  - [InlineResponse2005](docs/InlineResponse2005.md)
  - [InlineResponse2006](docs/InlineResponse2006.md)
+ - [InlineResponse2007](docs/InlineResponse2007.md)
+ - [InlineResponse2008](docs/InlineResponse2008.md)
  - [InlineResponse200Geometry](docs/InlineResponse200Geometry.md)
  - [IsochronesProfileBody](docs/IsochronesProfileBody.md)
  - [IsochronesRequest](docs/IsochronesRequest.md)
@@ -178,6 +191,7 @@ Class | Method | HTTP request | Description
  - [JSONIndividualRouteResponseSummary](docs/JSONIndividualRouteResponseSummary.md)
  - [JSONIndividualRouteResponseWarnings](docs/JSONIndividualRouteResponseWarnings.md)
  - [JSONLeg](docs/JSONLeg.md)
+ - [JSONLocation](docs/JSONLocation.md)
  - [JSONObject](docs/JSONObject.md)
  - [JSONPtStop](docs/JSONPtStop.md)
  - [JSONRouteResponse](docs/JSONRouteResponse.md)
@@ -204,11 +218,18 @@ Class | Method | HTTP request | Description
  - [OpenpoiservicePoiRequest](docs/OpenpoiservicePoiRequest.md)
  - [OpenpoiservicePoiResponse](docs/OpenpoiservicePoiResponse.md)
  - [OptimizationBody](docs/OptimizationBody.md)
+ - [OptimizationBreaks](docs/OptimizationBreaks.md)
+ - [OptimizationCosts](docs/OptimizationCosts.md)
  - [OptimizationJobs](docs/OptimizationJobs.md)
+ - [OptimizationMatrices](docs/OptimizationMatrices.md)
+ - [OptimizationMatricesCyclingelectric](docs/OptimizationMatricesCyclingelectric.md)
  - [OptimizationOptions](docs/OptimizationOptions.md)
+ - [OptimizationSteps](docs/OptimizationSteps.md)
  - [OptimizationVehicles](docs/OptimizationVehicles.md)
  - [PoisFilters](docs/PoisFilters.md)
  - [PoisGeometry](docs/PoisGeometry.md)
+ - [ProfileGeojsonBody](docs/ProfileGeojsonBody.md)
+ - [ProfileJsonBody](docs/ProfileJsonBody.md)
  - [ProfileParameters](docs/ProfileParameters.md)
  - [ProfileParametersRestrictions](docs/ProfileParametersRestrictions.md)
  - [ProfileWeightings](docs/ProfileWeightings.md)
@@ -218,10 +239,11 @@ Class | Method | HTTP request | Description
  - [RouteOptionsAvoidPolygons](docs/RouteOptionsAvoidPolygons.md)
  - [RouteResponseInfo](docs/RouteResponseInfo.md)
  - [Rte](docs/Rte.md)
- - [V2directionsprofilegeojsonScheduleDuration](docs/V2directionsprofilegeojsonScheduleDuration.md)
- - [V2directionsprofilegeojsonScheduleDurationDuration](docs/V2directionsprofilegeojsonScheduleDurationDuration.md)
- - [V2directionsprofilegeojsonScheduleDurationUnits](docs/V2directionsprofilegeojsonScheduleDurationUnits.md)
- - [V2directionsprofilegeojsonWalkingTime](docs/V2directionsprofilegeojsonWalkingTime.md)
+ - [SnapProfileBody](docs/SnapProfileBody.md)
+ - [SnappingRequest](docs/SnappingRequest.md)
+ - [SnappingResponse](docs/SnappingResponse.md)
+ - [SnappingResponseInfo](docs/SnappingResponseInfo.md)
+ - [SnappingResponseLocations](docs/SnappingResponseLocations.md)
 
 ## Author
 
