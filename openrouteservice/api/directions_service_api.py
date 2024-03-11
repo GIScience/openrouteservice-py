@@ -44,7 +44,7 @@ class DirectionsServiceApi(object):
         :param async_req bool
         :param DirectionsService body: (required)
         :param str profile: Specifies the route profile. (required)
-        :return: InlineResponse2003
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -67,7 +67,7 @@ class DirectionsServiceApi(object):
         :param async_req bool
         :param DirectionsService body: (required)
         :param str profile: Specifies the route profile. (required)
-        :return: InlineResponse2003
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -131,7 +131,7 @@ class DirectionsServiceApi(object):
             body=body_params,
             post_params=form_params,
             files=local_var_files,
-            response_type='InlineResponse2003',  # noqa: E501
+            response_type='JSONResponse',  # noqa: E501
             auth_settings=auth_settings,
             async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
@@ -151,7 +151,7 @@ class DirectionsServiceApi(object):
         :param async_req bool
         :param DirectionsService1 body: (required)
         :param str profile: Specifies the route profile. (required)
-        :return: InlineResponse2004
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -174,7 +174,7 @@ class DirectionsServiceApi(object):
         :param async_req bool
         :param DirectionsService1 body: (required)
         :param str profile: Specifies the route profile. (required)
-        :return: InlineResponse2004
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -238,7 +238,7 @@ class DirectionsServiceApi(object):
             body=body_params,
             post_params=form_params,
             files=local_var_files,
-            response_type='InlineResponse2004',  # noqa: E501
+            response_type='JSONResponse',  # noqa: E501
             auth_settings=auth_settings,
             async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),

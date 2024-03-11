@@ -8,7 +8,7 @@ Method | HTTP request | Description
 [**get_json_route**](DirectionsServiceApi.md#get_json_route) | **POST** /v2/directions/{profile}/json | Directions Service JSON
 
 # **get_geo_json_route**
-> InlineResponse2003 get_geo_json_route(body, profile)
+> JSONResponse get_geo_json_route(body, profile)
 
 Directions Service GeoJSON
 
@@ -50,7 +50,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse2003**](InlineResponse2003.md)
+[**JSONResponse**](JSONResponse.md)
 
 ### Authorization
 
@@ -64,7 +64,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation_for_api_endpoints) [[Back to Model list]](../README.md#documentation_for_models) [[Back to README]](../README.md)
 
 # **get_json_route**
-> InlineResponse2004 get_json_route(body, profile)
+> JSONResponse get_json_route(body, profile)
 
 Directions Service JSON
 
@@ -106,7 +106,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse2004**](InlineResponse2004.md)
+[**JSONResponse**](JSONResponse.md)
 
 ### Authorization
 

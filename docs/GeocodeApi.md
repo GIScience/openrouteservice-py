@@ -10,7 +10,7 @@ Method | HTTP request | Description
 [**geocode_search_structured_get**](GeocodeApi.md#geocode_search_structured_get) | **GET** /geocode/search/structured | Structured Forward Geocode Service (beta)
 
 # **geocode_autocomplete_get**
-> GeocodeResponse geocode_autocomplete_get(text, focus_point_lon=focus_point_lon, focus_point_lat=focus_point_lat, boundary_rect_min_lon=boundary_rect_min_lon, boundary_rect_min_lat=boundary_rect_min_lat, boundary_rect_max_lon=boundary_rect_max_lon, boundary_rect_max_lat=boundary_rect_max_lat, boundary_country=boundary_country, sources=sources, layers=layers)
+> JSONResponse geocode_autocomplete_get(text, focus_point_lon=focus_point_lon, focus_point_lat=focus_point_lat, boundary_rect_min_lon=boundary_rect_min_lon, boundary_rect_min_lat=boundary_rect_min_lat, boundary_rect_max_lon=boundary_rect_max_lon, boundary_rect_max_lat=boundary_rect_max_lat, boundary_country=boundary_country, sources=sources, layers=layers)
 
 Geocode Autocomplete Service
 
@@ -68,7 +68,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**GeocodeResponse**](GeocodeResponse.md)
+[**JSONResponse**](JSONResponse.md)
 
 ### Authorization
 
@@ -82,7 +82,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation_for_api_endpoints) [[Back to Model list]](../README.md#documentation_for_models) [[Back to README]](../README.md)
 
 # **geocode_reverse_get**
-> GeocodeResponse geocode_reverse_get(point_lon, point_lat, boundary_circle_radius=boundary_circle_radius, size=size, layers=layers, sources=sources, boundary_country=boundary_country)
+> JSONResponse geocode_reverse_get(point_lon, point_lat, boundary_circle_radius=boundary_circle_radius, size=size, layers=layers, sources=sources, boundary_country=boundary_country)
 
 Reverse Geocode Service
 
@@ -134,7 +134,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**GeocodeResponse**](GeocodeResponse.md)
+[**JSONResponse**](JSONResponse.md)
 
 ### Authorization
 
@@ -148,7 +148,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation_for_api_endpoints) [[Back to Model list]](../README.md#documentation_for_models) [[Back to README]](../README.md)
 
 # **geocode_search_get**
-> GeocodeResponse geocode_search_get(text, focus_point_lon=focus_point_lon, focus_point_lat=focus_point_lat, boundary_rect_min_lon=boundary_rect_min_lon, boundary_rect_min_lat=boundary_rect_min_lat, boundary_rect_max_lon=boundary_rect_max_lon, boundary_rect_max_lat=boundary_rect_max_lat, boundary_circle_lon=boundary_circle_lon, boundary_circle_lat=boundary_circle_lat, boundary_circle_radius=boundary_circle_radius, boundary_gid=boundary_gid, boundary_country=boundary_country, sources=sources, layers=layers, size=size)
+> JSONResponse geocode_search_get(text, focus_point_lon=focus_point_lon, focus_point_lat=focus_point_lat, boundary_rect_min_lon=boundary_rect_min_lon, boundary_rect_min_lat=boundary_rect_min_lat, boundary_rect_max_lon=boundary_rect_max_lon, boundary_rect_max_lat=boundary_rect_max_lat, boundary_circle_lon=boundary_circle_lon, boundary_circle_lat=boundary_circle_lat, boundary_circle_radius=boundary_circle_radius, boundary_gid=boundary_gid, boundary_country=boundary_country, sources=sources, layers=layers, size=size)
 
 Forward Geocode Service
 
@@ -216,7 +216,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**GeocodeResponse**](GeocodeResponse.md)
+[**JSONResponse**](JSONResponse.md)
 
 ### Authorization
 
@@ -230,7 +230,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation_for_api_endpoints) [[Back to Model list]](../README.md#documentation_for_models) [[Back to README]](../README.md)
 
 # **geocode_search_structured_get**
-> GeocodeResponse geocode_search_structured_get(address=address, neighbourhood=neighbourhood, country=country, postalcode=postalcode, region=region, county=county, locality=locality, borough=borough, focus_point_lon=focus_point_lon, focus_point_lat=focus_point_lat, boundary_rect_min_lon=boundary_rect_min_lon, boundary_rect_min_lat=boundary_rect_min_lat, boundary_rect_max_lon=boundary_rect_max_lon, boundary_rect_max_lat=boundary_rect_max_lat, boundary_circle_lon=boundary_circle_lon, boundary_circle_lat=boundary_circle_lat, boundary_circle_radius=boundary_circle_radius, boundary_country=boundary_country, layers=layers, sources=sources, size=size)
+> JSONResponse geocode_search_structured_get(address=address, neighbourhood=neighbourhood, country=country, postalcode=postalcode, region=region, county=county, locality=locality, borough=borough, focus_point_lon=focus_point_lon, focus_point_lat=focus_point_lat, boundary_rect_min_lon=boundary_rect_min_lon, boundary_rect_min_lat=boundary_rect_min_lat, boundary_rect_max_lon=boundary_rect_max_lon, boundary_rect_max_lat=boundary_rect_max_lat, boundary_circle_lon=boundary_circle_lon, boundary_circle_lat=boundary_circle_lat, boundary_circle_radius=boundary_circle_radius, boundary_country=boundary_country, layers=layers, sources=sources, size=size)
 
 Structured Forward Geocode Service (beta)
 
@@ -310,7 +310,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**GeocodeResponse**](GeocodeResponse.md)
+[**JSONResponse**](JSONResponse.md)
 
 ### Authorization
 

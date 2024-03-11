@@ -9,7 +9,7 @@ Method | HTTP request | Description
 [**get_json_snapping**](SnappingServiceApi.md#get_json_snapping) | **POST** /v2/snap/{profile}/json | Snapping Service JSON
 
 # **get_default**
-> InlineResponse2007 get_default(body, profile)
+> JSONResponse get_default(body, profile)
 
 Snapping Service
 
@@ -51,7 +51,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse2007**](InlineResponse2007.md)
+[**JSONResponse**](JSONResponse.md)
 
 ### Authorization
 
@@ -65,7 +65,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation_for_api_endpoints) [[Back to Model list]](../README.md#documentation_for_models) [[Back to README]](../README.md)
 
 # **get_geo_json_snapping**
-> InlineResponse2008 get_geo_json_snapping(body, profile)
+> JSONResponse get_geo_json_snapping(body, profile)
 
 Snapping Service GeoJSON
 
@@ -107,7 +107,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse2008**](InlineResponse2008.md)
+[**JSONResponse**](JSONResponse.md)
 
 ### Authorization
 
@@ -121,7 +121,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation_for_api_endpoints) [[Back to Model list]](../README.md#documentation_for_models) [[Back to README]](../README.md)
 
 # **get_json_snapping**
-> InlineResponse2007 get_json_snapping(body, profile)
+> JSONResponse get_json_snapping(body, profile)
 
 Snapping Service JSON
 
@@ -163,7 +163,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse2007**](InlineResponse2007.md)
+[**JSONResponse**](JSONResponse.md)
 
 ### Authorization
 

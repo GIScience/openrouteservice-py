@@ -52,7 +52,7 @@ class GeocodeApi(object):
         :param str boundary_country: Restrict results to single country. Possible values are [alpha-2 and alpha-3 country codes](https://en.wikipedia.org/wiki/ISO_3166-1). Example: `DEU` or `DE` for Germany. 
         :param list[str] sources: Restrict your search to specific sources. Searches all sources by default. You can either use the normal or short name. Sources are [`openstreetmap(osm)`](http://www.openstreetmap.org/), [`openaddresses(oa)`](http://openaddresses.io/), [`whosonfirst(wof)`](https://whosonfirst.org/), [`geonames(gn)`](http://www.geonames.org/). 
         :param list[str] layers: Restrict search to layers (place type). By default all layers are searched.   layer|description|   ----|----|   `venue`|points of interest, businesses, things with walls|   `address`|places with a street address|   `street`|streets,roads,highways|   `neighbourhood`|social communities, neighbourhoods|   `borough`|a local administrative boundary, currently only used for New York City|   `localadmin`|local administrative boundaries|   `locality`|towns, hamlets, cities|   `county`|official governmental area; usually bigger than a locality, almost always smaller than a region|   `macrocounty`|a related group of counties. Mostly in Europe.|   `region`|states and provinces|   `macroregion`|a related group of regions. Mostly in Europe|   `country`|places that issue passports, nations, nation-states|   `coarse`|alias for simultaneously using all administrative layers (everything except `venue` and `address`)| 
-        :return: GeocodeResponse
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -83,7 +83,7 @@ class GeocodeApi(object):
         :param str boundary_country: Restrict results to single country. Possible values are [alpha-2 and alpha-3 country codes](https://en.wikipedia.org/wiki/ISO_3166-1). Example: `DEU` or `DE` for Germany. 
         :param list[str] sources: Restrict your search to specific sources. Searches all sources by default. You can either use the normal or short name. Sources are [`openstreetmap(osm)`](http://www.openstreetmap.org/), [`openaddresses(oa)`](http://openaddresses.io/), [`whosonfirst(wof)`](https://whosonfirst.org/), [`geonames(gn)`](http://www.geonames.org/). 
         :param list[str] layers: Restrict search to layers (place type). By default all layers are searched.   layer|description|   ----|----|   `venue`|points of interest, businesses, things with walls|   `address`|places with a street address|   `street`|streets,roads,highways|   `neighbourhood`|social communities, neighbourhoods|   `borough`|a local administrative boundary, currently only used for New York City|   `localadmin`|local administrative boundaries|   `locality`|towns, hamlets, cities|   `county`|official governmental area; usually bigger than a locality, almost always smaller than a region|   `macrocounty`|a related group of counties. Mostly in Europe.|   `region`|states and provinces|   `macroregion`|a related group of regions. Mostly in Europe|   `country`|places that issue passports, nations, nation-states|   `coarse`|alias for simultaneously using all administrative layers (everything except `venue` and `address`)| 
-        :return: GeocodeResponse
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -157,7 +157,7 @@ class GeocodeApi(object):
             body=body_params,
             post_params=form_params,
             files=local_var_files,
-            response_type='GeocodeResponse',  # noqa: E501
+            response_type='JSONResponse',  # noqa: E501
             auth_settings=auth_settings,
             async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
@@ -182,7 +182,7 @@ class GeocodeApi(object):
         :param list[str] layers: Restrict search to layers (place type). By default all layers are searched.   layer|description|   ----|----|   `venue`|points of interest, businesses, things with walls|   `address`|places with a street address|   `street`|streets,roads,highways|   `neighbourhood`|social communities, neighbourhoods|   `locality`|towns, hamlets, cities|   `borough`|a local administrative boundary, currently only used for New York City|   `localadmin`|local administrative boundaries|   `county`|official governmental area; usually bigger than a locality, almost always smaller than a region|   `macrocounty`|a related group of counties. Mostly in Europe.|   `region`|states and provinces|   `macroregion`|a related group of regions. Mostly in Europe|   `country`|places that issue passports, nations, nation-states|   `coarse`|alias for simultaneously using all administrative layers (everything except `venue` and `address`)| 
         :param list[str] sources: Restrict your search to specific sources. Searches all sources by default. You can either use the normal or short name. Sources are [`openstreetmap(osm)`](http://www.openstreetmap.org/), [`openaddresses(oa)`](http://openaddresses.io/), [`whosonfirst(wof)`](https://whosonfirst.org/), [`geonames(gn)`](http://www.geonames.org/). 
         :param str boundary_country: Restrict search to country by [alpha 2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) or [alpha 3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) codes. 
-        :return: GeocodeResponse
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -210,7 +210,7 @@ class GeocodeApi(object):
         :param list[str] layers: Restrict search to layers (place type). By default all layers are searched.   layer|description|   ----|----|   `venue`|points of interest, businesses, things with walls|   `address`|places with a street address|   `street`|streets,roads,highways|   `neighbourhood`|social communities, neighbourhoods|   `locality`|towns, hamlets, cities|   `borough`|a local administrative boundary, currently only used for New York City|   `localadmin`|local administrative boundaries|   `county`|official governmental area; usually bigger than a locality, almost always smaller than a region|   `macrocounty`|a related group of counties. Mostly in Europe.|   `region`|states and provinces|   `macroregion`|a related group of regions. Mostly in Europe|   `country`|places that issue passports, nations, nation-states|   `coarse`|alias for simultaneously using all administrative layers (everything except `venue` and `address`)| 
         :param list[str] sources: Restrict your search to specific sources. Searches all sources by default. You can either use the normal or short name. Sources are [`openstreetmap(osm)`](http://www.openstreetmap.org/), [`openaddresses(oa)`](http://openaddresses.io/), [`whosonfirst(wof)`](https://whosonfirst.org/), [`geonames(gn)`](http://www.geonames.org/). 
         :param str boundary_country: Restrict search to country by [alpha 2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) or [alpha 3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) codes. 
-        :return: GeocodeResponse
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -282,7 +282,7 @@ class GeocodeApi(object):
             body=body_params,
             post_params=form_params,
             files=local_var_files,
-            response_type='GeocodeResponse',  # noqa: E501
+            response_type='JSONResponse',  # noqa: E501
             auth_settings=auth_settings,
             async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
@@ -315,7 +315,7 @@ class GeocodeApi(object):
         :param list[str] sources: Restrict your search to specific sources. Searches all sources by default. You can either use the normal or short name. Sources are [`openstreetmap(osm)`](http://www.openstreetmap.org/), [`openaddresses(oa)`](http://openaddresses.io/), [`whosonfirst(wof)`](https://whosonfirst.org/), [`geonames(gn)`](http://www.geonames.org/). 
         :param list[str] layers: Restrict search to layers (place type). By default all layers are searched.   layer|description|   ----|----|   `venue`|points of interest, businesses, things with walls|   `address`|places with a street address|   `street`|streets,roads,highways|   `neighbourhood`|social communities, neighbourhoods|   `borough`|a local administrative boundary, currently only used for New York City|   `localadmin`|local administrative boundaries|   `locality`|towns, hamlets, cities|   `county`|official governmental area; usually bigger than a locality, almost always smaller than a region|   `macrocounty`|a related group of counties. Mostly in Europe.|   `region`|states and provinces|   `macroregion`|a related group of regions. Mostly in Europe|   `country`|places that issue passports, nations, nation-states|   `coarse`|alias for simultaneously using all administrative layers (everything except `venue` and `address`)| 
         :param int size: Set the number of returned results. 
-        :return: GeocodeResponse
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -351,7 +351,7 @@ class GeocodeApi(object):
         :param list[str] sources: Restrict your search to specific sources. Searches all sources by default. You can either use the normal or short name. Sources are [`openstreetmap(osm)`](http://www.openstreetmap.org/), [`openaddresses(oa)`](http://openaddresses.io/), [`whosonfirst(wof)`](https://whosonfirst.org/), [`geonames(gn)`](http://www.geonames.org/). 
         :param list[str] layers: Restrict search to layers (place type). By default all layers are searched.   layer|description|   ----|----|   `venue`|points of interest, businesses, things with walls|   `address`|places with a street address|   `street`|streets,roads,highways|   `neighbourhood`|social communities, neighbourhoods|   `borough`|a local administrative boundary, currently only used for New York City|   `localadmin`|local administrative boundaries|   `locality`|towns, hamlets, cities|   `county`|official governmental area; usually bigger than a locality, almost always smaller than a region|   `macrocounty`|a related group of counties. Mostly in Europe.|   `region`|states and provinces|   `macroregion`|a related group of regions. Mostly in Europe|   `country`|places that issue passports, nations, nation-states|   `coarse`|alias for simultaneously using all administrative layers (everything except `venue` and `address`)| 
         :param int size: Set the number of returned results. 
-        :return: GeocodeResponse
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -435,7 +435,7 @@ class GeocodeApi(object):
             body=body_params,
             post_params=form_params,
             files=local_var_files,
-            response_type='GeocodeResponse',  # noqa: E501
+            response_type='JSONResponse',  # noqa: E501
             auth_settings=auth_settings,
             async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
@@ -474,7 +474,7 @@ class GeocodeApi(object):
         :param list[str] layers: Restrict search to layers (place type). By default all layers are searched.   layer|description|   ----|----|   `venue`|points of interest, businesses, things with walls|   `address`|places with a street address|   `street`|streets,roads,highways|   `neighbourhood`|social communities, neighbourhoods|   `borough`|a local administrative boundary, currently only used for New York City|   `localadmin`|local administrative boundaries|   `locality`|towns, hamlets, cities|   `county`|official governmental area; usually bigger than a locality, almost always smaller than a region|   `macrocounty`|a related group of counties. Mostly in Europe.|   `region`|states and provinces|   `macroregion`|a related group of regions. Mostly in Europe|   `country`|places that issue passports, nations, nation-states|   `coarse`|alias for simultaneously using all administrative layers (everything except `venue` and `address`)| 
         :param list[str] sources: Restrict your search to specific sources. Searches all sources by default. You can either use the normal or short name. Sources are [`openstreetmap(osm)`](http://www.openstreetmap.org/), [`openaddresses(oa)`](http://openaddresses.io/), [`whosonfirst(wof)`](https://whosonfirst.org/), [`geonames(gn)`](http://www.geonames.org/). 
         :param int size: Set the number of returned results. 
-        :return: GeocodeResponse
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -516,7 +516,7 @@ class GeocodeApi(object):
         :param list[str] layers: Restrict search to layers (place type). By default all layers are searched.   layer|description|   ----|----|   `venue`|points of interest, businesses, things with walls|   `address`|places with a street address|   `street`|streets,roads,highways|   `neighbourhood`|social communities, neighbourhoods|   `borough`|a local administrative boundary, currently only used for New York City|   `localadmin`|local administrative boundaries|   `locality`|towns, hamlets, cities|   `county`|official governmental area; usually bigger than a locality, almost always smaller than a region|   `macrocounty`|a related group of counties. Mostly in Europe.|   `region`|states and provinces|   `macroregion`|a related group of regions. Mostly in Europe|   `country`|places that issue passports, nations, nation-states|   `coarse`|alias for simultaneously using all administrative layers (everything except `venue` and `address`)| 
         :param list[str] sources: Restrict your search to specific sources. Searches all sources by default. You can either use the normal or short name. Sources are [`openstreetmap(osm)`](http://www.openstreetmap.org/), [`openaddresses(oa)`](http://openaddresses.io/), [`whosonfirst(wof)`](https://whosonfirst.org/), [`geonames(gn)`](http://www.geonames.org/). 
         :param int size: Set the number of returned results. 
-        :return: GeocodeResponse
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -608,7 +608,7 @@ class GeocodeApi(object):
             body=body_params,
             post_params=form_params,
             files=local_var_files,
-            response_type='GeocodeResponse',  # noqa: E501
+            response_type='JSONResponse',  # noqa: E501
             auth_settings=auth_settings,
             async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),

@@ -7,7 +7,7 @@ Method | HTTP request | Description
 [**pois_post**](PoisApi.md#pois_post) | **POST** /pois | Pois Service
 
 # **pois_post**
-> OpenpoiservicePoiResponse pois_post(body)
+> JSONResponse pois_post(body)
 
 Pois Service
 
@@ -47,7 +47,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**OpenpoiservicePoiResponse**](OpenpoiservicePoiResponse.md)
+[**JSONResponse**](JSONResponse.md)
 
 ### Authorization
 

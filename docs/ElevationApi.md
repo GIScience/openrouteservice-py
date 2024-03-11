@@ -9,7 +9,7 @@ Method | HTTP request | Description
 [**elevation_point_post**](ElevationApi.md#elevation_point_post) | **POST** /elevation/point | Elevation Point Service
 
 # **elevation_line_post**
-> InlineResponse200 elevation_line_post(body)
+> JSONResponse elevation_line_post(body)
 
 Elevation Line Service
 
@@ -49,7 +49,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse200**](InlineResponse200.md)
+[**JSONResponse**](JSONResponse.md)
 
 ### Authorization
 
@@ -63,7 +63,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation_for_api_endpoints) [[Back to Model list]](../README.md#documentation_for_models) [[Back to README]](../README.md)
 
 # **elevation_point_get**
-> InlineResponse2001 elevation_point_get(geometry, format_out=format_out, dataset=dataset)
+> JSONResponse elevation_point_get(geometry, format_out=format_out, dataset=dataset)
 
 Elevation Point Service
 
@@ -107,7 +107,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse2001**](InlineResponse2001.md)
+[**JSONResponse**](JSONResponse.md)
 
 ### Authorization
 
@@ -121,7 +121,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation_for_api_endpoints) [[Back to Model list]](../README.md#documentation_for_models) [[Back to README]](../README.md)
 
 # **elevation_point_post**
-> InlineResponse2001 elevation_point_post(body)
+> JSONResponse elevation_point_post(body)
 
 Elevation Point Service
 
@@ -161,7 +161,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse2001**](InlineResponse2001.md)
+[**JSONResponse**](JSONResponse.md)
 
 ### Authorization
 

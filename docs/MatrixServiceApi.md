@@ -7,7 +7,7 @@ Method | HTTP request | Description
 [**get_default1**](MatrixServiceApi.md#get_default1) | **POST** /v2/matrix/{profile} | Matrix Service
 
 # **get_default1**
-> InlineResponse2006 get_default1(body, profile)
+> JSONResponse get_default1(body, profile)
 
 Matrix Service
 
@@ -49,7 +49,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse2006**](InlineResponse2006.md)
+[**JSONResponse**](JSONResponse.md)
 
 ### Authorization
 

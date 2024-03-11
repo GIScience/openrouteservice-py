@@ -7,7 +7,7 @@ Method | HTTP request | Description
 [**optimization_post**](OptimizationApi.md#optimization_post) | **POST** /optimization | Optimization Service
 
 # **optimization_post**
-> InlineResponse2002 optimization_post(body)
+> JSONResponse optimization_post(body)
 
 Optimization Service
 
@@ -47,7 +47,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse2002**](InlineResponse2002.md)
+[**JSONResponse**](JSONResponse.md)
 
 ### Authorization
 

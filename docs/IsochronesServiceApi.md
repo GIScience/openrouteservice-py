@@ -7,7 +7,7 @@ Method | HTTP request | Description
 [**get_default_isochrones**](IsochronesServiceApi.md#get_default_isochrones) | **POST** /v2/isochrones/{profile} | Isochrones Service
 
 # **get_default_isochrones**
-> InlineResponse2005 get_default_isochrones(body, profile)
+> JSONResponse get_default_isochrones(body, profile)
 
 Isochrones Service
 
@@ -49,7 +49,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse2005**](InlineResponse2005.md)
+[**JSONResponse**](JSONResponse.md)
 
 ### Authorization
 

@@ -43,7 +43,7 @@ class ElevationApi(object):
 
         :param async_req bool
         :param ElevationLineBody body: Query the elevation of a line in various formats. (required)
-        :return: InlineResponse200
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -65,7 +65,7 @@ class ElevationApi(object):
 
         :param async_req bool
         :param ElevationLineBody body: Query the elevation of a line in various formats. (required)
-        :return: InlineResponse200
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -123,7 +123,7 @@ class ElevationApi(object):
             body=body_params,
             post_params=form_params,
             files=local_var_files,
-            response_type='InlineResponse200',  # noqa: E501
+            response_type='JSONResponse',  # noqa: E501
             auth_settings=auth_settings,
             async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
@@ -144,7 +144,7 @@ class ElevationApi(object):
         :param list[float] geometry: The point to be queried, in comma-separated lon,lat values, e.g. [13.349762, 38.11295] (required)
         :param str format_out: The output format to be returned.
         :param str dataset: The elevation dataset to be used.
-        :return: InlineResponse2001
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -168,7 +168,7 @@ class ElevationApi(object):
         :param list[float] geometry: The point to be queried, in comma-separated lon,lat values, e.g. [13.349762, 38.11295] (required)
         :param str format_out: The output format to be returned.
         :param str dataset: The elevation dataset to be used.
-        :return: InlineResponse2001
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -227,7 +227,7 @@ class ElevationApi(object):
             body=body_params,
             post_params=form_params,
             files=local_var_files,
-            response_type='InlineResponse2001',  # noqa: E501
+            response_type='JSONResponse',  # noqa: E501
             auth_settings=auth_settings,
             async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
@@ -246,7 +246,7 @@ class ElevationApi(object):
 
         :param async_req bool
         :param ElevationPointBody body: Query the elevation of a point in various formats. (required)
-        :return: InlineResponse2001
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -268,7 +268,7 @@ class ElevationApi(object):
 
         :param async_req bool
         :param ElevationPointBody body: Query the elevation of a point in various formats. (required)
-        :return: InlineResponse2001
+        :return: JSONResponse
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -326,7 +326,7 @@ class ElevationApi(object):
             body=body_params,
             post_params=form_params,
             files=local_var_files,
-            response_type='InlineResponse2001',  # noqa: E501
+            response_type='JSONResponse',  # noqa: E501
             auth_settings=auth_settings,
             async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),
