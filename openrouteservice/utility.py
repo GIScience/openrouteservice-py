@@ -1,3 +1,16 @@
+from openrouteservice.configuration import Configuration
+from openrouteservice.api_client import ApiClient
+
+def apiClient(apiKey: str, host: str = None) -> ApiClient:
+    configuration = Configuration()
+    configuration.api_key['Authorization'] = apiKey
+
+    if(host):
+        configuration.host = host
+    
+    return ApiClient(configuration)
+
+
 def decode_polyline(polyline, is3d=False):
     """Decodes a Polyline string into a GeoJSON geometry.
     :param polyline: An encoded polyline, only the geometry.
