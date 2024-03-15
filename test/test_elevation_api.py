@@ -18,7 +18,7 @@ import configparser
 import openrouteservice
 from openrouteservice.api.elevation_api import ElevationApi  # noqa: E501
 from openrouteservice.rest import ApiException
-
+from openrouteservice import apiClient
 
 class TestElevationApi(unittest.TestCase):
     """ElevationApi unit test stubs"""
@@ -26,9 +26,7 @@ class TestElevationApi(unittest.TestCase):
     def setUp(self):
         cfg = configparser.ConfigParser()
         cfg.read('tests-config.ini')
-        configuration = openrouteservice.Configuration()
-        configuration.api_key['Authorization'] = cfg['ORS']['apiKey']
-        self.api = ElevationApi(openrouteservice.ApiClient(configuration))  # noqa: E501
+        self.api = ElevationApi(apiClient(cfg['ORS']['apiKey']))  # noqa: E501
 
     def tearDown(self):
         pass

@@ -18,6 +18,7 @@ import configparser
 import openrouteservice
 from openrouteservice.api.snapping_service_api import SnappingServiceApi  # noqa: E501
 from openrouteservice.rest import ApiException
+from openrouteservice import apiClient
 
 
 class TestSnappingServiceApi(unittest.TestCase):
@@ -26,9 +27,7 @@ class TestSnappingServiceApi(unittest.TestCase):
     def setUp(self):
         cfg = configparser.ConfigParser()
         cfg.read('tests-config.ini')
-        configuration = openrouteservice.Configuration()
-        configuration.api_key['Authorization'] = cfg['ORS']['apiKey']
-        self.api = SnappingServiceApi(openrouteservice.ApiClient(configuration))  # noqa: E501
+        self.api = SnappingServiceApi(apiClient(cfg['ORS']['apiKey']))  # noqa: E501
 
     def tearDown(self):
         pass

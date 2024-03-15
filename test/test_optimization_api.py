@@ -18,6 +18,7 @@ import configparser
 import openrouteservice
 from openrouteservice.api.optimization_api import OptimizationApi  # noqa: E501
 from openrouteservice.rest import ApiException
+from openrouteservice import apiClient
 
 
 class TestOptimizationApi(unittest.TestCase):
@@ -26,9 +27,7 @@ class TestOptimizationApi(unittest.TestCase):
     def setUp(self):
         cfg = configparser.ConfigParser()
         cfg.read('tests-config.ini')
-        configuration = openrouteservice.Configuration()
-        configuration.api_key['Authorization'] = cfg['ORS']['apiKey']
-        self.api = OptimizationApi(openrouteservice.ApiClient(configuration))  # noqa: E501
+        self.api = OptimizationApi(apiClient(cfg['ORS']['apiKey']))  # noqa: E501
 
     def tearDown(self):
         pass

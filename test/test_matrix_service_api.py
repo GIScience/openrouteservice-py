@@ -18,7 +18,7 @@ import configparser
 import openrouteservice
 from openrouteservice.api.matrix_service_api import MatrixServiceApi  # noqa: E501
 from openrouteservice.rest import ApiException
-
+from openrouteservice import apiClient
 
 class TestMatrixServiceApi(unittest.TestCase):
     """MatrixServiceApi unit test stubs"""
@@ -26,9 +26,7 @@ class TestMatrixServiceApi(unittest.TestCase):
     def setUp(self):
         cfg = configparser.ConfigParser()
         cfg.read('tests-config.ini')
-        configuration = openrouteservice.Configuration()
-        configuration.api_key['Authorization'] = cfg['ORS']['apiKey']
-        self.api = MatrixServiceApi(openrouteservice.ApiClient(configuration))  # noqa: E501
+        self.api = MatrixServiceApi(apiClient(cfg['ORS']['apiKey']))  # noqa: E501
 
     def tearDown(self):
         pass

@@ -18,6 +18,7 @@ import configparser
 import openrouteservice as ors
 from openrouteservice.api.pois_api import PoisApi  # noqa: E501
 from openrouteservice.rest import ApiException
+from openrouteservice import apiClient
 
 
 class TestPoisApi(unittest.TestCase):
@@ -26,9 +27,7 @@ class TestPoisApi(unittest.TestCase):
     def setUp(self):
         cfg = configparser.ConfigParser()
         cfg.read('tests-config.ini')
-        configuration = ors.Configuration()
-        configuration.api_key['Authorization'] = cfg['ORS']['apiKey']
-        self.api = PoisApi(ors.ApiClient(configuration))  # noqa: E501
+        self.api = PoisApi(apiClient(cfg['ORS']['apiKey']))  # noqa: E501
 
     def tearDown(self):
         pass

@@ -18,7 +18,7 @@ import configparser
 import openrouteservice
 from openrouteservice.api.directions_service_api import DirectionsServiceApi  # noqa: E501
 from openrouteservice.rest import ApiException
-
+from openrouteservice import apiClient
 
 class TestDirectionsServiceApi(unittest.TestCase):
     """DirectionsServiceApi unit test stubs"""
@@ -26,9 +26,7 @@ class TestDirectionsServiceApi(unittest.TestCase):
     def setUp(self):
         cfg = configparser.ConfigParser()
         cfg.read('tests-config.ini')
-        configuration = openrouteservice.Configuration()
-        configuration.api_key['Authorization'] = cfg['ORS']['apiKey']
-        self.api = DirectionsServiceApi(openrouteservice.ApiClient(configuration))  # noqa: E501
+        self.api = DirectionsServiceApi(apiClient(cfg['ORS']['apiKey']))  # noqa: E501
 
     def tearDown(self):
         pass
