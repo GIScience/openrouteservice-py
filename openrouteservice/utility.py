@@ -1,12 +1,17 @@
 from openrouteservice.configuration import Configuration
 from openrouteservice.api_client import ApiClient
 
-def apiClient(apiKey: str, host: str = None) -> ApiClient:
+def apiClient(apiKey: str = None, host: str = None) -> ApiClient:
     configuration = Configuration()
-    configuration.api_key['Authorization'] = apiKey
+
+    if(apiKey):
+        configuration.api_key['Authorization'] = apiKey
 
     if(host):
         configuration.host = host
+
+    if not(host or apiKey):
+        raise ValueError('apiKey is required when using api.openrouteservice.org as a host. Please specify an apiKey or use a different host.')
     
     return ApiClient(configuration)
 
