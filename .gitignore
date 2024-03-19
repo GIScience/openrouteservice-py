@@ -62,3 +62,17 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# IDE
+.vscode
+.idea
+
+# API Key
+openrouteservice-py/tests-config.ini
+
+# node_modules
+openrouteservice-js/node_modules
+
+# Generated and used during building
+client_version.txt
+openrouteservice_ignore_paths.yaml

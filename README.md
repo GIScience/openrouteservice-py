@@ -3,7 +3,7 @@ The openrouteservice library gives you painless access to the [openrouteservice]
 
 | API Version    | Package version    | Build package      |
 | -------------- | ------------------ | ------------------ |
-| 7.1.1 | 7.1.1 | io.swagger.codegen.v3.generators.python.PythonClientCodegen |
+| 7.1.1 | 7.1.1.post1 | io.swagger.codegen.v3.generators.python.PythonClientCodegen |
 
 For further details, please visit:
 - our [homepage](https://openrouteservice.org)
