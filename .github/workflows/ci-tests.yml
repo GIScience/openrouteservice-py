@@ -21,7 +21,7 @@ jobs:
           - python-version: '3.11'
             tox: py311
         poetry-version: [ "1.8.2" ]
-        os: [ ubuntu-20.04, macos-latest, windows-latest ]
+        os: [ ubuntu-22.04, macos-latest, windows-latest ]
     runs-on: ${{ matrix.os }}
     name: Python ${{ matrix.config.python-version }} / Poetry ${{ matrix.poetry-version }} / ${{ matrix.os }}
     defaults:
