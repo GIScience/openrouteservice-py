@@ -9,11 +9,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11", "pypy3.8", "pypy3.9" ]
-        poetry-version: [ "1.5.1" ]
+        config:
+          - python-version: '3.7'
+            tox: py37
+          - python-version: '3.8'
+            tox: py38
+          - python-version: '3.9'
+            tox: py39
+          - python-version: '3.10'
+            tox: py310
+          - python-version: '3.11'
+            tox: py311
+        poetry-version: [ "1.8.2" ]
         os: [ ubuntu-20.04, macos-latest, windows-latest ]
     runs-on: ${{ matrix.os }}
-    name: Python ${{ matrix.python-version }} / Poetry ${{ matrix.poetry-version }} / ${{ matrix.os }}
+    name: Python ${{ matrix.config.python-version }} / Poetry ${{ matrix.poetry-version }} / ${{ matrix.os }}
     defaults:
       run:
         shell: bash
@@ -21,20 +31,25 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Install Python ${{ matrix.config.python-version }}
+        uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
-          cache: 'pip'
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-      - name: Install test dependencies
-        run: pip install -r test-requirements.txt
-      - name: Install tox
-        run: pip install tox
+          python-version: ${{ matrix.config.python-version }}
+          cache: 'poetry'
+      - name: Install packages
+        run: poetry install --no-root
+      - name: Load cached tox
+        uses: actions/cache@v3
+        with:
+          path: .tox
+          key: tox-${{ matrix.os }}-poetry-${{ matrix.poetry-version }}-python-${{ matrix.config.python-version }}-${{ hashFiles('**/poetry.lock') }}
       - name: Setup API Key
         env:
           ORS_API_KEY: ${{ secrets.ORS_API_KEY }}
         run: printf "[ORS]\napiKey = $ORS_API_KEY\n" > tests-config.ini
-      - name: Run tests
-        run: python -m tox
+      - name: Run tox
+        run: |
+          poetry run tox -e pytest-${{ matrix.config.tox }}
