@@ -59,12 +59,10 @@ These examples show common usages of this library.
 import openrouteservice as ors
 from pprint import pprint
 
-# Configure API key authorization:
-configuration = ors.Configuration()
-configuration.api_key['Authorization'] = "YOUR_API_KEY"
-
 # create an instance of the API class
-directionsApi = ors.DirectionsServiceApi(ors.ApiClient(configuration))
+directionsApi = ors.DirectionsServiceApi(
+    ors.apiClient(apiKey="YOUR_API_KEY") # set your api key here
+)
 
 # create request body
 body = ors.DirectionsService(
@@ -85,11 +83,10 @@ except ors.rest.ApiException as e:
 import openrouteservice as ors
 from pprint import pprint
 
-# Configure host
-configuration = ors.Configuration()
-configuration.host = "http://localhost:8080/ors"
+isochronesApi = ors.IsochronesServiceApi(
+    ors.apiClient(host="http://localhost:8080/ors") # set host to your local instance
+)
 
-isochronesApi = ors.IsochronesServiceApi(ors.ApiClient(configuration))
 body = ors.IsochronesProfileBody(
     locations=[[8.681495,49.41461],[8.686507,49.41943]],
     range=[300]
