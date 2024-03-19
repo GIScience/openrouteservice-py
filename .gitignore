@@ -76,3 +76,4 @@ openrouteservice-js/node_modules
 # Generated and used during building
 client_version.txt
 openrouteservice_ignore_paths.yaml
+
