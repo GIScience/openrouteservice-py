@@ -10,8 +10,6 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - python-version: '3.7'
-            tox: py37
           - python-version: '3.8'
             tox: py38
           - python-version: '3.9'
