@@ -1,32 +1,43 @@
 [build-system]
-requires = ["setuptools", "setuptools-scm"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core>=1.8.2"]
+build-backend = "poetry.core.masonry.api"
 
-[project]
-name = "orspytest"
+[tool.poetry]
+name = "openrouteservice"
 version = "7.1.1.post1"
-authors = [
-    {name = "HeiGIT gGmbH", email = "support@smartmobility.heigit.org"},
-]
+authors = ["HeiGIT gGmbH <support@smartmobility.heigit.org>"]
 description = "Python client for requests to openrouteservice API services"
 readme = "README.md"
-requires-python = ">=3.7"
 keywords = ["routing","accessibility","router","OSM","ORS","openrouteservice","openstreetmap","isochrone","POI","elevation","DEM","swagger"]
-license = {text = "Apache 2.0"}
+license = "Apache 2.0"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
 ]
-dependencies = [
-    "urllib3 >= 1.15",
-    "six >= 1.10",
-    "certifi",
-    "python-dateutil"
-]
 
-[project.urls]
-"Homepage" = "https://openrouteservice.org/"
+[tool.poetry.dependencies]
+python = ">=3.8, <4.0"
+urllib3 = "^2.2.1"
+six = "^1.16.0"
+certifi = "^2024.2.2"
+python-dateutil = "^2.9.0.post0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^8.1.1"
+pytest-cov = "^4.1.0"
+coverage = "^7.4.4"
+pytest-xdist = "^3.5.0"
+pluggy = "^1.4.0"
+py = "^1.11.0"
+randomize = "^0.14"
+tox = "^4.14.1"
+
+[tool.pytest.ini_options]
+addopts = "--cov=openrouteservice --cov-report xml --cov-report term-missing --cov-fail-under 50 -n auto"
+
+[tool.poetry.urls]
+homepage = "https://openrouteservice.org/"
 "Forum" = "https://ask.openrouteservice.org/c/sdks"
 "API Documentation" = "https://openrouteservice.org/documentation/"
 "API Terms of service" = "https://openrouteservice.org/terms-of-service/"
