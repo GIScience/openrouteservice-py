@@ -28,8 +28,7 @@ from openrouteservice.api_client import ApiClient
 from openrouteservice.configuration import Configuration
 # import models into sdk package
 from openrouteservice.models.alternative_routes import AlternativeRoutes
-from openrouteservice.models.directions_service import DirectionsService
-from openrouteservice.models.directions_service1 import DirectionsService1
+from openrouteservice.models.directions_service_body import DirectionsServiceBody
 from openrouteservice.models.elevation_line_body import ElevationLineBody
 from openrouteservice.models.elevation_point_body import ElevationPointBody
 from openrouteservice.models.isochrones_profile_body import IsochronesProfileBody

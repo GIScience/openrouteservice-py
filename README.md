@@ -3,7 +3,7 @@ The openrouteservice library gives you painless access to the [openrouteservice]
 
 | API Version    | Package version    | Build package      |
 | -------------- | ------------------ | ------------------ |
-| 7.1.1 | 7.1.1.post1 | io.swagger.codegen.v3.generators.python.PythonClientCodegen |
+| 7.1.1 | 7.1.1.post2 | io.swagger.codegen.v3.generators.python.PythonClientCodegen |
 
 For further details, please visit:
 - our [homepage](https://openrouteservice.org)
@@ -65,7 +65,7 @@ directionsApi = ors.DirectionsServiceApi(
 )
 
 # create request body
-body = ors.DirectionsService(
+body = ors.DirectionsServiceBody(
     coordinates=[[8.34234,48.23424],[8.34423,48.26424]]
 )
 
@@ -126,8 +126,7 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [AlternativeRoutes](docs/AlternativeRoutes.md)
- - [DirectionsService](docs/DirectionsService.md)
- - [DirectionsService1](docs/DirectionsService1.md)
+ - [DirectionsServiceBody](docs/DirectionsServiceBody.md)
  - [ElevationLineBody](docs/ElevationLineBody.md)
  - [ElevationPointBody](docs/ElevationPointBody.md)
  - [IsochronesProfileBody](docs/IsochronesProfileBody.md)

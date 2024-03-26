@@ -36,7 +36,7 @@ class TestDirectionsServiceApi(unittest.TestCase):
 
         Directions Service GeoJSON  # noqa: E501
         """
-        body = openrouteservice.DirectionsService(
+        body = openrouteservice.DirectionsServiceBody(
             coordinates=[[8.681495,49.41461],[8.686507,49.41943],[8.687872,49.420318]]
         )
         profile = 'driving-car'
@@ -61,7 +61,7 @@ class TestDirectionsServiceApi(unittest.TestCase):
 
         Directions Service JSON  # noqa: E501
         """
-        body = openrouteservice.DirectionsService1(
+        body = openrouteservice.DirectionsServiceBody(
             coordinates=[[8.681495,49.41461],[8.686507,49.41943],[8.687872,49.420318]]
         )
         profile = 'driving-car'

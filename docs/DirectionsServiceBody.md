@@ -1,4 +1,4 @@
-# DirectionsService
+# DirectionsServiceBody
 
 ## Properties
 Name | Type | Description | Notes

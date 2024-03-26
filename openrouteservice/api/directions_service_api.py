@@ -42,7 +42,7 @@ class DirectionsServiceApi(object):
         >>> result = thread.get()
 
         :param async_req bool
-        :param DirectionsService body: (required)
+        :param DirectionsServiceBody body: (required)
         :param str profile: Specifies the route profile. (required)
         :return: JSONResponse
                  If the method is called asynchronously,
@@ -65,7 +65,7 @@ class DirectionsServiceApi(object):
         >>> result = thread.get()
 
         :param async_req bool
-        :param DirectionsService body: (required)
+        :param DirectionsServiceBody body: (required)
         :param str profile: Specifies the route profile. (required)
         :return: JSONResponse
                  If the method is called asynchronously,
@@ -149,7 +149,7 @@ class DirectionsServiceApi(object):
         >>> result = thread.get()
 
         :param async_req bool
-        :param DirectionsService1 body: (required)
+        :param DirectionsServiceBody body: (required)
         :param str profile: Specifies the route profile. (required)
         :return: JSONResponse
                  If the method is called asynchronously,
@@ -172,7 +172,7 @@ class DirectionsServiceApi(object):
         >>> result = thread.get()
 
         :param async_req bool
-        :param DirectionsService1 body: (required)
+        :param DirectionsServiceBody body: (required)
         :param str profile: Specifies the route profile. (required)
         :return: JSONResponse
                  If the method is called asynchronously,

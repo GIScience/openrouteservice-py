@@ -30,7 +30,7 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = openrouteservice.DirectionsServiceApi(openrouteservice.ApiClient(configuration))
-body = openrouteservice.DirectionsService() # DirectionsService | 
+body = openrouteservice.DirectionsServiceBody() # DirectionsServiceBody | 
 profile = 'profile_example' # str | Specifies the route profile.
 
 try:
@@ -45,7 +45,7 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**DirectionsService**](DirectionsService.md)|  | 
+ **body** | [**DirectionsServiceBody**](DirectionsServiceBody.md)|  | 
  **profile** | **str**| Specifies the route profile. | 
 
 ### Return type
@@ -86,7 +86,7 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = openrouteservice.DirectionsServiceApi(openrouteservice.ApiClient(configuration))
-body = openrouteservice.DirectionsService1() # DirectionsService1 | 
+body = openrouteservice.DirectionsServiceBody() # DirectionsServiceBody | 
 profile = 'profile_example' # str | Specifies the route profile.
 
 try:
@@ -101,7 +101,7 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**DirectionsService1**](DirectionsService1.md)|  | 
+ **body** | [**DirectionsServiceBody**](DirectionsServiceBody.md)|  | 
  **profile** | **str**| Specifies the route profile. | 
 
 ### Return type

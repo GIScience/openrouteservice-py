@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "openrouteservice"
-version = "7.1.1.post1"
+version = "7.1.1.post2"
 authors = ["HeiGIT gGmbH <support@smartmobility.heigit.org>"]
 description = "Python client for requests to openrouteservice API services"
 readme = "README.md"
