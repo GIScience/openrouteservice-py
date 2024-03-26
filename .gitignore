@@ -1,23 +1,78 @@
-.tox/
-.venv*
-.env*
-.coverage
-**/.ipynb_checkpoints/
-*.geojson
-*.pyc
-*.in
-*egg-info/
-dist/
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
 build/
-/docs/build
-test.py
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
 
-#IDE
-.spyproject/
-.idea/
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
 
-cover/
-conda/
-*coverage.xml
-/setup.py
-/requirements.txt
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+.hypothesis/
+venv/
+.python-version
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+#Ipython Notebook
+.ipynb_checkpoints
+
+# IDE
+.vscode
+.idea
+
+# API Key
+openrouteservice-py/tests-config.ini
+
+# node_modules
+openrouteservice-js/node_modules
+
+# Generated and used during building
+client_version.txt
+openrouteservice_ignore_paths.yaml

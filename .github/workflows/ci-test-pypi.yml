@@ -1,13 +1,9 @@
-name: Continous Integration
+name: Test and deploy to TestPyPI | generated-client branch
 
 on:
   push:
     branches:
-      - main
-      - master
-  release:
-    types:
-      - created
+      - generated-client
 
 jobs:
   pytest:
@@ -51,7 +47,7 @@ jobs:
           poetry run tox -e pytest-${{ matrix.config.tox }}
 
   build-and-publish:
-    name: Build and publish Python distributions 📦 to PyPI and TestPyPI
+    name: Build and publish Python distributions 📦 to TestPyPI
     runs-on: ubuntu-20.04
     needs: pytest
     steps:
@@ -70,9 +66,3 @@ jobs:
           poetry config pypi-token.testpypi ${{ secrets.TEST_PYPI_API_TOKEN }}
           poetry build
           poetry publish -r testpypi
-      - name: Publish distribution 📦 to PyPI
-        if: startsWith(github.ref, 'refs/tags')
-        run: |
-          poetry config pypi-token.pypi ${{ secrets.PYPI_API_TOKEN }}
-          poetry build
-          poetry publish

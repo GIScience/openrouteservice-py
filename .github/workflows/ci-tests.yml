@@ -1,78 +1,52 @@
 name: tests
 
 on:
-  pull_request:
-    branches: '**'
+  push:
+    branches: ['**']
 
 jobs:
-  lint:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: Install Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-      - uses: pre-commit/action@v3.0.0
-        with:
-          extra_args: --all-files --show-diff-on-failure
   pytest:
-    needs:
-      - lint
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11", "pypy3.8", "pypy3.9" ]
-        poetry-version: [ "1.5.1" ]
-        os: [ ubuntu-20.04, macos-latest, windows-latest ]
+        config:
+          - python-version: '3.8'
+            tox: py38
+          - python-version: '3.9'
+            tox: py39
+          - python-version: '3.10'
+            tox: py310
+          - python-version: '3.11'
+            tox: py311
+        poetry-version: [ "1.8.2" ]
+        os: [ ubuntu-22.04, macos-latest, windows-latest ]
     runs-on: ${{ matrix.os }}
-    name: Python ${{ matrix.python-version }} / Poetry ${{ matrix.poetry-version }} / ${{ matrix.os }}
+    name: Python ${{ matrix.config.python-version }} / Poetry ${{ matrix.poetry-version }} / ${{ matrix.os }}
     defaults:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Install Python ${{ matrix.config.python-version }}
+        uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
-          cache: 'pip'
-      - name: Select the cache folder
-        id: cache-folder
-        run: |
-          if [ ${{ matrix.os }} == 'ubuntu-20.04' ]; then
-            CACHE_FOLDER="/home/runner/.cache/pypoetry"
-          elif [ ${{ matrix.os }} == 'macos-latest' ]; then
-            CACHE_FOLDER="/Users/runner/Library/Caches/pypoetry"
-          elif [ ${{ matrix.os }} == 'windows-latest' ]; then
-            CACHE_FOLDER="C:\Users\runneradmin\AppData\Local\pypoetry\Cache"
-          fi
-          echo "Cache folder is $CACHE_FOLDER"
-          echo "folder=$CACHE_FOLDER" >> "$GITHUB_OUTPUT"
-      - name: Cache Poetry cache
+          python-version: ${{ matrix.config.python-version }}
+          cache: 'poetry'
+      - name: Install packages
+        run: poetry install --no-root
+      - name: Load cached tox
         uses: actions/cache@v3
         with:
-          path: ${{ steps.cache-folder.outputs.folder }}
-          key: poetry-cache-${{ matrix.os }}-${{ matrix.python-version }}-${{ matrix.poetry-version }}
-      - name: Run Poetry action
-        uses: abatilo/actions-poetry@v2
-        with:
-          poetry-version: ${{ matrix.poetry-version }}
-      - name: View poetry --version
-        run: poetry --version
-      - name: Install dependencies
-        run: poetry install
-      - name: Run tests
-        run: poetry run pytest
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: unittests
-          env_vars: OS,PYTHON
-          name: codecov-umbrella
-          fail_ci_if_error: true
-          verbose: true
+          path: .tox
+          key: tox-${{ matrix.os }}-poetry-${{ matrix.poetry-version }}-python-${{ matrix.config.python-version }}-${{ hashFiles('**/poetry.lock') }}
+      - name: Setup API Key
+        env:
+          ORS_API_KEY: ${{ secrets.ORS_API_KEY }}
+        run: printf "[ORS]\napiKey = $ORS_API_KEY\n" > tests-config.ini
+      - name: Run tox
+        run: |
+          poetry run tox -e pytest-${{ matrix.config.tox }}
