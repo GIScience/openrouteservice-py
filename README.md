@@ -14,7 +14,7 @@ By using this library, you agree to the ORS [terms and conditions](https://openr
 
 ## Requirements.
 
-Python 2.7 and 3.4+
+Python 3.8+
 
 ## Installation & Usage
 ### pip install
@@ -22,7 +22,7 @@ Python 2.7 and 3.4+
 If the python package is hosted on Github, you can install directly from Github
 
 ```sh
-pip install ors-py
+pip install openrouteservice
 ```
 
 Then import the package:
@@ -49,10 +49,10 @@ Please follow the [installation procedure](#installation--usage) before running 
 
 ### Examples
 These examples show common usages of this library.
-- [Avoid construction sites dynamically](examples/Avoid_ConstructionSites.ipynb)
-- [Dieselgate Routing](examples/Dieselgate_Routing.ipynb)
-- [Route optimization of pub crawl](examples/ortools_pubcrawl.ipynb)
-- [Routing optimization in humanitarian context](examples/Routing_Optimization_Idai.ipynb)
+- [Avoid construction sites dynamically](https://openrouteservice.org/example-avoid-obstacles-while-routing/)
+- [Dieselgate Routing](https://openrouteservice.org/dieselgate-avoid-berlin-banned-diesel-streets/)
+- [Route optimization of pub crawl](https://openrouteservice.org/example-optimize-pub-crawl-with-ors/)
+- [Routing optimization in humanitarian context](https://openrouteservice.org/disaster-optimization/)
 
 ### Basic example
 ```python
