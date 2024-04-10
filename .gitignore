@@ -72,6 +72,10 @@ openrouteservice-py/tests-config.ini
 
 # node_modules
 openrouteservice-js/node_modules
+node_modules/
+
+# Vitepress
+.vitepress/cache
 
 # Generated and used during building
 client_version.txt
