@@ -1,5 +1,8 @@
 # openrouteservice.GeocodeApi
 
+> [!NOTE]  
+> This documentation is automatically generated. Code examples might not work out of the box as not all required parameters are passed.
+
 All URIs are relative to *https://api.openrouteservice.org*
 
 Method | HTTP request | Description
@@ -24,14 +27,8 @@ import openrouteservice
 from openrouteservice.rest import ApiException
 from pprint import pprint
 
-# Configure API key authorization: ApiKeyAuth
-configuration = openrouteservice.Configuration()
-configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['Authorization'] = 'Bearer'
-
 # create an instance of the API class
-api_instance = openrouteservice.GeocodeApi(openrouteservice.ApiClient(configuration))
+api_instance = openrouteservice.GeocodeApi(openrouteservice.apiClient(apiKey='YOUR_API_KEY'))
 text = 'text_example' # str | Name of location, street address or postal code. 
 focus_point_lon = 3.4 # float | Longitude of the `focus.point`. Specify the focus point to order results by linear distance to this point. Works for up to 100 kilometers distance.  Use with `focus.point.lat`.  (optional)
 focus_point_lat = 3.4 # float | Latitude of the `focus.point`. Specify the focus point to order results by linear distance to this point. Works for up to 100 kilometers distance. Use with `focus.point.lon`.  (optional)
@@ -96,14 +93,8 @@ import openrouteservice
 from openrouteservice.rest import ApiException
 from pprint import pprint
 
-# Configure API key authorization: ApiKeyAuth
-configuration = openrouteservice.Configuration()
-configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['Authorization'] = 'Bearer'
-
 # create an instance of the API class
-api_instance = openrouteservice.GeocodeApi(openrouteservice.ApiClient(configuration))
+api_instance = openrouteservice.GeocodeApi(openrouteservice.apiClient(apiKey='YOUR_API_KEY'))
 point_lon = 3.4 # float | Longitude of the coordinate to query. 
 point_lat = 48.858268 # float | Latitude of the coordinate to query.  (default to 48.858268)
 boundary_circle_radius = 1 # float | Restrict search to circular region around `point.lat/point.lon`. Value in kilometers.  (optional) (default to 1)
@@ -162,14 +153,8 @@ import openrouteservice
 from openrouteservice.rest import ApiException
 from pprint import pprint
 
-# Configure API key authorization: ApiKeyAuth
-configuration = openrouteservice.Configuration()
-configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['Authorization'] = 'Bearer'
-
 # create an instance of the API class
-api_instance = openrouteservice.GeocodeApi(openrouteservice.ApiClient(configuration))
+api_instance = openrouteservice.GeocodeApi(openrouteservice.apiClient(apiKey='YOUR_API_KEY'))
 text = 'text_example' # str | Name of location, street address or postal code. 
 focus_point_lon = 3.4 # float | Longitude of the `focus.point`. Specify the focus point to order results by linear distance to this point. Works for up to 100 kilometers distance.  Use with `focus.point.lat`.  (optional)
 focus_point_lat = 3.4 # float | Latitude of the `focus.point`. Specify the focus point to order results by linear distance to this point. Works for up to 100 kilometers distance. Use with `focus.point.lon`.  (optional)
@@ -244,14 +229,8 @@ import openrouteservice
 from openrouteservice.rest import ApiException
 from pprint import pprint
 
-# Configure API key authorization: ApiKeyAuth
-configuration = openrouteservice.Configuration()
-configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['Authorization'] = 'Bearer'
-
 # create an instance of the API class
-api_instance = openrouteservice.GeocodeApi(openrouteservice.ApiClient(configuration))
+api_instance = openrouteservice.GeocodeApi(openrouteservice.apiClient(apiKey='YOUR_API_KEY'))
 address = 'address_example' # str | Search for full address with house number or only a street name.  (optional)
 neighbourhood = 'neighbourhood_example' # str | Search for neighbourhoods. Neighbourhoods are vernacular geographic entities that may not necessarily be official administrative divisions but are important nonetheless. Example: `Notting Hill`.  (optional)
 country = 'country_example' # str | Search for full country name, [alpha 2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) or [alpha 3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) codes.  (optional)

@@ -1,5 +1,8 @@
 # openrouteservice.ElevationApi
 
+> [!NOTE]  
+> This documentation is automatically generated. Code examples might not work out of the box as not all required parameters are passed.
+
 All URIs are relative to *https://api.openrouteservice.org*
 
 Method | HTTP request | Description
@@ -23,14 +26,8 @@ import openrouteservice
 from openrouteservice.rest import ApiException
 from pprint import pprint
 
-# Configure API key authorization: ApiKeyAuth
-configuration = openrouteservice.Configuration()
-configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['Authorization'] = 'Bearer'
-
 # create an instance of the API class
-api_instance = openrouteservice.ElevationApi(openrouteservice.ApiClient(configuration))
+api_instance = openrouteservice.ElevationApi(openrouteservice.apiClient(apiKey='YOUR_API_KEY'))
 body = openrouteservice.ElevationLineBody() # ElevationLineBody | Query the elevation of a line in various formats.
 
 try:
@@ -77,14 +74,8 @@ import openrouteservice
 from openrouteservice.rest import ApiException
 from pprint import pprint
 
-# Configure API key authorization: ApiKeyAuth
-configuration = openrouteservice.Configuration()
-configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['Authorization'] = 'Bearer'
-
 # create an instance of the API class
-api_instance = openrouteservice.ElevationApi(openrouteservice.ApiClient(configuration))
+api_instance = openrouteservice.ElevationApi(openrouteservice.apiClient(apiKey='YOUR_API_KEY'))
 geometry = [3.4] # list[float] | The point to be queried, in comma-separated lon,lat values, e.g. [13.349762, 38.11295]
 format_out = 'geojson' # str | The output format to be returned. (optional) (default to geojson)
 dataset = 'srtm' # str | The elevation dataset to be used. (optional) (default to srtm)
@@ -135,14 +126,8 @@ import openrouteservice
 from openrouteservice.rest import ApiException
 from pprint import pprint
 
-# Configure API key authorization: ApiKeyAuth
-configuration = openrouteservice.Configuration()
-configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['Authorization'] = 'Bearer'
-
 # create an instance of the API class
-api_instance = openrouteservice.ElevationApi(openrouteservice.ApiClient(configuration))
+api_instance = openrouteservice.ElevationApi(openrouteservice.apiClient(apiKey='YOUR_API_KEY'))
 body = openrouteservice.ElevationPointBody() # ElevationPointBody | Query the elevation of a point in various formats.
 
 try:

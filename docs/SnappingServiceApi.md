@@ -1,5 +1,8 @@
 # openrouteservice.SnappingServiceApi
 
+> [!NOTE]  
+> This documentation is automatically generated. Code examples might not work out of the box as not all required parameters are passed.
+
 All URIs are relative to *https://api.openrouteservice.org*
 
 Method | HTTP request | Description
@@ -23,14 +26,8 @@ import openrouteservice
 from openrouteservice.rest import ApiException
 from pprint import pprint
 
-# Configure API key authorization: ApiKeyAuth
-configuration = openrouteservice.Configuration()
-configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['Authorization'] = 'Bearer'
-
 # create an instance of the API class
-api_instance = openrouteservice.SnappingServiceApi(openrouteservice.ApiClient(configuration))
+api_instance = openrouteservice.SnappingServiceApi(openrouteservice.apiClient(apiKey='YOUR_API_KEY'))
 body = openrouteservice.SnapProfileBody() # SnapProfileBody | 
 profile = 'profile_example' # str | Specifies the route profile.
 
@@ -79,14 +76,8 @@ import openrouteservice
 from openrouteservice.rest import ApiException
 from pprint import pprint
 
-# Configure API key authorization: ApiKeyAuth
-configuration = openrouteservice.Configuration()
-configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['Authorization'] = 'Bearer'
-
 # create an instance of the API class
-api_instance = openrouteservice.SnappingServiceApi(openrouteservice.ApiClient(configuration))
+api_instance = openrouteservice.SnappingServiceApi(openrouteservice.apiClient(apiKey='YOUR_API_KEY'))
 body = openrouteservice.ProfileGeojsonBody() # ProfileGeojsonBody | 
 profile = 'profile_example' # str | Specifies the profile.
 
@@ -135,14 +126,8 @@ import openrouteservice
 from openrouteservice.rest import ApiException
 from pprint import pprint
 
-# Configure API key authorization: ApiKeyAuth
-configuration = openrouteservice.Configuration()
-configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['Authorization'] = 'Bearer'
-
 # create an instance of the API class
-api_instance = openrouteservice.SnappingServiceApi(openrouteservice.ApiClient(configuration))
+api_instance = openrouteservice.SnappingServiceApi(openrouteservice.apiClient(apiKey='YOUR_API_KEY'))
 body = openrouteservice.ProfileJsonBody() # ProfileJsonBody | 
 profile = 'profile_example' # str | Specifies the profile.
 
