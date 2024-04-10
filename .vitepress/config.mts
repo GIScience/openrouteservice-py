@@ -52,10 +52,10 @@ export default defineVersionedConfig(__dirname, {
       {
         text: 'Examples',
         items: [
-          { text: 'Avoid construction sites dynamically', link: 'docs/examples/Avoid_ConstructionSites' },
-          { text: 'Dieselgate Routing', link: 'docs/examples/Dieselgate_Routing' },
-          { text: 'Route optimization of pub crawl', link: 'docs/examples/ortools_pubcrawl' },
-          { text: 'Routing optimization in humanitarian context', link: 'docs/examples/Routing_Optimization_Idai' }
+          { text: 'Avoid construction sites dynamically', link: 'https://openrouteservice.org/example-avoid-obstacles-while-routing/' },
+          { text: 'Dieselgate Routing', link: 'https://openrouteservice.org/dieselgate-avoid-berlin-banned-diesel-streets/' },
+          { text: 'Route optimization of pub crawl', link: 'https://openrouteservice.org/example-optimize-pub-crawl-with-ors/' },
+          { text: 'Routing optimization in humanitarian context', link: 'https://openrouteservice.org/disaster-optimization/' }
         ]
       },
     ],
