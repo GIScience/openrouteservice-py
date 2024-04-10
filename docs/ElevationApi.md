@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 Elevation Line Service
 
-This endpoint can take planar 2D line objects and enrich them with elevation from a variety of datasets.  The input and output formats are:   * GeoJSON   * Polyline   * <a href=\"https://developers.google.com/maps/documentation/utilities/polylinealgorithm\">Google's Encoded polyline</a> with coordinate precision 5 or 6  Example: ```   # POST LineString as polyline   curl -XPOST https://api.openrouteservice.org/elevation/line     -H 'Content-Type: application/json' \\     -H 'Authorization: INSERT_YOUR_KEY     -d '{       \"format_in\": \"polyline\",       \"format_out\": \"encodedpolyline5\",       \"geometry\": [[13.349762, 38.112952],                    [12.638397, 37.645772]]         }' ``` 
+This endpoint can take planar 2D line objects and enrich them with elevation from a variety of datasets.  The input and output formats are:   * GeoJSON   * Polyline   * <a href="https://developers.google.com/maps/documentation/utilities/polylinealgorithm">Google's Encoded polyline</a> with coordinate precision 5 or 6  Example: ```   # POST LineString as polyline   curl -XPOST https://api.openrouteservice.org/elevation/line     -H 'Content-Type: application/json' \\     -H 'Authorization: INSERT_YOUR_KEY     -d '{       \"format_in\": \"polyline\",       \"format_out\": \"encodedpolyline5\",       \"geometry\": [[13.349762, 38.112952],                    [12.638397, 37.645772]]         }' ``` 
 
 ### Example
 ```python
