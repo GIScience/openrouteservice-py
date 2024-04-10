@@ -1,33 +1,54 @@
 :root {
-    --vp-c-brand-1: #b5152b;
-    --vp-button-brand-bg: #b5152b;
-    --vp-c-brand-2: #b5152b;
-    /* values below are taken from the old Jekyll installation of the docs */
-    --vp-font-family-base: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-    --vp-font-family-mono:  "SFMono-Regular",menlo,consolas,monospace;
+  --vp-c-brand-1: #b5152b;
+  --vp-button-brand-bg: #b5152b;
+  --vp-c-brand-2: #b5152b;
+  /* values below are taken from the old Jekyll installation of the docs */
+  --vp-font-family-base: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --vp-font-family-mono: "SFMono-Regular", menlo, consolas, monospace;
 
-    --vp-home-hero-name-color: transparent;
-    --vp-home-hero-name-background: -webkit-linear-gradient(
-        120deg,
-        #b5152b 30%,
-        #f57124
-    );
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(120deg,
+      #b5152b 30%,
+      #f57124);
+}
+
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3,
+.vp-doc h4,
+.vp-doc h5,
+.vp-doc h6 {
+  font-weight: 300;
+}
+
+:root {
+  --vp-layout-max-width: 1680px;
+}
+
+.content-container {
+  max-width: 100% !important;
+}
+
+/* min-width: 1440px same as original min-width: 960px */
+@media (min-width: 1440px) {
+  .VPSidebar {
+      padding-left: 32px !important;
+      width: var(--vp-sidebar-width) !important;
   }
-  
-  .vp-doc h1, .vp-doc h2, .vp-doc h3, .vp-doc h4, .vp-doc h5, .vp-doc h6  {
-    font-weight: 300;
+  .VPContent.has-sidebar {
+      padding-left: var(--vp-sidebar-width) !important;
+      padding-right: 0 !important;
   }
-  
-  /*
-  //$body-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-  //$root-font-size: 14px; // Base font-size for rems
-  //$font-size-8: 28px; //h1
-  //
-  //$body-background-color: #fbfcfd;
-  //$code-background-color: #f7f7f7;
-  //
-  //$body-text-color: #5c5c5c;
-  //$link-color: #d60039;
-  //$border: 1px solid !default;
-  //$border-color: #cfcfcf;
-  */
+}
+
+/* Add additional min-width: 1680px */
+@media (min-width: 1680px) {
+  .VPSidebar {
+      padding-left: calc((100% - (var(--vp-layout-max-width) - 64px)) / 2) !important;
+      width: calc((100% - (var(--vp-layout-max-width) - 64px)) / 2 + var(--vp-sidebar-width) - 32px) !important;
+  }
+  .VPContent.has-sidebar {
+      padding-left: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width)) !important;
+      padding-right: calc((100vw - var(--vp-layout-max-width)) / 2) !important;
+  }
+}
