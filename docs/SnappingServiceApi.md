@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 Snapping Service
 
-Returns a list of points snapped to the nearest edge in the graph. In case an appropriate snapping point cannot be found within the specified search radius, \"null\" is returned. 
+Returns a list of points snapped to the nearest edge in the routing graph. In case an appropriate snapping point cannot be found within the specified search radius, \"null\" is returned. 
 
 ### Example
 ```python
@@ -66,7 +66,7 @@ Name | Type | Description  | Notes
 
 Snapping Service GeoJSON
 
-Returns a GeoJSON FeatureCollection of points snapped to the nearest edge in the graph. In case an appropriate snapping point cannot be found within the specified search radius, it is omitted from the features array. The features provide the 'source_id' property, to match the results with the input location array (IDs start at 0). 
+Returns a GeoJSON FeatureCollection of points snapped to the nearest edge in the routing graph. In case an appropriate snapping point cannot be found within the specified search radius, it is omitted from the features array. The features provide the 'source_id' property, to match the results with the input location array (IDs start at 0). 
 
 ### Example
 ```python
@@ -116,7 +116,7 @@ Name | Type | Description  | Notes
 
 Snapping Service JSON
 
-Returns a list of points snapped to the nearest edge in the graph. In case an appropriate snapping point cannot be found within the specified search radius, \"null\" is returned. 
+Returns a list of points snapped to the nearest edge in the routing graph. In case an appropriate snapping point cannot be found within the specified search radius, \"null\" is returned. 
 
 ### Example
 ```python
