@@ -6,6 +6,8 @@ PARAM_POLY = [[[8.688641, 49.420577], [8.680916, 49.415776]]]
 
 PARAM_INT_BIG = 500
 PARAM_INT_SMALL = 50
+PARAM_FLOAT_SMALL = 0.5
+PARAM_FLOAT_BIG = 3.5
 PARAM_LIST_ONE = [PARAM_INT_SMALL, PARAM_INT_SMALL]
 PARAM_LIST_TWO = [PARAM_LIST_ONE, PARAM_LIST_ONE]
 
@@ -204,6 +206,7 @@ ENDPOINT_DICT = {
             {
                 "id": 0,
                 "profile": "driving-car",
+                "description": "vehicle",
                 "start": PARAM_LINE[0],
                 "start_index": 0,
                 "end_index": 0,
@@ -211,10 +214,15 @@ ENDPOINT_DICT = {
                 "capacity": [PARAM_INT_SMALL],
                 "skills": PARAM_LIST_ONE,
                 "time_window": PARAM_LIST_ONE,
+                "speed_factor": PARAM_FLOAT_SMALL,
+                "max_tasks": PARAM_INT_SMALL,
+                "max_travel_time": PARAM_INT_BIG,
+                "max_distance": PARAM_INT_BIG,
             },
             {
                 "id": 1,
                 "profile": "driving-car",
+                "description": "vehicle",
                 "start": PARAM_LINE[1],
                 "start_index": 1,
                 "end_index": 1,
@@ -222,6 +230,10 @@ ENDPOINT_DICT = {
                 "capacity": [PARAM_INT_SMALL],
                 "skills": PARAM_LIST_ONE,
                 "time_window": PARAM_LIST_ONE,
+                "speed_factor": PARAM_FLOAT_SMALL,
+                "max_tasks": PARAM_INT_SMALL,
+                "max_travel_time": PARAM_INT_BIG,
+                "max_distance": PARAM_INT_BIG,
             },
         ],
         "options": {"g": False},
