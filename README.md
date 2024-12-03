@@ -8,7 +8,7 @@ The openrouteservice library gives you painless access to the [openrouteservice]
 
 | API Version    | Package version    | Build package      |
 | -------------- | ------------------ | ------------------ |
-| 8.1.0 | 8.1.0 | io.swagger.codegen.v3.generators.python.PythonClientCodegen |
+| 8.2.0 | 8.2.0 | io.swagger.codegen.v3.generators.python.PythonClientCodegen |
 
 For further details, please visit:
 - our [homepage](https://openrouteservice.org)
