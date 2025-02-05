@@ -1,7 +1,6 @@
 # coding: utf-8
 
 # flake8: noqa
-
 """
     Openrouteservice
 
@@ -14,19 +13,7 @@
 
 from __future__ import absolute_import
 
-# import apis into sdk package
-from openrouteservice.api.directions_service_api import DirectionsServiceApi
-from openrouteservice.api.elevation_api import ElevationApi
-from openrouteservice.api.geocode_api import GeocodeApi
-from openrouteservice.api.isochrones_service_api import IsochronesServiceApi
-from openrouteservice.api.matrix_service_api import MatrixServiceApi
-from openrouteservice.api.optimization_api import OptimizationApi
-from openrouteservice.api.pois_api import PoisApi
-from openrouteservice.api.snapping_service_api import SnappingServiceApi
-# import ApiClient
-from openrouteservice.api_client import ApiClient
-from openrouteservice.configuration import Configuration
-# import models into sdk package
+# import models into model package
 from openrouteservice.models.alternative_routes import AlternativeRoutes
 from openrouteservice.models.directions_service_body import DirectionsServiceBody
 from openrouteservice.models.elevation_line_body import ElevationLineBody
@@ -55,4 +42,3 @@ from openrouteservice.models.round_trip_route_options import RoundTripRouteOptio
 from openrouteservice.models.route_options import RouteOptions
 from openrouteservice.models.route_options_avoid_polygons import RouteOptionsAvoidPolygons
 from openrouteservice.models.snap_profile_body import SnapProfileBody
-from openrouteservice.utility import *
