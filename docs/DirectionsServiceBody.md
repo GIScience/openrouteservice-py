@@ -21,6 +21,7 @@ Name | Type | Description | Notes
 **maximum_speed** | **float** | The maximum speed specified by user. | [optional] 
 **options** | [**RouteOptions**](RouteOptions.md) |  | [optional] 
 **preference** | **str** | Specifies the route preference | [optional] [default to 'recommended']
+**profile_name** | **str** |  | [optional] 
 **radiuses** | **list[float]** | A list of maximum distances (measured in metres) that limit the search of nearby road segments to every given waypoint. The values must be greater than 0, the value of -1 specifies using the maximum possible search radius. The number of radiuses correspond to the number of waypoints. If only a single value is given, it will be applied to all waypoints. | [optional] 
 **roundabout_exits** | **bool** | Provides bearings of the entrance and all passed roundabout exits. Adds the &#x60;exit_bearings&#x60; array to the step object in the response.  | [optional] [default to False]
 **schedule** | **bool** | If true, return a public transport schedule starting at &lt;departure&gt; for the next &lt;schedule_duration&gt; minutes. | [optional] [default to False]
