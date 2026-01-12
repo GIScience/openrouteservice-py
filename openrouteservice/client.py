@@ -103,6 +103,27 @@ class Client:
         )
 
         self._req = None
+    def validate_key(self, profile="driving-car", coordinates=None) -> bool:
+        """
+        Validate the configured API key by performing a lightweight request.
+
+        Returns True if the key appears valid.
+        Raises openrouteservice.exceptions.ApiError for invalid keys or other API errors.
+        """
+        if coordinates is None:
+            # Two close points (small/cheap request)
+            coordinates = ((8.681495, 49.41461), (8.686507, 49.41943))
+
+        # Minimal directions request; invalid keys will raise ApiError from request()
+        self.request(
+            url=f"/v2/directions/{profile}",
+            post_json={
+                "coordinates": coordinates,
+                "instructions": False,
+                "geometry": False,
+            },
+        )
+        return True
 
     def request(
         self,
