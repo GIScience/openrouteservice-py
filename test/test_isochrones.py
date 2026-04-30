@@ -28,7 +28,7 @@ class IsochronesTest(_test.TestCase):
 
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/v2/isochrones/{}/geojson".format(
+            "https://api.heigit.org/openrouteservice/v2/isochrones/{}/geojson".format(
                 query["profile"]
             ),
             json=query,

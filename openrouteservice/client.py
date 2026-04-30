@@ -32,7 +32,7 @@ import warnings
 from openrouteservice import exceptions, __version__, get_ordinal
 
 _USER_AGENT = "ORSClientPython.v{}".format(__version__)
-_DEFAULT_BASE_URL = "https://api.openrouteservice.org"
+_DEFAULT_BASE_URL = "https://api.heigit.org"
 
 _RETRIABLE_STATUSES = set([503])  # noqa
 
@@ -55,8 +55,8 @@ class Client:
         :param key: ORS API key.
         :type key: string
 
-        :param base_url: The base URL for the request. Defaults to the ORS API
-            server. Should not have a trailing slash.
+        :param base_url: The base URL for the request. Defaults to the HeiGIT API
+            domain. Should not have a trailing slash.
         :type base_url: string
 
         :param timeout: Combined connect and read timeout for HTTP requests, in

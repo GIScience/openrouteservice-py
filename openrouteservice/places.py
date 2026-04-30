@@ -114,4 +114,6 @@ def places(
         if sortby:
             params["sortby"] = sortby
 
-    return client.request("/pois", {}, post_json=params, dry_run=dry_run)
+    return client.request(
+        "/openpoiservice/v0/pois", {}, post_json=params, dry_run=dry_run
+    )
