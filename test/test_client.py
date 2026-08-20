@@ -48,7 +48,7 @@ class ClientTest(_test.TestCase):
         valid_query = ENDPOINT_DICT["directions"]
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+            "https://api.heigit.org/openrouteservice/v2/directions/{}/geojson".format(
                 valid_query["profile"]
             ),
             json=valid_query,
@@ -76,7 +76,7 @@ class ClientTest(_test.TestCase):
         valid_query = ENDPOINT_DICT["directions"]
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+            "https://api.heigit.org/openrouteservice/v2/directions/{}/geojson".format(
                 valid_query["profile"]
             ),
             json=valid_query,
@@ -128,7 +128,7 @@ class ClientTest(_test.TestCase):
 
         responses.add(
             responses.GET,
-            "https://api.openrouteservice.org/directions",
+            "https://api.heigit.org/openrouteservice/directions",
             body='{"status":"OK","results":[]}',
             status=200,
             content_type="application/json",
@@ -146,7 +146,7 @@ class ClientTest(_test.TestCase):
     def test_no_get_parameter(self):
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/directions",
+            "https://api.heigit.org/openrouteservice/directions",
             body='{"status":"OK","results":[]}',
             status=200,
             content_type="application/json",
@@ -167,7 +167,7 @@ class ClientTest(_test.TestCase):
 
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+            "https://api.heigit.org/openrouteservice/v2/directions/{}/geojson".format(
                 query["profile"]
             ),
             json=ENDPOINT_DICT["directions"],

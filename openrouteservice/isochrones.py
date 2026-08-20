@@ -17,6 +17,7 @@
 """Performs requests to the ORS isochrones API."""
 
 from openrouteservice import deprecation
+from openrouteservice.utils import _DEFAULT_ORS_API_PATH
 
 
 def isochrones(
@@ -36,6 +37,7 @@ def isochrones(
     attributes=None,
     validate=True,
     dry_run=None,
+    ors_path=_DEFAULT_ORS_API_PATH,
 ):
     """Gets travel distance and time for a matrix of origins and destinations.
 
@@ -102,6 +104,10 @@ def isochrones(
     :param dry_run: Print URL and parameters without sending the request.
     :param dry_run: boolean
 
+    :param ors_path: Specifies the path to the api. Defaults to the ORS API
+        server. Should not have a trailing slash.
+    :param ors_path: str
+
     :raises ValueError: When parameter has invalid value(s).
 
     :rtype: call to Client.request()
@@ -147,7 +153,7 @@ def isochrones(
         params["options"] = options
 
     return client.request(
-        "/v2/isochrones/" + profile + "/geojson",
+        ors_path + "/v2/isochrones/" + profile + "/geojson",
         {},
         post_json=params,
         dry_run=dry_run,

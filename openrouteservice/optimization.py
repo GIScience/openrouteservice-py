@@ -96,9 +96,7 @@ def optimization(
     if matrix:
         params["matrix"] = matrix
 
-    return client.request(
-        "/optimization", {}, post_json=params, dry_run=dry_run
-    )
+    return client.request("/vroom/v0", {}, post_json=params, dry_run=dry_run)
 
 
 class Job:
