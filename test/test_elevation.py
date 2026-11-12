@@ -27,7 +27,7 @@ class ElevationTest(_test.TestCase):
     def test_elevation_line(self):
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/elevation/line",
+            "https://api.heigit.org/openelevationservice/v0/line",
             json=self.valid_query,
             status=200,
             content_type="application/json",
@@ -43,7 +43,7 @@ class ElevationTest(_test.TestCase):
         query = ENDPOINT_DICT["elevation_point"]
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/elevation/point",
+            "https://api.heigit.org/openelevationservice/v0/point",
             json=self.valid_query,
             status=200,
             content_type="application/json",

@@ -101,7 +101,7 @@ class OptimizationTest(_test.TestCase):
 
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/optimization",
+            "https://api.heigit.org/vroom/v0",
             json={},
             status=200,
             content_type="application/json",

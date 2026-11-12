@@ -33,7 +33,7 @@ class GeocodingPeliasTest(_test.TestCase):
     def test_pelias_search(self):
         responses.add(
             responses.GET,
-            "https://api.openrouteservice.org/geocode/search",
+            "https://api.heigit.org/pelias/v1/search",
             body='{"status":"OK","results":[]}',
             status=200,
             content_type="application/json",
@@ -43,7 +43,7 @@ class GeocodingPeliasTest(_test.TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
-            "https://api.openrouteservice.org/geocode/search?boundary.circle.lat=48.23424&boundary.circle.lon=8.34234&boundary.circle.radius=50&boundary.country=de&boundary.rect.max_lat=501&boundary.rect.max_lon=501&boundary.rect.min_lat=500&boundary.rect.min_lon=500&focus.point.lat=48.23424&focus.point.lon=8.34234&layers=locality%2Ccounty%2Cregion&size=50&sources=osm%2Cwof%2Cgn&text=Heidelberg",
+            "https://api.heigit.org/pelias/v1/search?boundary.circle.lat=48.23424&boundary.circle.lon=8.34234&boundary.circle.radius=50&boundary.country=de&boundary.rect.max_lat=501&boundary.rect.max_lon=501&boundary.rect.min_lat=500&boundary.rect.min_lon=500&focus.point.lat=48.23424&focus.point.lon=8.34234&layers=locality%2Ccounty%2Cregion&size=50&sources=osm%2Cwof%2Cgn&text=Heidelberg",
             responses.calls[0].request.url,
         )
 
@@ -51,7 +51,7 @@ class GeocodingPeliasTest(_test.TestCase):
     def test_pelias_autocomplete(self):
         responses.add(
             responses.GET,
-            "https://api.openrouteservice.org/geocode/autocomplete",
+            "https://api.heigit.org/pelias/v1/autocomplete",
             body='{"status":"OK","results":[]}',
             status=200,
             content_type="application/json",
@@ -61,7 +61,7 @@ class GeocodingPeliasTest(_test.TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
-            "https://api.openrouteservice.org/geocode/autocomplete?boundary.country=de&boundary.rect.max_lon%09=500&boundary.rect.min_lat%09=500&boundary.rect.min_lon%09=500&focus.point.lat=48.23424&focus.point.lon=8.34234&layers=locality%2Ccounty%2Cregion&sources=osm%2Cwof%2Cgn&text=Heidelberg",
+            "https://api.heigit.org/pelias/v1/autocomplete?boundary.country=de&boundary.rect.max_lon%09=500&boundary.rect.min_lat%09=500&boundary.rect.min_lon%09=500&focus.point.lat=48.23424&focus.point.lon=8.34234&layers=locality%2Ccounty%2Cregion&sources=osm%2Cwof%2Cgn&text=Heidelberg",
             responses.calls[0].request.url,
         )
 
@@ -69,7 +69,7 @@ class GeocodingPeliasTest(_test.TestCase):
     def test_pelias_structured(self):
         responses.add(
             responses.GET,
-            "https://api.openrouteservice.org/geocode/search/structured",
+            "https://api.heigit.org/pelias/v1/search/structured",
             body='{"status":"OK","results":[]}',
             status=200,
             content_type="application/json",
@@ -79,7 +79,7 @@ class GeocodingPeliasTest(_test.TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
-            "https://api.openrouteservice.org/geocode/search/structured?address=Berliner+Stra%C3%9Fe+45&borough=Heidelberg&country=de&county=Rhein-Neckar-Kreis&locality=Heidelberg&neighbourhood=Neuenheimer+Feld&postalcode=69120&region=Baden-W%C3%BCrttemberg",
+            "https://api.heigit.org/pelias/v1/search/structured?address=Berliner+Stra%C3%9Fe+45&borough=Heidelberg&country=de&county=Rhein-Neckar-Kreis&locality=Heidelberg&neighbourhood=Neuenheimer+Feld&postalcode=69120&region=Baden-W%C3%BCrttemberg",
             responses.calls[0].request.url,
         )
 
@@ -87,7 +87,7 @@ class GeocodingPeliasTest(_test.TestCase):
     def test_pelias_reverse(self):
         responses.add(
             responses.GET,
-            "https://api.openrouteservice.org/geocode/reverse",
+            "https://api.heigit.org/pelias/v1/reverse",
             body='{"status":"OK","results":[]}',
             status=200,
             content_type="application/json",
@@ -97,6 +97,6 @@ class GeocodingPeliasTest(_test.TestCase):
 
         self.assertEqual(1, len(responses.calls))
         self.assertURLEqual(
-            "https://api.openrouteservice.org/geocode/reverse?boundary.circle.radius=50&boundary.country=de&layers=locality%2Ccounty%2Cregion&point.lat=48.23424&point.lon=8.34234&size=50&sources=osm%2Cwof%2Cgn",
+            "https://api.heigit.org/pelias/v1/reverse?boundary.circle.radius=50&boundary.country=de&layers=locality%2Ccounty%2Cregion&point.lat=48.23424&point.lon=8.34234&size=50&sources=osm%2Cwof%2Cgn",
             responses.calls[0].request.url,
         )

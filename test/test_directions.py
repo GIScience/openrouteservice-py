@@ -35,7 +35,7 @@ class DirectionsTest(_test.TestCase):
     def test_directions(self):
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+            "https://api.heigit.org/openrouteservice/v2/directions/{}/geojson".format(
                 self.valid_query["profile"]
             ),
             json=self.valid_query,
@@ -55,7 +55,7 @@ class DirectionsTest(_test.TestCase):
 
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/v2/directions/{}/gpx".format(
+            "https://api.heigit.org/openrouteservice/v2/directions/{}/gpx".format(
                 self.valid_query["profile"]
             ),
             body=GPX_RESPONSE,
@@ -73,7 +73,7 @@ class DirectionsTest(_test.TestCase):
         self.valid_query["optimized"] = True
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+            "https://api.heigit.org/openrouteservice/v2/directions/{}/geojson".format(
                 self.valid_query["profile"]
             ),
             json=self.valid_query,
@@ -113,7 +113,7 @@ class DirectionsTest(_test.TestCase):
 
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+            "https://api.heigit.org/openrouteservice/v2/directions/{}/geojson".format(
                 query["profile"]
             ),
             json=query,
@@ -138,7 +138,7 @@ class DirectionsTest(_test.TestCase):
 
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+            "https://api.heigit.org/openrouteservice/v2/directions/{}/geojson".format(
                 query["profile"]
             ),
             json=query,
@@ -157,7 +157,7 @@ class DirectionsTest(_test.TestCase):
 
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+            "https://api.heigit.org/openrouteservice/v2/directions/{}/geojson".format(
                 query["profile"]
             ),
             json=query,
@@ -186,7 +186,7 @@ class DirectionsTest(_test.TestCase):
 
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+            "https://api.heigit.org/openrouteservice/v2/directions/{}/geojson".format(
                 query["profile"]
             ),
             json=query,
@@ -211,7 +211,7 @@ class DirectionsTest(_test.TestCase):
 
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/v2/directions/{}/geojson".format(
+            "https://api.heigit.org/openrouteservice/v2/directions/{}/geojson".format(
                 query["profile"]
             ),
             json=query,

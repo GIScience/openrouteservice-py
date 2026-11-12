@@ -33,7 +33,7 @@ class DistanceMatrixTest(_test.TestCase):
 
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/v2/matrix/{}/json".format(
+            "https://api.heigit.org/openrouteservice/v2/matrix/{}/json".format(
                 query["profile"]
             ),
             json=query,

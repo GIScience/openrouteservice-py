@@ -29,7 +29,7 @@ class PlacesTest(_test.TestCase):
         query = ENDPOINT_DICT["pois"]
         responses.add(
             responses.POST,
-            "https://api.openrouteservice.org/pois",
+            "https://api.heigit.org/openpoiservice/v0/pois",
             json=query,
             status=200,
             content_type="application/json",

@@ -56,7 +56,7 @@ def elevation_point(
     }
 
     return client.request(
-        "/elevation/point", {}, post_json=params, dry_run=dry_run
+        "/openelevationservice/v0/point", {}, post_json=params, dry_run=dry_run
     )
 
 
@@ -102,5 +102,5 @@ def elevation_line(
     }
 
     return client.request(
-        "/elevation/line", {}, post_json=params, dry_run=dry_run
+        "/openelevationservice/v0/line", {}, post_json=params, dry_run=dry_run
     )

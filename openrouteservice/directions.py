@@ -19,6 +19,7 @@
 """Performs requests to the ORS directions API."""
 
 from openrouteservice import deprecation
+from openrouteservice.utils import _DEFAULT_ORS_API_PATH
 from openrouteservice.optimization import optimization, Job, Vehicle
 
 import warnings
@@ -54,6 +55,7 @@ def directions(
     options=None,
     validate=True,
     dry_run=None,
+    ors_path=_DEFAULT_ORS_API_PATH,
 ):
     """Get directions between an origin point and a destination point.
 
@@ -194,6 +196,10 @@ def directions(
     :param dry_run: Print URL and parameters without sending the request.
     :param dry_run: boolean
 
+    :param ors_path: Specifies the path to the api. Defaults to the ORS API
+            server. Should not have a trailing slash.
+    :param ors_path: str
+
     :raises ValueError: When parameter has wrong value.
     :raises TypeError: When parameter is of wrong type.
 
@@ -295,7 +301,7 @@ def directions(
         params["options"] = options
 
     return client.request(
-        "/v2/directions/" + profile + "/" + format,
+        ors_path + "/v2/directions/" + profile + "/" + format,
         {},
         post_json=params,
         dry_run=dry_run,

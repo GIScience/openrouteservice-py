@@ -134,7 +134,7 @@ def pelias_search(
     if size:
         params["size"] = size
 
-    return client.request("/geocode/search", params, dry_run=dry_run)
+    return client.request("/pelias/v1/search", params, dry_run=dry_run)
 
 
 def pelias_autocomplete(
@@ -229,7 +229,7 @@ def pelias_autocomplete(
     if layers:
         params["layers"] = convert._comma_list(layers)
 
-    return client.request("/geocode/autocomplete", params, dry_run=dry_run)
+    return client.request("/pelias/v1/autocomplete", params, dry_run=dry_run)
 
 
 def pelias_structured(
@@ -321,7 +321,9 @@ def pelias_structured(
     if country:
         params["country"] = country
 
-    return client.request("/geocode/search/structured", params, dry_run=dry_run)
+    return client.request(
+        "/pelias/v1/search/structured", params, dry_run=dry_run
+    )
 
 
 def pelias_reverse(
@@ -391,4 +393,4 @@ def pelias_reverse(
     if size:
         params["size"] = size
 
-    return client.request("/geocode/reverse", params, dry_run=dry_run)
+    return client.request("/pelias/v1/reverse", params, dry_run=dry_run)
