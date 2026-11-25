@@ -7,7 +7,7 @@ readme = 'README.rst'
 license = "Apache2"
 
 [tool.poetry.dependencies]
-python = ">=3.7, <4.0"
+python = ">=3.10, <4.0"
 requests = ">=2.31.0"
 responses = ">=0.23.1"
 poetry2conda = "^0.3.0"
