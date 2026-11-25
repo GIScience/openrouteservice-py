@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openrouteservice"
-version = "2.3.3"
+version = "2.4.0"
 description = "Python client for requests to openrouteservice API services."
 authors = ["Julian Psotta <julian.psotta@heigit.org>"]
 readme = 'README.rst'
