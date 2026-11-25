@@ -18,9 +18,9 @@
 #
 
 """Initialize openrouteservice."""
-import pkg_resources
+import importlib
 
-__version__ = pkg_resources.get_distribution("openrouteservice").version
+__version__ = importlib.metadata.version("openrouteservice")
 
 
 def get_ordinal(number):
