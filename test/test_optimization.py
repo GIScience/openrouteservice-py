@@ -48,6 +48,7 @@ class OptimizationTest(_test.TestCase):
                 Vehicle(
                     idx,
                     profile="driving-car",
+                    description="vehicle",
                     start=coord,
                     start_index=idx,
                     end=coord,
@@ -55,6 +56,10 @@ class OptimizationTest(_test.TestCase):
                     capacity=[PARAM_INT_SMALL],
                     skills=PARAM_LIST_ONE,
                     time_window=PARAM_LIST_ONE,
+                    speed_factor=PARAM_FLOAT_SMALL,
+                    max_tasks=PARAM_INT_SMALL,
+                    max_travel_time=PARAM_INT_BIG,
+                    max_distance=PARAM_INT_BIG,
                 )
             )
 
